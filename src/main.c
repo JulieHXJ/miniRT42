@@ -36,7 +36,5 @@ int main(int ac, char **av)
 		//free
 		return(1);
 	}
-
-	
 	
 }

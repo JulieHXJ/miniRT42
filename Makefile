@@ -14,8 +14,8 @@ NAME = minirt
 
 CC = gcc
 
-# CFLAGS = -Wall -Wextra -Werror -Imlx -g libmlx42.a -Iinclude -lglfw
-CFLAGS = -Wall -Wextra -Werror -Wunreachable-code -Ofast -g
+# CFLAGS = -Wall -Wextra -Werror -Imlx -g libmlx42.a -Iinclude -lglfw -lm
+CFLAGS = -Wall -Wextra -Werror -Wunreachable-code -Ofast -g -lm
 
 HEADERS = -I. -I $(LIBMLX)/include
 
@@ -23,7 +23,7 @@ SRCS = $(wildcard *.c src/*.c src/*/*.c)
 
 SRCOBJ = $(SRCS:%.c=%.o) 
 
-LIBMLX = ./lib/MLX42
+LIBMLX = ./inc/MLX42
 
 LIBFT = ./lib/libft
 
