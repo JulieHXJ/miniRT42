@@ -1,57 +1,49 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/11/16 14:44:37 by xhuang            #+#    #+#              #
-#    Updated: 2024/11/17 17:36:17 by xhuang           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+#
+#
+CC = cc
+CFLAGS = -Wall -Werror -Wextra -I$(INCDIR)
 
-# variables
+INCDIR = ./inc
+SRCDIR = ./src
+OBJDIR = ./obj
 
-NAME := libft.a
+SRCS = $(SRCDIR)/ft_isalnum.c $(SRCDIR)/ft_isprint.c $(SRCDIR)/ft_strlen.c $(SRCDIR)/ft_toupper.c\
+		$(SRCDIR)/ft_tolower.c $(SRCDIR)/ft_isalpha.c $(SRCDIR)/ft_isdigit.c $(SRCDIR)/ft_isascii.c\
+		$(SRCDIR)/ft_memset.c $(SRCDIR)/ft_strchr.c $(SRCDIR)/ft_strrchr.c $(SRCDIR)/ft_strlcpy.c\
+		$(SRCDIR)/ft_strncmp.c $(SRCDIR)/ft_strlcat.c $(SRCDIR)/ft_atoi.c $(SRCDIR)/ft_bzero.c\
+		$(SRCDIR)/ft_memcpy.c $(SRCDIR)/ft_memcmp.c $(SRCDIR)/ft_memmove.c $(SRCDIR)/ft_memchr.c\
+		$(SRCDIR)/ft_calloc.c $(SRCDIR)/ft_strdup.c $(SRCDIR)/ft_itoa.c $(SRCDIR)/ft_putchar_fd.c\
+		$(SRCDIR)/ft_putendl_fd.c $(SRCDIR)/ft_putnbr_fd.c $(SRCDIR)/ft_putstr_fd.c $(SRCDIR)/ft_substr.c\
+		$(SRCDIR)/ft_strjoin.c $(SRCDIR)/ft_striteri.c $(SRCDIR)/ft_strmapi.c $(SRCDIR)/ft_strtrim.c\
+		$(SRCDIR)/ft_strnstr.c $(SRCDIR)/ft_split.c 
 
-RM := rm -f
+OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+NAME = libft.a
 
-CC := cc
+all: $(NAME)
 
-CFLAGS := -Wall -Wextra -Werror
+$(NAME): $(OBJDIR) $(OBJS)
+	@echo "\033[33mCompilating $(NAME) static library...\033[0m"
+	ar rcs $(NAME) $(OBJS)
+	@echo "$(NAME) created \033[32msuccessfully\033[0m!"
 
-# directories and files
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-INCLUDES := ./header/
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
 
-SRCS := ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c ft_itoa.c ft_memchr.c ft_memcmp.c ft_memcpy.c ft_memmove.c ft_memset.c \
-	ft_putchar_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_putstr_fd.c ft_split.c ft_strchr.c ft_strdup.c ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlcpy.c ft_strlen.c ft_strmapi.c \
-	ft_strncmp.c ft_strrchr.c ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c ft_strnstr.c ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c \
-	ft_lstclear.c ft_lstiter.c ft_lstmap.c \
-	ft_printf.c ft_print_utils.c ft_print_unsign.c get_next_line.c
-	
-
-SRCOBJ := $(SRCS:%.c=%.o) 
-
-# rules
-
-.PHONY: all clean fclean re
-
-all:	$(NAME)
-
-$(NAME):	$(SRCOBJ) 
-	ar rcs $(NAME) $(SRCOBJ)
-	@echo "Library $(NAME) has been created."
-
-%.o:	%.c
-	@$(CC) $(CFLAGS) -I $(INCLUDES) -c $< -o $@ 
-
-clean:	
-	$(RM) $(SRCOBJ) $(BONUS_OBJ)
-	@echo "Object files have been deleted."
+clean:
+	@echo "\033[33mRemoving $(NAME) build...\033[0m"
+	rm -f $(OBJS)
+	rm -rf $(OBJDIR)
+	@echo "$(NAME) build removed \033[32msuccessfully\033[0m!"
 
 fclean: clean
-	$(RM) $(NAME)
-	@echo "Library has been deleted."
+	@echo "\033[33mRemoving $(NAME)...\033[0m"
+	rm -f $(NAME)
+	@echo "$(NAME) removed \033[32msuccessfully\033[0m!"
 
-re: fclean all 
+re: fclean all
+
+.PHONY: all clean fclean re

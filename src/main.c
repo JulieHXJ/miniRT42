@@ -3,38 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/04/09 14:17:39 by junjun           ###   ########.fr       */
+/*   Updated: 2025/04/30 15:58:16 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../inc/minirt.h"
 
-void print_error(char *str)
+int	main(int ac, char **av)
 {
-	printf("%s\n", str);
-	//free resoure
-	exit();
-}
+	// t_gc_object	*gc_list;
+	int			fd;
 
-int main(int ac, char **av)
-{
-	
 	if (ac != 2 || !av[1])
-	{
-		printf(USAGE_MSG);
+		return (printf(USAGE_MSG), 1);
+	fd = open(av[1], O_RDONLY);
+	if (!invalid_file(av[1], fd))
 		return (1);
-	}
-	if (invalid_file(av[1]))
-	{
-		return(1);
-	}
-	if (!parse_input())
-	{
-		//free
-		return(1);
-	}
-	
+	return (0);
 }
