@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:16:31 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/04/30 15:58:27 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:21:32 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,56 @@ size_t	array_size(char **arr)
 
 void	free_array(char ***arr)
 {
-	int	i;
-	int	size;
+    size_t	i;
+    size_t	size;
 
-	if (!arr || !*arr)
-		return ;
-	size = 0;
-	i = -1;
-	while (arr[++i])
-		size++;
-	i = -1;
-	while (++i < size)
-		free((*arr)[i]);
-	free (*arr);
-	*arr = NULL;
+    if (!arr || !*arr)
+        return ;
+    size = array_size(*arr);
+    i = -1;
+    while (++i < size)
+        free((*arr)[i]);
+    free(*arr);
+    *arr = NULL;
 }
 
 void	print_error(char *msg, t_gc_object *gc_list)
 {
-	printf("Error: %s\n", msg);
+	printf("%sError%s: %s\n", RED, RST, msg);
 	if (gc_list)
 		gc_sweep(gc_list);
 	exit(1);
+}
+
+/**
+ * @brief Convert string to double
+ * @param str String to convert (format: [-+]?[0-9]*\.?[0-9]+)
+ * @return Double value
+ */
+double	ft_atod(const char *s)
+{
+	double	res;
+	double	frac;
+	double	div;
+	int		sign;
+
+	sign = 1;
+	if (*s == '-' || *s == '+')
+		if (*s++ == '-')
+			sign = -1;
+	res = 0;
+	while (*s >= '0' && *s <= '9')
+		res = res * 10 + (*s++ - '0');
+	frac = 0;
+	div = 10;
+	if (*s == '.')
+	{
+		s++;
+		while (*s >= '0' && *s <= '9')
+		{
+			frac += (*s++ - '0') / div;
+			div *= 10;
+		}
+	}
+	return (sign * (res + frac));
 }

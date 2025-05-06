@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 13:14:32 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/04/30 16:39:54 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:31:00 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int				ft_toupper(int ch);
 int				ft_isprint(int ch);
 int				ft_atoi(const char *str);
 int				ft_memcmp(const void *s1, const void *s2, size_t n);
+int				ft_strcmp(const char *str1, const char *str2);
 void			*ft_memset(void *b, int c, size_t len);
 void			*ft_memchr(const void *s, int c, size_t n);
 void			ft_bzero(void *s, size_t n);

@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/06 16:40:28 by dchrysov         ###   ########.fr       */
+/*   Created: 2025/05/05 15:25:31 by dchrysov          #+#    #+#             */
+/*   Updated: 2025/05/05 15:25:59 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minirt.h"
+#include "../inc/libft.h"
 
-int	main(int ac, char **av)
+int	ft_strcmp(const char *str1, const char *str2)
 {
-	// t_gc_object	*gc_list;
-	t_scene			*scene;
+	size_t	i;
 
-	if (ac != 2 || !av[1])
-		return (print_error(USAGE_MSG, NULL), 1);
-	if (!invalid_file(av[1]))
-		return (1);
-	scene = scene_init();
-	parser(av[1], &scene);
-	return (0);
+	i = 0;
+	while (str1[i] && str2[i] && str1[i] == str2[i])
+		i++;
+	return ((unsigned char)str1[i] - (unsigned char)str2[i]);
 }

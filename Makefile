@@ -6,14 +6,14 @@
 #    By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/05/05 11:56:53 by dchrysov         ###   ########.fr        #
+#    Updated: 2025/05/06 16:30:59 by dchrysov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 MAKEFLAGS += -s
-CFLAGS = -Wall -Wextra -Werror -Wunreachable-code -g -I$(LIBMLX)/inc -I$(GNLDIR)/inc -I./inc
-MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit
+CFLAGS = -Wall -Wextra -Werror -Wunreachable-code -g -I$(LIBMLX)/inc -I$(GNLDIR)/inc -I./inc -fsanitize=address
+MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw -pthread
 
 OBJDIR = ./obj
 SRCDIR = ./src
@@ -23,7 +23,8 @@ GNLDIR = ./lib/getnextline
 
 SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c \
 	\
-	$(SRCDIR)/parser/check.c
+	$(SRCDIR)/parser/check.c $(SRCDIR)/parser/parse.c $(SRCDIR)/parser/environment.c $(SRCDIR)/parser/objects.c \
+	$(SRCDIR)/parser/parse_utils.c
 
 OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 
@@ -31,14 +32,14 @@ RM = rm -f
 
 MLX = $(MLXDIR)/build/libmlx42.a
 LIBFT = $(LIBFTDIR)/libft.a
-GNL = $(GNLDIR)/getnextline.a
+GNL = $(GNLDIR)/libgnl.a
 NAME = minirt
 
 all: gitclone libmlx libft $(NAME)
 
-$(NAME): $(OBJDIR) $(OBJS) $(LIBFT) $(MLX) $(GNL)
-	$(CC) $(CFLAGS) $(OBJS) $(MLX) $(MLX_FLAGS) -o $(NAME) -L$(LIBFTDIR) -lft -L$(GNLDIR) -lgetnextline -ldl -lglfw -pthread -lm
-	@echo "Executable $(NAME) has been created."
+$(NAME): $(OBJDIR) $(OBJS) $(MLX) $(LIBFT) $(GNL)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(MLX) $(MLX_FLAGS) -L$(LIBFTDIR) -lft -L$(GNLDIR) -lgnl -lm
+	@echo "$(NAME) compiled \033[32msuccessfully\033[0m!"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< $(HEADERS) -o $@
