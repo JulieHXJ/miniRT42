@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/06 17:37:14 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/07 13:36:04 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,41 @@
 # include <stdbool.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include "mrt_color.h"
+# include "mrt_vec3.h"
 
 # include "../lib/libft/inc/libft.h"
 # include "../lib/getnextline/inc/get_next_line.h"
 
+/* ************************************************************************** */
+/* ENUMS & DEFINES                                                            */
+/* ************************************************************************** */
+
 # define USAGE_MSG "Usage: ./minirt scenes/<file_name>.rt"
 # define RED "\033[31m"
 # define RST "\033[0m"
+
+typedef enum e_obj_type
+{
+	SPHERE,
+	PLANE,
+	CYLINDER,
+	LIGHT,
+	CAMERA,//i thingk its not necessary to put these types cuz there is only ono cam and one ambient right?
+	AMB_LIGHT//
+}	t_obj_type;
+
+/* ************************************************************************** */
+/* CORE MATH STRUCTURES                                                       */
+/* ************************************************************************** */
+
+//implyment vectors for center, normal and point on plane
+typedef struct s_vec3	t_vec3;
+typedef struct s_color	t_color;
+
+/* ************************************************************************** */
+/* MEMORY GC OBJECT                                                           */
+/* ************************************************************************** */
 
 typedef struct s_gc_object
 {
@@ -32,57 +60,23 @@ typedef struct s_gc_object
 	struct s_gc_object	*next;
 }						t_gc_object;
 
-typedef enum e_obj_type
-{
-	SPHERE,
-	PLANE,
-	CYLINDER,
-	LIGHT,
-	CAMERA,
-	AMB_LIGHT
-}	t_obj_type;
 
-/**
- * @note ratio range: [0.0, 1.0]
- * @note RGB range: [0, 255]
- */
-typedef struct s_amb_light
-{
-	t_obj_type	type;
-	double		ratio;
-	int			rgb[3];
-}				t_amb_light;
-
-/**
- * @note orient range: [-1.0, 1.0]
- * @note fov range: [0, 180]
- */
-typedef struct s_camera
-{
-	t_obj_type	type;
-	double		viewpoint[3];
-	double		orient[3];
-	int			fov;
-}				t_camera;
-
-/**
- * @note brightness range: [0.0, 1.0]
- */
-typedef struct s_light
-{
-	t_obj_type	type;
-	double		coord[3];
-	double		brightness;
-}				t_light;
+/* ************************************************************************** */
+/* OBJECTS                                                                    */
+/* ************************************************************************** */
 
 /**
  * @note rgb range: [0, 255]
  */
 typedef struct s_sphere
 {
-	t_obj_type	type;
+	t_obj_type	type;//i think its not necessary to put type here, cuz we have it we creating object
 	char		*id;
 	double		diam;
+	int				rgb[3];
+	double			center[3];//instead i use vertor
+	// t_vec3		center;
+	// t_color		color;
 }				t_sphere;
 
 /**
@@ -92,8 +86,11 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_obj_type	type;
-	char		*id;
+	char		*id;//what is the purpose of this
 	double		normal[3];
+	// t_vec3		point;
+	// t_vec3		normal;
+	// t_color		color;
 }				t_plane;
 
 /**
@@ -107,11 +104,57 @@ typedef struct s_cylinder
 	double		normal[3];
 	double		diam;
 	double		height;
+	// t_vec3		center;
+	// t_vec3		normal;
+	// t_color		color;
 }				t_cylinder;
 
 /**
- * @brief Generic declation of the geometrical objects
+ * @note ratio range: [0.0, 1.0]
+ * @note RGB range: [0, 255]
  */
+typedef struct s_amb_light
+{
+	t_obj_type	type;//unnecessary i think
+	double		ratio;
+	int			rgb[3];
+	// t_color		color;
+}				t_amb_light;
+
+/**
+ * @note orient range: [-1.0, 1.0]
+ * @note fov range: [0, 180]
+ */
+typedef struct s_camera
+{
+	t_obj_type	type;//
+	double		viewpoint[3];
+	double		orient[3];
+	// t_vec3		viewpoint;
+	// t_vec3		orientation;
+	int			fov;// field of view, nor
+}				t_camera;
+
+/**
+ * @note brightness range: [0.0, 1.0]
+ */
+//i think its better to use linked list cuz we will have more lights later
+typedef struct s_light
+{
+	t_obj_type	type;//
+	double		coord[3];
+	double		brightness;
+	// t_vec3		position;
+	// t_color		color;
+}				t_light;
+
+
+
+/* ************************************************************************** */
+/* GENERIC OBJECT WRAPPER                                                     */
+/* ************************************************************************** */
+
+//i put color and center into certain object's structure so can be used direct when calling the object
 typedef struct s_object
 {
 	t_obj_type		type;
@@ -121,19 +164,28 @@ typedef struct s_object
 		t_plane		plane;
 		t_cylinder	cylinder;
 	}	u_type;
-	int				rgb[3];
-	double			center[3];
+	// int				rgb[3];
+	// double			center[3];
+	void		*content;//added
 	struct s_object	*next;
 	struct s_object	*previous;
 }	t_object;
+
+/* ************************************************************************** */
+/* SCENE STRUCTURE                                                            */
+/* ************************************************************************** */
 
 typedef struct s_scene
 {
 	t_amb_light	*amb_light;
 	t_camera	*cam;
-	t_light		*light;
+	t_light		*light;// make it a list
 	t_object	*obj;
 }				t_scene;
+
+/* ************************************************************************** */
+/* FUNCTION PROTOTYPES                                                        */
+/* ************************************************************************** */
 
 // Utils
 void	free_array(char ***arr);
