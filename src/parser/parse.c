@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/06 17:39:18 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:08:45 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@
  * @brief Init scene with the NULL env parameters and allocates memory for one
  * obj node.
  */
-t_scene	*scene_init(void)
+t_scene	*scene_init(t_gc_object **list)
 {
 	t_scene	*scene;
 
-	scene = malloc(sizeof(t_scene));
-	if (!scene)
-		return (NULL);
+	scene = gc_alloc(sizeof(t_scene), list);
 	scene->amb_light = NULL;
 	scene->light = NULL;
 	scene->cam = NULL;
@@ -30,7 +28,7 @@ t_scene	*scene_init(void)
 	return (scene);
 }
 
-void	parser(char *fname, t_scene **scene)
+void	parser(char *fname, t_scene **scene, t_gc_object **gc_list)
 {
 	char	*line;
 	int		fd;
@@ -47,9 +45,9 @@ void	parser(char *fname, t_scene **scene)
 			continue ;
 		}
 		if (line[0] == 'A' || line[0] == 'C' || line[0] == 'L')
-			create_environment(line, scene);
+			create_environment(line, scene, gc_list);
 		else if (line[0] == 'p' || line[0] == 's' || line[0] == 'c')
-			create_objects(line, scene);
+			create_objects(line, scene, gc_list);
 		free(line);
 	}
 	close(fd);

@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/06 17:37:14 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:56:19 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,22 +138,25 @@ typedef struct s_scene
 // Utils
 void	free_array(char ***arr);
 size_t	array_size(char **arr);
-void	print_error(char *str, t_gc_object *gc_list);
+void	print_error(char *msg, t_gc_object **gc_list);
 double	ft_atod(const char *str);
 
 // Parser
-bool	invalid_file(char *fname);
-void	parser(char *fname, t_scene **scene);
-void	create_environment(char *line, t_scene **scene);
-void	create_objects(char *line, t_scene **scene);
-void	rgb_range_check(t_object **obj, char *rgb);
-void	normal_vector_range_check(t_object **obj, t_obj_type type, char *vec);
+bool	invalid_file(int ac, char **av);
+t_scene	*scene_init(t_gc_object **list);
+void	parser(char *fname, t_scene **scene, t_gc_object **gc_list);
+void	create_environment(char *line, t_scene **scene, t_gc_object **gc_list);
+void	create_objects(char *line, t_scene **scene, t_gc_object **gc_list);
+void	rgb_range_check(t_object **obj, char *rgb, t_gc_object **gc_list);
+void	normal_vector_range_check(t_object **obj, char *vec, t_gc_object **lis);
 void	center_point_assign(t_object **obj, char *point);
-t_scene	*scene_init(void);
 
 // GC
-void	*gc_alloc(size_t size, t_gc_object *gc_list);
+void	*gc_alloc(size_t size, t_gc_object **gc_list);
 void	gc_mark(void *ptr, t_gc_object *gc_list);
-void	gc_sweep(t_gc_object *gc_list);
+void	gc_sweep(t_gc_object **gc_list);
+
+
+void	print_obj(t_scene scene);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/06 16:40:28 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:35:04 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 int	main(int ac, char **av)
 {
-	// t_gc_object	*gc_list;
-	t_scene			*scene;
+	t_gc_object	*gc_list;
+	t_scene		*scene;
 
-	if (ac != 2 || !av[1])
-		return (print_error(USAGE_MSG, NULL), 1);
-	if (!invalid_file(av[1]))
+	if (!invalid_file(ac, av))
 		return (1);
-	scene = scene_init();
-	parser(av[1], &scene);
+	gc_list = NULL;
+	scene = scene_init(&gc_list);
+	parser(av[1], &scene, &gc_list);
+	print_obj(*scene);
+	gc_sweep(&gc_list);
 	return (0);
 }

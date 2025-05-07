@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:00:36 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/06 11:11:18 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:37:12 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static bool	check_file_contents(char *fname, int fd)
 			if (!(!ft_strcmp(arr[0], "A") || !ft_strcmp(arr[0], "C")
 					|| !ft_strcmp(arr[0], "L") || !ft_strcmp(arr[0], "pl")
 					|| !ft_strcmp(arr[0], "sp") || !ft_strcmp(arr[0], "cy")))
-				return (print_error("Misconfiguration in .rt filee", NULL),
+				return (print_error("Misconfiguration in .rt file", NULL),
 					free_array(&arr), free(line), false);
 			else if (!check_ele_number(arr))
 				return (free_array(&arr), free(line), false);
@@ -85,10 +85,14 @@ static void	check_file(char *fname, int fd)
  * @brief validate file name and content
  * @return true is it's invalid file
  */
-bool	invalid_file(char *fname)
+bool	invalid_file(int ac, char **av)
 {
-	int	fd;
+	int		fd;
+	char	*fname;
 
+	if (ac != 2 || !av[1])
+		return (print_error(USAGE_MSG, NULL), 1);
+	fname = av[1];
 	fd = open(fname, O_RDONLY);
 	check_file(fname, fd);
 	if (!check_file_contents(fname, fd))
