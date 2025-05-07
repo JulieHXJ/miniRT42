@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:00:36 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/07 11:37:12 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/07 15:39:18 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,16 @@
  */
 static bool	check_ele_number(char **arr)
 {
-	if ((*arr)[0] == 'A' && array_size(arr) == 3)
-		return (true);
-	else if ((*arr)[0] == 'C' && array_size(arr) == 4)
-		return (true);
-	else if ((*arr)[0] == 'L' && array_size(arr) == 3)
-		return (true);
+	static bool	check_a = false;
+	static bool	check_c = false;
+	static bool	check_l = false;
+
+	if ((*arr)[0] == 'A' && array_size(arr) == 3 && !check_a)
+		return (check_a = !check_a, true);
+	else if ((*arr)[0] == 'C' && array_size(arr) == 4 && !check_c)
+		return (check_c = !check_c, true);
+	else if ((*arr)[0] == 'L' && array_size(arr) == 3 && !check_l)
+		return (check_l = !check_l, true);
 	else if ((*arr)[0] == 's' && array_size(arr) == 4)
 		return (true);
 	else if ((*arr)[0] == 'p' && array_size(arr) == 4)
@@ -88,14 +92,12 @@ static void	check_file(char *fname, int fd)
 bool	invalid_file(int ac, char **av)
 {
 	int		fd;
-	char	*fname;
 
 	if (ac != 2 || !av[1])
 		return (print_error(USAGE_MSG, NULL), 1);
-	fname = av[1];
-	fd = open(fname, O_RDONLY);
-	check_file(fname, fd);
-	if (!check_file_contents(fname, fd))
+	fd = open(av[1], O_RDONLY);
+	check_file(av[1], fd);
+	if (!check_file_contents(av[1], fd))
 		return (print_error("Misconfiguration in .rt file", NULL), false);
 	close(fd);
 	return (true);

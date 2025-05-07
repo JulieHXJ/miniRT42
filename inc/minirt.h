@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/07 11:56:19 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/07 14:37:33 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdbool.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <math.h>
 
 # include "../lib/libft/inc/libft.h"
 # include "../lib/getnextline/inc/get_next_line.h"
