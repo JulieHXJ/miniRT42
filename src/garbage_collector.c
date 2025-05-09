@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:25:22 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/04/30 15:58:00 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:18:22 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*gc_alloc(size_t size, t_gc_object *gc_list)
 	mem = malloc(size);
 	obj = malloc(sizeof(t_gc_object));
 	if (!obj)
-		return (gc_sweep(gc_list), NULL);
+		return (gc_free(gc_list), NULL);
 	obj->ptr = mem;
 	obj->marked = false;
 	obj->next = gc_list;
@@ -44,7 +44,7 @@ void	gc_mark(void *ptr, t_gc_object *gc_list)
 	}
 }
 
-void	gc_sweep(t_gc_object *gc_list)
+void	gc_free(t_gc_object *gc_list)
 {
 	t_gc_object	**obj;
 	t_gc_object	*unreached;

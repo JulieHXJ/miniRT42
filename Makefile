@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+         #
+#    By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/05/06 16:30:59 by dchrysov         ###   ########.fr        #
+#    Updated: 2025/05/09 15:35:14 by xhuang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw -pth
 
 OBJDIR = ./obj
 SRCDIR = ./src
-MLXDIR = ./inc/MLX42
+MLXDIR = ./lib/MLX42
 LIBFTDIR = ./lib/libft
 GNLDIR = ./lib/getnextline
 

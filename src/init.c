@@ -1,28 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mrt_color.h                                        :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/07 13:36:31 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/09 16:39:54 by xhuang           ###   ########.fr       */
+/*   Created: 2025/05/09 15:29:21 by xhuang            #+#    #+#             */
+/*   Updated: 2025/05/09 15:58:36 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MRT_COLOR_H
-# define MRT_COLOR_H
-
-typedef struct s_color
-{
-	int	r;
-	int	g;
-	int	b;
-}	t_color;
-
-t_color	color(int r, int g, int b);
-t_color	color_scale(t_color c, double factor);
-t_color	color_add(t_color c1, t_color c2);
+#include "minirt.h"
 
 
-#endif
+
+//img_init
