@@ -1,28 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mrt_color.h                                        :+:      :+:    :+:   */
+/*   render.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/07 13:36:31 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/09 16:39:54 by xhuang           ###   ########.fr       */
+/*   Created: 2025/05/11 13:38:15 by junjun            #+#    #+#             */
+/*   Updated: 2025/05/11 13:38:26 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MRT_COLOR_H
-# define MRT_COLOR_H
-
-typedef struct s_color
-{
-	int	r;
-	int	g;
-	int	b;
-}	t_color;
-
-t_color	color(int r, int g, int b);
-t_color	color_scale(t_color c, double factor);
-t_color	color_add(t_color c1, t_color c2);
-
-
-#endif

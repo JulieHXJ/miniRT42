@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   objects.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/06 17:43:16 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/11 14:05:04 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,20 @@ void	create_objects(char *line, t_scene **scene)
 
 	trimmed = ft_strtrim(line, "\n");
 	tokens = ft_split(trimmed, ' ');
-	if (tokens[0][0] == 'p')
+	if (!tokens || !tokens[0])
+	{
+		return (print_error("Invalid object line", line));
+	}
+	
+	if (!ft_strcmp(tokens[0], "pl"))
 		create_plane(scene, tokens);
 	else if (!ft_strcmp(tokens[0], "sp"))
 		create_sphere(scene, tokens);
-	else
+	else if (!ft_strcmp(tokens[0], "cy"))
 		create_cylinder(scene, tokens);
+	else
+		print_error("Unknown object identifier", tokens[0]);
+	
 	free_array(&tokens);
 	free(trimmed);
 }

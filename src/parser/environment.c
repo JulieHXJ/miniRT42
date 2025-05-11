@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/06 17:12:19 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/11 14:06:06 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,17 @@ void	create_environment(char *line, t_scene **scene)
 
 	trimmed = ft_strtrim(line, "\n");
 	tokens = ft_split(trimmed, ' ');
+	if (!tokens)
+	{
+		return (print_error("Invalid envrionment line", line));
+	}
+	
 	if (!ft_strcmp(tokens[0], "A"))
-		set_amb_light(scene, tokens);
+		set_amb_light(scene, tokens);//check number range
 	else if (!ft_strcmp(tokens[0], "C"))
-		set_camera(scene, tokens);
+		set_camera(scene, tokens); //check number range
 	else if (!ft_strcmp(tokens[0], "L"))
-		set_light(scene, tokens);
+		set_light(scene, tokens); //check number range
 	free(trimmed);
 	free_array(&tokens);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/09 16:42:56 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/11 14:00:51 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <unistd.h>
 # include <fcntl.h>
 
-# include "mrt_color.h"
-# include "mrt_vec3.h"
+# include "vector.h"
+# include "intersect.h"
 # include "../lib/libft/inc/libft.h"
 # include "../lib/getnextline/inc/get_next_line.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
@@ -35,16 +35,19 @@
 # define WIN_WIDTH 800
 # define WIN_HEIGHT 600
 
+#define ORIENT_MIN -1.0
+#define ORIENT_MAX 1.0
+
 typedef enum e_obj_type
 {
 	SPHERE,
 	PLANE,
 	CYLINDER,
 	LIGHT,
-	//Cone, Hyperboloid, Paraboloid
-
-	// CAMERA,//i thingk its not necessary to put these types cuz there is only ono cam and one ambient right?
-	// AMB_LIGHT
+	//Bonus
+	CONE,
+	HYPERBOLOID,
+	PARABOLOID
 }	t_obj_type;
 
 
@@ -52,7 +55,6 @@ typedef enum e_obj_type
 /* CORE MATH STRUCTURES                                                       */
 /* ************************************************************************** */
 
-//implyment vectors for center, normal and point on plane
 typedef struct s_vec3	t_vec3;
 typedef struct s_color	t_color;
 
@@ -70,20 +72,70 @@ typedef struct s_gc_object
 
 
 /* ************************************************************************** */
+/* BASICS                                                                     */
+/* ************************************************************************** */
+
+/**
+ * @note orient range: [-1.0, 1.0]
+ * @note fov range: [0, 180]
+ */
+typedef struct s_camera
+{
+	t_vec3 position;
+    t_vec3 direction;
+    t_vec3 cam_orient;         // For camera orientation
+    double fov;        // Field of view in degrees
+    int    width;      // Viewport width
+    int    height;     // Viewport height
+	
+	
+	// double		viewpoint[3];
+	// double		orient[3];
+	// int			fov;
+}				t_camera;
+
+/**
+ * @note ratio range: [0.0, 1.0]
+ * @note RGB range: [0, 255]
+ */
+typedef struct s_amb_light
+{
+	// double		ratio;
+	double  intensity;
+	// int			rgb[3];
+	t_color		color;
+}				t_amb_light;
+
+/**
+ * @note brightness range: [0.0, 1.0]
+ * @note better to use linked list cuz we will have more lights later
+ */
+typedef struct s_light
+{
+	double		coord[3];
+	double		brightness;
+	t_vec3		position;
+	t_color		color;
+	struct s_light		*next;
+}				t_light;
+
+/* ************************************************************************** */
 /* OBJECTS                                                                    */
 /* ************************************************************************** */
+
 /**
  * @note rgb range: [0, 255]
  */
 typedef struct s_sphere
 {
-	// t_obj_type	type;//i think its not necessary to put type here, cuz we have it we creating object
-	char		*id;
 	double		diam;
 	// int				rgb[3];
 	// double			center[3];//instead i use vertor
 	t_vec3		center;
 	t_color		color;
+	double      radius;
+	double  specular;      // For bonus specular lighting
+    double  reflective;    // For bonus reflections
 }				t_sphere;
 
 /**
@@ -92,12 +144,12 @@ typedef struct s_sphere
  */
 typedef struct s_plane
 {
-	// t_obj_type	type;
-	char		*id;//what is the purpose of this
 	// double		normal[3];
 	t_vec3		point;
 	t_vec3		normal;
 	t_color		color;
+	double  specular;      // For bonus specular lighting
+    double  reflective;    // For bonus reflections
 }				t_plane;
 
 /**
@@ -106,59 +158,19 @@ typedef struct s_plane
  */
 typedef struct s_cylinder
 {
-	// t_obj_type	type;
-	char		*id;//what for
 	// double		normal[3];
+	t_vec3		center;
 	double		diam;
 	double		height;
-	t_vec3		center;
-	t_vec3		normal;
+	t_vec3		direction;
 	t_color		color;
+	double  specular;      // For bonus specular lighting
+    double  reflective;    // For bonus reflections
 }				t_cylinder;
-
-/**
- * @note ratio range: [0.0, 1.0]
- * @note RGB range: [0, 255]
- */
-typedef struct s_amb_light
-{
-	// t_obj_type	type;//unnecessary i think
-	double		ratio;
-	// int			rgb[3];
-	t_color		color;
-}				t_amb_light;
-
-/**
- * @note orient range: [-1.0, 1.0]
- * @note fov range: [0, 180]
- */
-typedef struct s_camera
-{
-	// t_obj_type	type;
-	// double		viewpoint[3];
-	// double		orient[3];
-	t_vec3		viewpoint;
-	t_vec3		orientation;
-	int			fov;// field of view, nor
-}				t_camera;
-
-/**
- * @note brightness range: [0.0, 1.0]
- */
-//i think its better to use linked list cuz we will have more lights later
-typedef struct s_light
-{
-	// t_obj_type	type;
-	double		coord[3];
-	double		brightness;
-	t_vec3		position;
-	t_color		color;
-}				t_light;
-
 
 
 /* ************************************************************************** */
-/* GENERIC OBJECT WRAPPER                                                     */
+/* Generic object structure                                                   */
 /* ************************************************************************** */
 
 //i put color and center into certain object's structure so can be used direct when calling the object
@@ -170,7 +182,8 @@ typedef struct s_object
 		t_sphere	sphere;
 		t_plane		plane;
 		t_cylinder	cylinder;
-	}	u_type;
+		//more objects
+	}	data;
 	// int				rgb[3];
 	// double			center[3];
 	void		*content;//added
@@ -178,24 +191,27 @@ typedef struct s_object
 	struct s_object	*previous;
 }	t_object;
 
+
 /* ************************************************************************** */
 /* SCENE STRUCTURE                                                            */
 /* ************************************************************************** */
 
 typedef struct s_scene
 {
-	t_amb_light	*amb_light;
-	t_camera	*cam;
-	t_light		*light;// make it a list
+	t_camera	camera;
+	t_amb_light	amb_light;
+	t_light		*light;// linked list
+	int			light_num;
 	t_object	*obj;
+	
+	void        *mlx;       // MLX pointer
+    void        *win;       // MLX window pointer
+    void        *img;       // MLX image pointer
+    char        *addr;      // Image data address
+    int         bits_per_pixel;
+    int         line_length;
+    int         endian;
 }				t_scene;
-
-typedef struct s_minirt
-{
-	mlx_t		*mlx;
-	// void		*window;
-	t_scene		*scene;
-} t_minirt;
 
 
 /* ************************************************************************** */
@@ -212,11 +228,11 @@ double	ft_atod(const char *str);
 bool	valid_file(int ac, char **av);
 
 //Init
-void	*scene_init(t_scene *scene);
+void	scene_init(t_scene *scene, t_gc_object **list);
 
 
 // Parser
-void	parser(char *fname, t_scene **scene);
+void	parser(char *fname, t_scene **scene, t_gc_object **gc_list);
 void	create_environment(char *line, t_scene **scene);
 void	create_objects(char *line, t_scene **scene);
 //void create_light();
