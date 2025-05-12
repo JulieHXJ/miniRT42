@@ -6,7 +6,7 @@
 /*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 13:37:03 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/11 18:05:03 by junjun           ###   ########.fr       */
+/*   Updated: 2025/05/11 19:01:10 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct s_color
 	int	g;
 	int	b;
 }	t_color;
-
 
 t_vec3	new_vector(double x, double y, double z);
 t_vec3	vec_add(t_vec3 a, t_vec3 b);

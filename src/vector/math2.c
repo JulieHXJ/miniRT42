@@ -6,12 +6,24 @@
 /*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:22:02 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/11 18:05:43 by junjun           ###   ########.fr       */
+/*   Updated: 2025/05/11 19:00:53 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 
+/**
+ * @brief dot product, calculate angle between vectors, used for reflection and lighting
+ * @note a · b = ax * bx + ay * by + az * bz
+ */
+double vec_dot(t_vec3 a, t_vec3 b)
+{
+    return (a.x * b.x + a.y * b.y + a.z * b.z);
+}
+
+/**
+ * @brief cross product, calculating normal of two vectors
+ */
 t_vec3 vec_cross(t_vec3 a, t_vec3 b)
 {
     return (new_vector(
@@ -22,14 +34,19 @@ t_vec3 vec_cross(t_vec3 a, t_vec3 b)
 
 double vec_length(t_vec3 v)
 {
+	//|v| = sqrt(v · v)
     return (sqrt(vec_dot(v, v)));
 }
 
+/**
+ * @brief
+ */
 t_vec3 vec_normalize(t_vec3 v)
 {
     double len;
     
     len = vec_length(v);
+	//v / |v|
     if (len > 0)
         return (vec_scale(v, 1.0 / len));
     return (v);
