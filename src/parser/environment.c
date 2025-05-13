@@ -6,17 +6,22 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/12 18:39:52 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/13 16:49:09 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-static void	set_camera(t_scene **scene, char **tokens)
+/**
+ * @brief Check number range and parse to camera struct
+ */
+static bool	set_camera(t_scene **scene, char **tokens, t_gc_object **gc_list)
 {
 	char	**vp;
-	char	**orient;
-	double	d_orient[3];
+    char	**orient;
+    t_vec3	position;
+    t_vec3	orientation;
+    int		fov;
 
 	vp = ft_split(tokens[1], ',');
 	orient = ft_split(tokens[2], ',');
@@ -25,12 +30,10 @@ static void	set_camera(t_scene **scene, char **tokens)
 	d_orient[2] = ft_atod(orient[2]);
 	if (d_orient[0] <= -1.0 || d_orient[0] >= 1.0 || d_orient[1] <= -1.0
 		|| d_orient[1] >= 1.0 || d_orient[2] <= -1.0 || d_orient[2] >= 1.0)
-		return (print_error("Camera orient out of range [-1.0, 1.0]", NULL));
+		print_error("Camera orientation out of range [-1.0, 1.0]", gc_list);
 	if (ft_atoi(tokens[3]) < 0 || ft_atoi(tokens[3]) > 180)
-		return (print_error("Camera FOV out of range [0, 180]", NULL));
-	(*scene)->cam = malloc(sizeof(t_camera));
-	if (!(*scene)->cam)
-		return (print_error("Error allocating memory for camera", NULL));
+		print_error("Camera FOV out of range [0, 180]", gc_list);
+	(*scene)->cam = gc_alloc(sizeof(t_camera), gc_list);
 	(*scene)->cam->viewpoint[0] = ft_atod(vp[0]);
 	(*scene)->cam->viewpoint[1] = ft_atod(vp[1]);
 	(*scene)->cam->viewpoint[2] = ft_atod(vp[2]);
@@ -41,7 +44,7 @@ static void	set_camera(t_scene **scene, char **tokens)
 	return (free_array(&vp), free_array(&orient));
 }
 
-static void	set_amb_light(t_scene **scene, char **tokens)
+static bool	set_amb_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 {
 	char	**rgb;
 	double	ratio;
@@ -49,18 +52,15 @@ static void	set_amb_light(t_scene **scene, char **tokens)
 
 	ratio = ft_atod(tokens[1]);
 	if (ratio <= 0.0 || ratio >= 1.0)
-		return (print_error("Ambient light ratio out of range [0.0, 1.0]",
-				NULL));
+		print_error("Ambient light ratio out of range [0.0, 1.0]", gc_list);
 	rgb = ft_split(tokens[2], ',');
 	int_rgb[0] = ft_atoi(rgb[0]);
 	int_rgb[1] = ft_atoi(rgb[1]);
 	int_rgb[2] = ft_atoi(rgb[2]);
 	if (int_rgb[0] < 0 || int_rgb[0] > 255 || int_rgb[1] < 0 || int_rgb[1] > 255
 		|| int_rgb[2] < 0 || int_rgb[2] > 255)
-		return (print_error("Ambient light RGB out of range [0, 255]", NULL));
-	(*scene)->amb_light = malloc(sizeof(t_amb_light));
-	if (!(*scene)->amb_light)
-		return (print_error("Error allocating memory for ambient light", NULL));
+		print_error("Amb light RGB out of range [0, 255]", gc_list);
+	(*scene)->amb_light = gc_alloc(sizeof(t_amb_light), gc_list);
 	(*scene)->amb_light->ratio = ratio;
 	(*scene)->amb_light->rgb[0] = int_rgb[0];
 	(*scene)->amb_light->rgb[1] = int_rgb[1];
@@ -68,7 +68,7 @@ static void	set_amb_light(t_scene **scene, char **tokens)
 	free_array(&rgb);
 }
 
-static void	set_light(t_scene **scene, char **tokens)
+static bool	set_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 {
 	char	**coord;
 	int		brightness;
@@ -76,10 +76,8 @@ static void	set_light(t_scene **scene, char **tokens)
 	coord = ft_split(tokens[1], ',');
 	brightness = ft_atod(tokens[2]);
 	if (brightness < 0.0 || brightness > 1.0)
-		return (print_error("Light brightness out of range [0.0, 1.0]", NULL));
-	(*scene)->light = malloc(sizeof(t_light));
-	if (!(*scene)->light)
-		return (print_error("Error allocating memory for light", NULL));
+		return (print_error("Brightness out of range [0.0, 1.0]", gc_list));
+	(*scene)->light = gc_alloc(sizeof(t_light), gc_list);
 	(*scene)->light->coord[0] = ft_atod(coord[0]);
 	(*scene)->light->coord[1] = ft_atod(coord[1]);
 	(*scene)->light->coord[2] = ft_atod(coord[2]);
@@ -87,24 +85,30 @@ static void	set_light(t_scene **scene, char **tokens)
 	free_array(&coord);
 }
 
-void	create_environment(char *line, t_scene **scene)
+/**
+ * @brief Parse and create environmental elements (A, C, L)
+ * @return true if successful, false otherwise
+ */
+bool	create_environment(char *line, t_scene **scene, t_gc_object **gc_list)
 {
 	char	**tokens;
 	char	*trimmed;
+	bool	flag;
 
 	trimmed = ft_strtrim(line, "\n");
 	tokens = ft_split(trimmed, ' ');
-	if (!tokens)
-	{
-		return (print_error("Invalid envrionment line", line));
-	}
-	
-	if (!ft_strcmp(tokens[0], "A"))
-		set_amb_light(scene, tokens);//check number range
-	else if (!ft_strcmp(tokens[0], "C"))
-		set_camera(scene, tokens); //check number range
-	else if (!ft_strcmp(tokens[0], "L"))
-		set_light(scene, tokens); //check number range
 	free(trimmed);
+	if (!tokens || !tokens[0])
+		return (print_error("Memory allocation failed for environment", gc_list), false);
+	flag = true;
+	if (tokens[0][0] == 'A' && !tokens[0][1])
+		flag = set_amb_light(scene, tokens, gc_list);
+	else if (tokens[0][0] == 'C' && !tokens[0][1])
+		flag = set_camera(scene, tokens, gc_list);
+	else if (tokens[0][0] == 'L' && !tokens[0][1])
+		flag = set_light(scene, tokens, gc_list);
+	else
+        print_error("Unknown environment identifier", tokens[0]);
 	free_array(&tokens);
+	return (flag);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/11 14:00:51 by junjun           ###   ########.fr       */
+/*   Updated: 2025/05/13 17:30:19 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,12 +128,9 @@ typedef struct s_light
  */
 typedef struct s_sphere
 {
-	double		diam;
-	// int				rgb[3];
-	// double			center[3];//instead i use vertor
 	t_vec3		center;
 	t_color		color;
-	double      radius;
+	double      diam;
 	double  specular;      // For bonus specular lighting
     double  reflective;    // For bonus reflections
 }				t_sphere;
@@ -184,8 +181,6 @@ typedef struct s_object
 		t_cylinder	cylinder;
 		//more objects
 	}	data;
-	// int				rgb[3];
-	// double			center[3];
 	void		*content;//added
 	struct s_object	*next;
 	struct s_object	*previous;
@@ -226,22 +221,29 @@ double	ft_atod(const char *str);
 
 //Check
 bool	valid_file(int ac, char **av);
+bool in_range_int(int value, int min, int max);
+bool in_range_double(double value, double min, double max);
+bool valid_color(t_color color);
+bool valid_ratio(double ratio);
+bool	valid_normal(t_vec3 normal);
+
+
 
 //Init
 void	scene_init(t_scene *scene, t_gc_object **list);
 
 
 // Parser
-void	parser(char *fname, t_scene **scene, t_gc_object **gc_list);
-void	create_environment(char *line, t_scene **scene);
-void	create_objects(char *line, t_scene **scene);
+bool	parser(char *fname, t_scene **scene, t_gc_object **gc_list);
+bool	create_environment(char *line, t_scene **scene, t_gc_object **gc_list);
+bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list);
 //void create_light();
 void	rgb_range_check(t_object **obj, char *rgb);
 void	normal_vector_range_check(t_object **obj, t_obj_type type, char *vec);
 void	center_point_assign(t_object **obj, char *point);
 
 // GC
-void	*gc_alloc(size_t size, t_gc_object *gc_list);
+void	*gc_alloc(size_t size, t_gc_object **gc_list);
 void	gc_mark(void *ptr, t_gc_object *gc_list);
 void	gc_free(t_gc_object *gc_list);
 

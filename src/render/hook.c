@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hook.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:23:10 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/11 13:53:48 by junjun           ###   ########.fr       */
+/*   Updated: 2025/05/13 15:11:29 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,19 @@ void close_hook(void *param)
     // Any cleanup needed before exit
 }
 
-void	hook_setup(mlx_t *mlx, void (*key_hook)(), void (*close_hook)(), t_scene *scene)
+/**
+ * @brief Set up MLX hooks for keyboard and close events
+ * 
+ * @param mlx MLX instance
+ * @param key_hook Function to handle key events
+ * @param close_hook Function to handle close events
+ * @param param Parameter to pass to hook functions
+ */
+void hook_setup(mlx_t *mlx, mlx_keyfunc key_hook, mlx_closefunc close_hook, void *param)
 {
-	mlx_key_hook(mlx, keyfunc, &param);//todo
-    mlx_close_hook(mlx, close, &param);//todo
+    if (mlx)
+    {
+        mlx_key_hook(mlx, key_hook, param);
+        mlx_close_hook(mlx, close_hook, param);
+    }
 }

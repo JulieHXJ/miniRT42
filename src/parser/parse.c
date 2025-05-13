@@ -6,36 +6,36 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/12 18:37:55 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/13 16:06:18 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-
-void	parser(char *fname, t_scene **scene)
+bool	parser(char *fname, t_scene **scene, t_gc_object **gc_list)
 {
 	int		fd;
 	char	*line;
+	bool 	flag;
 
 	fd = open(fname, O_RDONLY);
 	if (fd == -1)
-	{
-		print_error("Failed to open file", NULL);
-	}
-	while (1)
+		return (print_error("Failed to open file", NULL), false);
+	flag = true;
+	while (flag)
 	{
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		if (ft_strlen(line) > 0 && line[0] != '#')
+		if (ft_strlen(line) > 0 && line[0] != '#' && line[0] != '\n')
 		{
 			if (line[0] == 'A' || line[0] == 'C' || line[0] == 'L')
-				create_environment(line, scene);//what it create fail
+				flag = create_environment(line, scene, gc_list);
 			else
-				create_objects(line, scene);//what if create fail
+				flag = create_objects(line, scene, gc_list);
 		}
 		free(line);
 	}
 	close(fd);
+	return (flag);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:22:35 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/11 12:18:01 by junjun           ###   ########.fr       */
+/*   Updated: 2025/05/13 15:11:54 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,11 @@ t_color color_add(t_color c1, t_color c2)
     result.g = c1.g + c2.g > 255 ? 255 : c1.g + c2.g;
     result.b = c1.b + c2.b > 255 ? 255 : c1.b + c2.b;
     return (result);
+}
+
+
+// Helper function to convert t_color to mlx color format
+int convert_color(t_color color)
+{
+    return ((color.r & 0xff) << 16) + ((color.g & 0xff) << 8) + (color.b & 0xff);
 }
