@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 13:37:03 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/11 19:01:10 by junjun           ###   ########.fr       */
+/*   Updated: 2025/05/14 20:39:08 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_vec3	vec_normalize(t_vec3 v);
 t_vec3  vec3_reflect(t_vec3 v, t_vec3 normal);
 
 
-t_color	color_init(int r, int g, int b);
+t_color	new_color(int r, int g, int b);
 t_color	color_scale(t_color c, double factor);
 t_color	color_add(t_color c1, t_color c2);
 

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:00:36 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/13 16:42:47 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/14 21:05:34 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static bool	check_file_contents(int fd)
 	line = get_next_line(fd);
 	while (line)
 	{
-		arr = ft_split(line, ' ');
+		arr = gc_split(line, ' ');
 		if (arr[0] == NULL || arr[0][0] == '\n' || arr[0][0] == '#')
 		{
 			free_array(&arr);

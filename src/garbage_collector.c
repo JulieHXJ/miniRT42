@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:25:22 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/05/13 16:54:40 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/14 21:14:23 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ void	*gc_alloc(size_t size, t_gc_object **gc_list)
 
 	mem = malloc(size);
 	if (!mem)
-		return (gc_free(*gc_list), NULL);// Free all previously allocated memory if allocation fails
+		return (gc_free(*gc_list), NULL);
 	obj = malloc(sizeof(t_gc_object));
 	if (!obj)
 	{
-		free(mem); // Free the allocated memory for `mem` before returning
+		free(mem);
 		return (gc_free(*gc_list), NULL);
 	}
 	obj->ptr = mem;
 	obj->marked = false;
 	obj->next = *gc_list;
-	*gc_list = obj; // Update the head of the garbage collection list
+	*gc_list = obj;
 	return (mem);
 }
 
@@ -70,4 +70,52 @@ void	gc_free(t_gc_object *gc_list)
 			obj = &(*obj)->next;
 		}
 	}
+}
+
+static char	*ft_next_word(char const **s, char c, t_gc_object **gc_list)
+{
+	char const	*start;
+	char		*str;
+	size_t		len;
+
+	while (**s == c)
+		(*s)++;
+	start = *s;
+	while (**s && **s != c)
+		(*s)++;
+	len = *s - start;
+	str = gc_alloc(sizeof(char) * (len + 1), gc_list);
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, start, len + 1);
+	return (str);
+}
+
+char	**gc_split(const char *s, char c, t_gc_object **gc_list)
+{
+	char	**res;
+	size_t	word_count;
+	size_t	i;
+
+	if (!s || !*s)
+		return (NULL);
+	word_count = str_count(s, c);
+	res = gc_alloc(sizeof(char *) * (word_count + 1), gc_list);
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (i < word_count)
+	{
+		res[i] = ft_next_word(&s, c);
+		if (!res[i])
+		{
+			while (i > 0)
+				free(res[--i]);
+			return (NULL);
+		}
+		res[i] = gc_alloc(ft_strlen(res[i]) + 1, gc_list);
+		i++;
+	}
+	res[word_count] = NULL;
+	return (res);
 }

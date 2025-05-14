@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/13 16:06:18 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/14 21:10:16 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ bool	parser(char *fname, t_scene **scene, t_gc_object **gc_list)
 {
 	int		fd;
 	char	*line;
-	bool 	flag;
+	bool	flag;
 
 	fd = open(fname, O_RDONLY);
 	if (fd == -1)

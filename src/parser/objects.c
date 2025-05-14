@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/13 17:43:30 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/14 21:07:33 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_vec3	assign_center(char *coordinates)
 	char	**tokens;
 	t_vec3	center;
 
-	tokens = ft_split(coordinates, ',');
+	tokens = gc_split(coordinates, ',');
 	center.x = ft_atod(tokens[0]);
 	center.y = ft_atod(tokens[1]);
 	center.z = ft_atod(tokens[2]);
@@ -48,7 +48,7 @@ t_color	assign_color(char *color)
 	char	**tokens;
 	t_color	color_vec;
 
-	tokens = ft_split(color, ',');
+	tokens = gc_split(color, ',');
 	color_vec.r = ft_atoi(tokens[0]);
 	color_vec.g = ft_atoi(tokens[1]);
 	color_vec.b = ft_atoi(tokens[2]);
@@ -130,7 +130,7 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
 	bool	flag;
 
 	trimmed = ft_strtrim(line, "\n");
-	tokens = ft_split(trimmed, ' ');
+	tokens = gc_split(trimmed, ' ');
 	free(trimmed);
 	if (!tokens || !tokens[0])
 		return (print_error("Memory allocation failed for objects", gc_list),

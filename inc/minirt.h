@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/13 17:30:19 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/14 21:04:38 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,16 +82,10 @@ typedef struct s_gc_object
 typedef struct s_camera
 {
 	t_vec3 position;
-    t_vec3 direction;
-    t_vec3 cam_orient;         // For camera orientation
+    t_vec3 cam_orient;   
     double fov;        // Field of view in degrees
-    int    width;      // Viewport width
-    int    height;     // Viewport height
-	
-	
-	// double		viewpoint[3];
-	// double		orient[3];
-	// int			fov;
+    // int    width;      // Viewport width
+    // int    height;     // Viewport height
 }				t_camera;
 
 /**
@@ -100,9 +94,7 @@ typedef struct s_camera
  */
 typedef struct s_amb_light
 {
-	// double		ratio;
-	double  intensity;
-	// int			rgb[3];
+	double		ratio;
 	t_color		color;
 }				t_amb_light;
 
@@ -112,9 +104,8 @@ typedef struct s_amb_light
  */
 typedef struct s_light
 {
-	double		coord[3];
-	double		brightness;
 	t_vec3		position;
+	double		brightness;
 	t_color		color;
 	struct s_light		*next;
 }				t_light;
@@ -198,7 +189,7 @@ typedef struct s_scene
 	t_light		*light;// linked list
 	int			light_num;
 	t_object	*obj;
-	
+
 	void        *mlx;       // MLX pointer
     void        *win;       // MLX window pointer
     void        *img;       // MLX image pointer
@@ -246,5 +237,6 @@ void	center_point_assign(t_object **obj, char *point);
 void	*gc_alloc(size_t size, t_gc_object **gc_list);
 void	gc_mark(void *ptr, t_gc_object *gc_list);
 void	gc_free(t_gc_object *gc_list);
+char	**gc_split(const char *s, char c, t_gc_object **gc_list);
 
 #endif

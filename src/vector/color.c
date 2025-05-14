@@ -6,13 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:22:35 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/13 15:11:54 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/14 20:38:59 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 
-t_color	color_init(int r, int g, int b)
+t_color	new_color(int r, int g, int b)
 {
     t_color c;
     
