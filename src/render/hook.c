@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:23:10 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/13 15:11:29 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/19 17:39:37 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,24 @@ void key_hook(mlx_key_data_t keydata, void *param)
     t_scene *scene;
     
     scene = (t_scene *)param;
-    if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+
+    if (mlx_is_key_down(scene->mlx, MLX_KEY_ESCAPE))
+    {
         mlx_close_window(scene->mlx);
+    }
+
+    // handle other keys here: left, right, up, down as rotation.
+    if (mlx_is_key_down(scene->mlx, MLX_KEY_UP))
+		rotate_vertical(scene, 1.0);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_DOWN))
+		rotate_vertical(scene, -1.0);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT))
+		rotate_horizontal(scene, 1.0);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT))
+		rotate_horizontal(scene, -1.0);
 }
 
-void close_hook(void *param)
+void mouse_hook(void *param)
 {
     (void)param; // To avoid unused warning
     // Any cleanup needed before exit
