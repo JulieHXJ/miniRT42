@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:25:22 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/05/14 21:14:23 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/21 19:12:27 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char	**gc_split(const char *s, char c, t_gc_object **gc_list)
 	i = 0;
 	while (i < word_count)
 	{
-		res[i] = ft_next_word(&s, c);
+		res[i] = ft_next_word(&s, c, gc_list);
 		if (!res[i])
 		{
 			while (i > 0)
