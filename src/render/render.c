@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/19 17:31:19 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/21 15:02:42 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void
 //     }
 // }
 
-bool graphic(t_scene *scene, t_gc_object **gc_list)
+bool render(t_scene *scene, t_gc_object **gc_list)
 {
 
     // Initialize MLX and create a new image
@@ -40,12 +40,9 @@ bool graphic(t_scene *scene, t_gc_object **gc_list)
         return (false);
     scene->img = mlx_new_image(scene->mlx, WIN_WIDTH, WIN_HEIGHT);
     if (!scene->img)
-    {
-        mlx_terminate(scene->mlx);
-        return (false);
-    }
+        return (mlx_terminate(scene->mlx), false);
     // Render the scene here. is it necessary to pass gc_list? i think we are not creating anything here
-    if (!render(scene, scene->img, gc_list))
+    if (!graphic(scene, scene->img, gc_list))
     {
         mlx_terminate(scene->mlx);
         return (false);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_name.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:00:36 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/14 21:05:34 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/21 14:49:53 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,13 @@ static bool	check_file_contents(int fd)
 	int 	cam_num = 0;
 	int		amb_num = 0;
 
-	line = get_next_line(fd);
-	while (line)
+	while ((line = get_next_line(fd)))
 	{
-		arr = gc_split(line, ' ');
+		arr = ft_split(line, ' ');
 		if (arr[0] == NULL || arr[0][0] == '\n' || arr[0][0] == '#')
 		{
 			free_array(&arr);
 			free(line);
-			line = get_next_line(fd);
 			continue ;
 		}
 		if (!check_ele_number(arr))
@@ -74,12 +72,9 @@ static bool	check_file_contents(int fd)
             amb_num++;
 		free_array(&arr);
 		free(line);
-		line = get_next_line(fd);
 	}
-	if (cam_num != 1)
-		return (print_error("Wrong number of camera in .rt file", NULL), false);
-	if (amb_num != 1)
-		return (print_error("Wrong number of ambient light in .rt file", NULL), false);
+	if (cam_num != 1 || amb_num != 1)
+		return (print_error("Only 1 camera or ambient light is allowed", NULL), false);
 	return (true);
 }
 

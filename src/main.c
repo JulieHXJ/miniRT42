@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/19 17:32:07 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/21 15:05:43 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ int	main(int ac, char **av)
 	// print_obj(scene);
 
 	//todo
-	if (!graphic(scene, &gc_list))
+	if (!render(scene, &gc_list))
 		return (gc_free(&gc_list), 1);
-	
+	// finish and clean up
 	gc_free(&gc_list);
 	return (0);
 }

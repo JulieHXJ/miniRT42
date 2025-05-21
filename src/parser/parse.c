@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/14 21:10:16 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/21 15:13:05 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,14 @@ bool	parser(char *fname, t_scene **scene, t_gc_object **gc_list)
 				flag = create_environment(line, scene, gc_list);
 			else
 				flag = create_objects(line, scene, gc_list);
+			if (!flag)
+			{
+				// print_error("Failed to create env or object", *gc_list);
+				free(line);
+				break;
+			}
 		}
 		free(line);
 	}
-	close(fd);
-	return (flag);
+	return (close(fd), flag);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/14 21:31:01 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/21 15:53:42 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ static bool	set_camera(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	char	**vp;
 	char	**orient;
 	t_vec3	position;
-	t_vec3	*ori_vec;
+	t_vec3	ori_vec;
 	int		fov;
 
-	vp = gc_split(tokens[1], ',');
-	orient = gc_split(tokens[2], ',');
+	vp = gc_split(tokens[1], ',', gc_list);
+	orient = gc_split(tokens[2], ',', gc_list);
 	if (!vp || !orient)
-		return (print_error("Camera parameters parse failed", gc_list), false);
+		return (print_error("Camera parameters split failed", gc_list), false);
 	position = new_vector(ft_atod(vp[0]), ft_atod(vp[1]), ft_atod(vp[2]));
 	ori_vec = new_vector(ft_atod(orient[0]), ft_atod(orient[1]),
 			ft_atod(orient[2]));
@@ -36,8 +36,7 @@ static bool	set_camera(t_scene **scene, char **tokens, t_gc_object **gc_list)
 			print_error("Camera parameters out of range", gc_list), false);
 	(*scene)->camera = gc_alloc(sizeof(t_camera), gc_list);
 	if (!(*scene)->camera)
-		return (free(ori_vec),
-			print_error("Failed to allocate memory for camera", gc_list),
+		return (free(ori_vec), print_error("Camera allocation failed", gc_list),
 			false);
 	(*scene)->camera.position = position;
 	(*scene)->camera.cam_orient = ori_vec;
@@ -54,15 +53,14 @@ static bool	set_amb_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	ratio = ft_atod(tokens[1]);
 	rgb = gc_split(tokens[2], ',');
 	if (!rgb)
-		return (print_error("Ambient light RGB parse failed", gc_list), false);
+		return (print_error("Ambient light param split failed", gc_list), false);
 	color = new_color(ft_atoi(rgb[0]), ft_atoi(rgb[1]), ft_atoi(rgb[2]));
 	if (!valid_ratio(ratio) || !valid_color(color))
 		return (print_error("Ambient light parameters out of range", gc_list),
 			false);
 	(*scene)->amb_light = gc_alloc(sizeof(t_amb_light), gc_list);
 	if (!(*scene)->amb_light)
-		return (print_error("Failed to allocate memory for ambient light",
-				gc_list), false);
+		return (print_error("Ambient light allocation failed", gc_list), false);
 	(*scene)->amb_light.ratio = ratio;
 	(*scene)->amb_light.color = color;
 	return (true);
@@ -100,35 +98,45 @@ static bool	set_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
     char	**color;
     double	brightness;
     t_color	color_vec;
-    t_light	*new_light;
+    t_light	*new_light;//linked list
 
-    // Split the position and color tokens
     coord = gc_split(tokens[1], ',', gc_list);
     color = gc_split(tokens[3], ',', gc_list);
     if (!coord || !color)
-        return (print_error("Light parse failed", gc_list), false);
+        return (print_error("Light split failed", gc_list), false);
 
-    // Parse position, brightness, and color
+    // Parse brightness, and color
     brightness = ft_atod(tokens[2]);
     color_vec = new_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
-
-    // Validate brightness and color
     if (!valid_ratio(brightness) || !valid_color(color_vec))
         return (print_error("Light parameters out of range", gc_list), false);
 
     // Allocate memory for the new light
     new_light = gc_alloc(sizeof(t_light), gc_list);
     if (!new_light)
-        return (print_error("Failed to allocate memory for light", gc_list), false);
-
-    // Assign values to the new light
+        return (print_error("Light allocatione failed", gc_list), false);
     new_light->position = new_vector(ft_atod(coord[0]), ft_atod(coord[1]), ft_atod(coord[2]));
     new_light->color = color_vec;
     new_light->brightness = brightness;
+	new_light->next = NULL;
 
-    // Link the new light to the existing list
-    new_light->next = (*scene)->light;
-    (*scene)->light = new_light;
+    // append to the list
+	if (!(*scene)->light)
+	{
+		(*scene)->light = new_light;
+	}
+	else
+	{
+		t_light	*temp;
+
+		temp = (*scene)->light;
+		while (temp->next)
+			temp = temp->next;
+		temp->next = new_light;
+	}
+	
+    // new_light->next = (*scene)->light;
+    // (*scene)->light = new_light;
 
     // Increment the light count
     (*scene)->light_num++;

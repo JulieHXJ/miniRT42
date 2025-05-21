@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/14 21:04:38 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/21 15:03:18 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,6 +232,11 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list);
 void	rgb_range_check(t_object **obj, char *rgb);
 void	normal_vector_range_check(t_object **obj, t_obj_type type, char *vec);
 void	center_point_assign(t_object **obj, char *point);
+
+
+
+// Graphic
+bool render(t_scene *scene, t_gc_object **gc_list);
 
 // GC
 void	*gc_alloc(size_t size, t_gc_object **gc_list);
