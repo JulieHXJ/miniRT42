@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 13:37:03 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/21 17:35:05 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/25 19:31:05 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_color
 	int	b;
 }	t_color;
 
-// t_vec3 new_vector(double x, double y, double z);
+t_vec3 new_vector(double x, double y, double z);
 t_vec3	vec_add(t_vec3 a, t_vec3 b);
 t_vec3	vec_sub(t_vec3 a, t_vec3 b);
 t_vec3	vec_scale(t_vec3 v, double s);

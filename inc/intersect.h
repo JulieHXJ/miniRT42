@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 22:42:17 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/10 23:49:30 by junjun           ###   ########.fr       */
+/*   Updated: 2025/05/25 19:36:09 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct s_ray
 
 typedef struct s_hit
 {
-    double  t;          // Distance from ray origin to hit point
+    double  t;          // Distance from camera to hit point
     t_vec3  point;      // Intersection point
     t_vec3  normal;     // Surface normal at intersection
     t_object *object;   // Pointer to the hit object

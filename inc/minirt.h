@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/21 19:25:13 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/25 20:30:23 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <math.h>
 
 /* ************************************************************************** */
 /* ENUMS & DEFINES                                                            */
@@ -227,7 +228,15 @@ bool					create_objects(char *line, t_scene **scene,
 bool					parser(char *fname, t_scene **scene,
 							t_gc_object **gc_list);
 
-// void create_light();
+// Ray casting
+
+t_vec3					ray_point_at(t_ray ray, double t);
+bool					ray_tracing(t_scene *scene, t_ray ray, t_hit *hit);
+
+// Intersections
+bool hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit);
+bool hit_plane(t_ray ray, t_plane plane, t_hit *hit);
+bool hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit);
 void					rgb_range_check(t_object **obj, char *rgb);
 void					normal_vector_range_check(t_object **obj,
 							t_obj_type type, char *vec);
@@ -235,6 +244,7 @@ void					center_point_assign(t_object **obj, char *point);
 
 // Graphic
 bool					render(t_scene *scene, t_gc_object **gc_list);
+t_ray					create_ray(t_vec3 camera, t_vec3 direction);
 
 // GC
 void					*gc_alloc(size_t size, t_gc_object **gc_list);

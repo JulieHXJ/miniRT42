@@ -6,16 +6,11 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:30:39 by xhuang            #+#    #+#             */
-/*   Updated: 2025/05/21 19:16:18 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/25 19:12:36 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-//for each should also check if the tokens array has enough elements before accessing them
-
-
-
 
 bool	assign_color(char *color, t_color *c, t_gc_object **gc_list)
 {
@@ -27,10 +22,9 @@ bool	assign_color(char *color, t_color *c, t_gc_object **gc_list)
 		print_error("Failed to parse color", NULL);
 		return (false);
 	}
-    // Check if there are enough tokens
-    if (array_size(tokens) != 3)
-        return (print_error("Color must have 3 components", NULL), false);
-    
+	// Check if there are enough tokens
+	if (array_size(tokens) != 3)
+		return (print_error("Color must have 3 components", NULL), false);
 	c.r = ft_atoi(tokens[0]);
 	c.g = ft_atoi(tokens[1]);
 	c.b = ft_atoi(tokens[2]);
@@ -52,9 +46,9 @@ bool	assign_vector(char *coordinates, t_vec3 *v, t_gc_object **gc_list)
 		print_error("Failed to parse vector", NULL);
 		return (false);
 	}
-    // Check if there are enough tokens
-    if (array_size(tokens) != 3)
-        return (print_error("Vector must have 3 components", NULL), false);
+	// Check if there are enough tokens
+	if (array_size(tokens) != 3)
+		return (print_error("Vector must have 3 components", NULL), false);
 	v.x = ft_atod(tokens[0]);
 	v.y = ft_atod(tokens[1]);
 	v.z = ft_atod(tokens[2]);

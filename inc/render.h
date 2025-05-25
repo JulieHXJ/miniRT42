@@ -3,10 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   render.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 13:38:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/11 13:38:26 by junjun           ###   ########.fr       */
+/*   Updated: 2025/05/25 20:47:36 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef RENDER_H
+# define RENDER_H
+
+#include <pthread.h>
+
+
+
+
+# endif
