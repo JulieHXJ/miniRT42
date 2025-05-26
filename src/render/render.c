@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/25 21:01:06 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/26 13:40:12 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../../inc/minirt.h"
 
 /**
  * @brief Create a new ray with origin and direction

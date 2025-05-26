@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:16:31 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/05/21 19:15:36 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/26 14:48:43 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ double	ft_atod(const char *s)
 
 /**
  * @brief Print the scene for debugging
- *
- * @param scene Scene to print
  */
 void	print_scene(t_scene *scene)
 {
@@ -100,9 +98,9 @@ void	print_scene(t_scene *scene)
 	printf("  FOV: %.2f\n", scene->camera.fov);
 	// Print ambient light
 	printf("Ambient Light:\n");
-	printf("  Intensity: %.2f\n", scene->amb_light.intensity);
-	printf("  Color: (%d, %d, %d)\n", scene->amb_light.color.r,
-		scene->amb_light.color.g, scene->amb_light.color.b);
+	printf("  Ratio: %.2f\n", scene->amb_light->ratio);
+	printf("  Color: (%d, %d, %d)\n", scene->amb_light->color.r,
+		scene->amb_light->color.g, scene->amb_light->color.b);
 	// Print lights
 	printf("Lights (%d):\n", scene->light_num);
 	light = scene->light;
@@ -122,37 +120,37 @@ void	print_scene(t_scene *scene)
 	{
 		if (obj->type == SPHERE)
 		{
-			printf("  Sphere:\n");
-			printf("    Center: (%.2f, %.2f, %.2f)\n",
-				obj->data.sphere.center.x, obj->data.sphere.center.y,
-				obj->data.sphere.center.z);
-			printf("    Diameter: %.2f\n", obj->data.sphere.diam);
-			printf("    Color: (%d, %d, %d)\n", obj->data.sphere.color.r,
-				obj->data.sphere.color.g, obj->data.sphere.color.b);
+			printf("\tSphere:\n");
+			printf("\t\tCenter: (%.2f, %.2f, %.2f)\n",
+				obj->u_data.sphere.center.x, obj->u_data.sphere.center.y,
+				obj->u_data.sphere.center.z);
+			printf("\t\tDiameter: %.2f\n", obj->u_data.sphere.diam);
+			printf("\t\tColor: (%d, %d, %d)\n", obj->u_data.sphere.color.r,
+				obj->u_data.sphere.color.g, obj->u_data.sphere.color.b);
 		}
 		else if (obj->type == PLANE)
 		{
-			printf("  Plane:\n");
-			printf("    Point: (%.2f, %.2f, %.2f)\n", obj->data.plane.point.x,
-				obj->data.plane.point.y, obj->data.plane.point.z);
-			printf("    Normal: (%.2f, %.2f, %.2f)\n", obj->data.plane.normal.x,
-				obj->data.plane.normal.y, obj->data.plane.normal.z);
-			printf("    Color: (%d, %d, %d)\n", obj->data.plane.color.r,
-				obj->data.plane.color.g, obj->data.plane.color.b);
+			printf("\tPlane:\n");
+			printf("\t\tPoint: (%.2f, %.2f, %.2f)\n", obj->u_data.plane.point.x,
+				obj->u_data.plane.point.y, obj->u_data.plane.point.z);
+			printf("\t\tNormal: (%.2f, %.2f, %.2f)\n", obj->u_data.plane.normal.x,
+				obj->u_data.plane.normal.y, obj->u_data.plane.normal.z);
+			printf("\t\tColor: (%d, %d, %d)\n", obj->u_data.plane.color.r,
+				obj->u_data.plane.color.g, obj->u_data.plane.color.b);
 		}
 		else if (obj->type == CYLINDER)
 		{
-			printf("  Cylinder:\n");
-			printf("    Center: (%.2f, %.2f, %.2f)\n",
-				obj->data.cylinder.center.x, obj->data.cylinder.center.y,
-				obj->data.cylinder.center.z);
-			printf("    Direction: (%.2f, %.2f, %.2f)\n",
-				obj->data.cylinder.direction.x, obj->data.cylinder.direction.y,
-				obj->data.cylinder.direction.z);
-			printf("    Diameter: %.2f\n", obj->data.cylinder.diam);
-			printf("    Height: %.2f\n", obj->data.cylinder.height);
-			printf("    Color: (%d, %d, %d)\n", obj->data.cylinder.color.r,
-				obj->data.cylinder.color.g, obj->data.cylinder.color.b);
+			printf("\tCylinder:\n");
+			printf("\t\tCenter: (%.2f, %.2f, %.2f)\n",
+				obj->u_data.cylinder.center.x, obj->u_data.cylinder.center.y,
+				obj->u_data.cylinder.center.z);
+			printf("\t\tDirection: (%.2f, %.2f, %.2f)\n",
+				obj->u_data.cylinder.direction.x, obj->u_data.cylinder.direction.y,
+				obj->u_data.cylinder.direction.z);
+			printf("\t\tDiameter: %.2f\n", obj->u_data.cylinder.diam);
+			printf("\t\tHeight: %.2f\n", obj->u_data.cylinder.height);
+			printf("\t\tColor: (%d, %d, %d)\n", obj->u_data.cylinder.color.r,
+				obj->u_data.cylinder.color.g, obj->u_data.cylinder.color.b);
 		}
 		obj = obj->next;
 	}

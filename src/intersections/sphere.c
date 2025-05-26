@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/25 20:24:32 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/26 13:40:12 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../../inc/minirt.h"
 
 /**
  * @note Solve the quadratic equation

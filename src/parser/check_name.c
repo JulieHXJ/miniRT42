@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_name.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:00:36 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/21 16:55:01 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/26 13:40:12 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../../inc/minirt.h"
 
 /**
 

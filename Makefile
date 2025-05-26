@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+         #
+#    By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/05/09 15:35:14 by xhuang           ###   ########.fr        #
+#    Updated: 2025/05/26 15:37:20 by dchrysov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ MLXDIR = ./lib/MLX42
 LIBFTDIR = ./lib/libft
 GNLDIR = ./lib/getnextline
 
-SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c \
+SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDIR)/scene_init.c\
 	\
 	$(SRCDIR)/parser/check.c $(SRCDIR)/parser/parse.c $(SRCDIR)/parser/environment.c $(SRCDIR)/parser/objects.c \
 	$(SRCDIR)/parser/parse_utils.c

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   objects.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/21 19:24:52 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/26 15:14:10 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../../inc/minirt.h"
 
 /**
  * @brief Connects the new object to the linked list of objects in the scene.
@@ -39,24 +39,19 @@ static bool	create_sphere(t_scene **scene, char **arr, t_gc_object **gc_list)
 {
 	t_object	*new_obj;
 
-	// allocate
 	new_obj = gc_alloc(sizeof(t_object), gc_list);
 	if (!new_obj)
-		return (print_error("Memory allocation failed for sphere", gc_list),
+		return (print_error("Memory allocation failed for sphere", *gc_list),
 			false);
 	new_obj->type = SPHERE;
-	// assign sphere center
-	if (!assign_vector(arr[1], &new_obj->data.sphere.center, gc_list))
-		return (print_error("Sphere center parse failed", gc_list), false);
-	// assign diameter
-	if (!assign_positive_num(arr[2], &new_obj->data.sphere.diam, gc_list))
-		return (print_error("Negative number as sphere diameter", gc_list),
-			false);
-	// color
-	if (!assign_color(arr[3], &new_obj->data.sphere.color, gc_list))
+	if (!assign_vector(arr[1], &new_obj->u_data.sphere.center, *gc_list))
+		return (print_error("Sphere center parse failed", *gc_list), false);
+	if (!assign_positive_num(arr[2], new_obj->u_data.sphere.diam, *gc_list))
+		return (print_error("Sphere diameter parse failed", gc_list), false);
+	if (!assign_color(arr[3], &new_obj->u_data.sphere.color, gc_list))
 		return (print_error("Sphere color parse failed", gc_list), false);
-	new_obj->data.sphere.specular = 0.0;   // No specular by default
-	new_obj->data.sphere.reflective = 0.0; // No reflection by default
+	new_obj->u_data.sphere.specular = 0.0;
+	new_obj->u_data.sphere.reflective = 0.0;
 	new_obj->content = NULL;
 	connect_nodes(scene, &new_obj);
 	return (true);
@@ -66,22 +61,18 @@ static bool	create_plane(t_scene **scene, char **arr, t_gc_object **gc_list)
 {
 	t_object	*new_obj;
 
-	// allocate
 	new_obj = gc_alloc(sizeof(t_object), gc_list);
 	if (!new_obj)
-		return (print_error("Memory allocation failed for plane", gc_list),
-			false);
+		return (print_error("Memory alloc failed for plane", gc_list), false);
 	new_obj->type = PLANE;
-	// assign plane point, normal and color
-	if (!assign_vector(arr[1], &new_obj->data.plane.point, gc_list))
+	if (!assign_vector(arr[1], &new_obj->u_data.plane.point, gc_list))
 		return (print_error("Plane point parse failed", gc_list), false);
-	if (!assign_normal(arr[2], &new_obj->data.plane.normal, gc_list))
+	if (!assign_normal(arr[2], &new_obj->u_data.plane.normal, gc_list))
 		return (print_error("Plane normal parse failed", gc_list), false);
-	if (!assign_color(arr[3], &new_obj->data.plane.color, gc_list))
+	if (!assign_color(arr[3], &new_obj->u_data.plane.color, gc_list))
 		return (print_error("Plane color parse failed", gc_list), false);
-	// assign specular and reflective values
-	new_obj->data.plane.specular = 0.0;
-	new_obj->data.plane.reflective = 0.0;
+	new_obj->u_data.plane.specular = 0.0;
+	new_obj->u_data.plane.reflective = 0.0;
 	new_obj->content = NULL;
 	connect_nodes(scene, &new_obj);
 	return (true);
@@ -98,19 +89,18 @@ static bool	create_cylinder(t_scene **scene, char **arr, t_gc_object **gc_list)
 		return (print_error("Memory allocation failed for cylinder", gc_list),
 			false);
 	new_obj->type = CYLINDER;
-	// assign center, axis, diameter, height and color
-	if (!assign_vector(arr[1], &new_obj->data.cylinder.center, gc_list))
+	if (!assign_vector(arr[1], &new_obj->u_data.cylinder.center, gc_list))
 		return (print_error("Cylinder center parse failed", gc_list), false);
-	if (!assign_normal(arr[2], &new_obj->data.cylinde.direction, gc_list))
+	if (!assign_normal(arr[2], &new_obj->u_data.cylinder.direction, gc_list))
 		return (print_error("Cylinder direction parse failed", gc_list), false);
-	if (!assign_positive_num(arr[3], &new_obj->data.cylinder.diam, gc_list)
-		|| !assign_positive_num(arr[4], &new_obj->data.cylinder.height,
+	if (!assign_positive_num(arr[3], new_obj->u_data.cylinder.diam, gc_list)
+		|| !assign_positive_num(arr[4], new_obj->u_data.cylinder.height,
 			gc_list))
 		return (print_error("Negative number detected", gc_list), false);
-	if (!assign_color(arr[5], &new_obj->data.cylinder.color, gc_list))
+	if (!assign_color(arr[5], &new_obj->u_data.cylinder.color, gc_list))
 		return (print_error("Cylinder color parse failed", gc_list), false);
-	new_obj->data.cylinder.specular = 0.0;   // No specular by default
-	new_obj->data.cylinder.reflective = 0.0; // No reflection by default
+	new_obj->u_data.cylinder.specular = 0.0;
+	new_obj->u_data.cylinder.reflective = 0.0;
 	new_obj->content = NULL;
 	connect_nodes(scene, &new_obj);
 	return (true);
@@ -120,26 +110,22 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
 {
 	char	**tokens;
 	char	*trimmed;
-	bool	flag;
 
 	trimmed = ft_strtrim(line, "\n");
 	if (!trimmed)
-		return (print_error("Strtrim failed for objects", gc_list), false);
-	tokens = gc_split(trimmed, ' ', gc_list);
+		return (print_error("strtrim failed for objects", gc_list), false);
+	tokens = split(trimmed, ' ');
 	free(trimmed);
 	if (!tokens || !tokens[0])
 		return (print_error("Split failed for objects", gc_list), false);
-	flag = true;
-	if (!ft_strcmp(tokens[0], "pl"))
-		flag = create_plane(scene, tokens, gc_list);
-	else if (!ft_strcmp(tokens[0], "sp"))
-		flag = create_sphere(scene, tokens, gc_list);
-	else if (!ft_strcmp(tokens[0], "cy"))
-		flag = create_cylinder(scene, tokens, gc_list);
-	else
-	{
-		print_error("Unknown object identifier", tokens[0]);
-		flag = false;
-	}
-	return (flag);
+	if (!ft_strcmp(tokens[0], "pl") && !create_plane(scene, tokens, gc_list))
+		return (free_array(tokens), false);
+	else if (!ft_strcmp(tokens[0], "sp")
+		&& !create_sphere(scene, tokens, gc_list))
+		return (free_array(tokens), false);
+	else if (!ft_strcmp(tokens[0], "cy")
+		&& !create_cylinder(scene, tokens, gc_list))
+		return (free_array(tokens), false);
+	return (print_error("Unknown object identifier", tokens[0]),
+		free_array(tokens), false);
 }

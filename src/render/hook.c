@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   hook.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:23:10 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/19 17:39:37 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/26 13:40:12 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../../inc/minirt.h"
 
 // mlx_key_hook(scene.mlx, key_hook, &scene);//todo
 // mlx_close_hook(scene.mlx, close_hook, &scene);//todo

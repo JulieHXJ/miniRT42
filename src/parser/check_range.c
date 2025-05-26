@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_range.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/21 19:23:16 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/05/26 14:37:23 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../../inc/minirt.h"
 
 // void	rgb_range_check(t_object **obj, char *rgb)		// wrong prototype ??
 // {
@@ -87,10 +87,10 @@ bool	valid_ratio(double ratio)
 /**
  * @brief Check normal vector range (-1.0 - 1.0)
  */
-bool	valid_normal(t_vec3 normal)
+bool	valid_normal(t_vec3 normal, t_gc_object *gc_list)
 {
 	if (normal.x == 0 && normal.y == 0 && normal.z == 0)
-		return (print_error("Normal vector cannot be zero", NULL), false);
+		return (print_error("Normal vector cannot be zero", gc_list), false);
 	return (in_range_double(normal.x, -1.0, 1.0) && in_range_double(normal.y,
 			-1.0, 1.0) && in_range_double(normal.z, -1.0, 1.0));
 }
