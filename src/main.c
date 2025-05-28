@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/26 15:55:59 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:30:16 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	main(int ac, char **av)
 	// for checking the parser
 	// print_obj(scene);
 	// todo
-	if (!render(scene, &gc_list))
-		return (gc_free(gc_list), 1);
+	// if (!render(scene, &gc_list))
+	// 	return (gc_free(gc_list), 1);
 	// finish and clean up
 	gc_free(gc_list);
 	return (0);

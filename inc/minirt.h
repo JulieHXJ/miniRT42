@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/26 15:57:37 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:21:39 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "../lib/libft/inc/libft.h"
 # include "intersect.h"
 # include "vector.h"
+// # include "render.h"
 # include <fcntl.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -212,10 +213,10 @@ bool	valid_ratio(double ratio);
 bool	valid_normal(t_vec3 normal, t_gc_object *gc_list);
 
 // Parser
-bool	assign_color(char *color, t_color *c, t_gc_object **gc_list);
-bool	assign_vector(char *coordinates, t_vec3 *v, t_gc_object **gc_list);
-bool	assign_normal(char *normal, t_vec3 *v, t_gc_object **gc_list);
-bool	assign_positive_num(char *num, double value, t_gc_object *gc_list);
+bool	assign_color(char *color, t_color *c, t_gc_object *gc_list);
+bool	assign_vector(char *coordinates, t_vec3 *v, t_gc_object *gc_list);
+bool	assign_normal(char *normal, t_vec3 *v, t_gc_object *gc_list);
+bool	assign_positive_num(char *num, double value);
 bool	create_environment(char *line, t_scene **scene, t_gc_object **gc_list);
 bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list);
 bool	parser(char *fname, t_scene **scene, t_gc_object **gc_list);

@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/26 15:54:26 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:32:02 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ static bool	set_camera(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	t_vec3	ori_vec;
 	int		fov;
 
-	if (!assign_vector(tokens[1], &position, gc_list))
-		return (print_error("Camera position parse failed", gc_list), false);
-	if (!assign_normal(tokens[2], &ori_vec, gc_list))
-		return (print_error("Camera orientation parse failed", gc_list), false);
+	if (!assign_vector(tokens[1], &position, *gc_list))
+		return (print_error("Camera position parse failed", *gc_list), false);
+	if (!assign_normal(tokens[2], &ori_vec, *gc_list))
+		return (print_error("Camera orient parse failed", *gc_list), false);
 	fov = ft_atoi(tokens[3]);
 	if (!in_range_int(fov, 0, 180))
-		return (print_error("FOV out of range", gc_list), false);
+		return (print_error("FOV out of range", *gc_list), false);
 	(*scene)->camera->position = position;
 	(*scene)->camera->direction = vec_normalize(ori_vec);
 	(*scene)->camera->fov = fov;
@@ -43,7 +43,7 @@ static bool	set_amb_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	if (!valid_ratio(ratio))
 		return (print_error("Ambient light ratio out of range", *gc_list),
 			false);
-	if (!assign_color(tokens[2], &color, gc_list))
+	if (!assign_color(tokens[2], &color, *gc_list))
 		return (print_error("Ambient light color parsing", *gc_list), false);
 	(*scene)->amb_light = gc_alloc(sizeof(t_amb_light), gc_list);
 	if (!(*scene)->amb_light)
@@ -78,15 +78,15 @@ static bool	set_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	// Parse brightness, and color
 	brightness = ft_atod(tokens[2]);
 	if (!valid_ratio(brightness))
-		return (print_error("Light brightness out of range", gc_list), false);
-	if (!assign_vector(tokens[1], &pos, gc_list))
-		return (print_error("Light position parse failed", gc_list), false);
-	if (!assign_color(tokens[3], &col, gc_list))
-		return (print_error("Light color parse failed", gc_list), false);
+		return (print_error("Light brightness out of range", *gc_list), false);
+	if (!assign_vector(tokens[1], &pos, *gc_list))
+		return (print_error("Light position parse failed", *gc_list), false);
+	if (!assign_color(tokens[3], &col, *gc_list))
+		return (print_error("Light color parse failed", *gc_list), false);
 	// Allocate memory for the new light
 	new_light = gc_alloc(sizeof(t_light), gc_list);
 	if (!new_light)
-		return (print_error("Light allocatione failed", gc_list), false);
+		return (print_error("Light allocatione failed", *gc_list), false);
 	new_light->position = pos;
 	new_light->color = col;
 	new_light->brightness = brightness;
@@ -109,19 +109,19 @@ bool	create_environment(char *line, t_scene **scene, t_gc_object **gc_list)
 	trimmed = ft_strtrim(line, "\n");
 	if (!trimmed)
 		return (print_error("Strtrim failed for environment", *gc_list), false);
-	tokens = split(trimmed, ' ');						// You dont have to gc_split() cause 'tokens' is a local variable, we free it before exiting the function.
+	tokens = ft_split(trimmed, ' ');						// You dont have to gc_split() cause 'tokens' is a local variable, we free it before exiting the function.
 	free(trimmed);
 	if (!tokens || !tokens[0])
 		return (print_error("Split failed for environment", *gc_list), false);
 	if (tokens[0][0] == 'A' && !tokens[0][1]
 			&& !set_amb_light(scene, tokens, gc_list))
-		return (free_array(tokens), false);
+		return (free_array(&tokens), false);
 	else if (tokens[0][0] == 'C' && !tokens[0][1]
 			&& !set_camera(scene, tokens, gc_list))
-		return (free_array(tokens), false);
+		return (free_array(&tokens), false);
 	else if (tokens[0][0] == 'L' && !tokens[0][1]
 			&& !set_light(scene, tokens, gc_list))
-		return (free_array(tokens), false);
+		return (free_array(&tokens), false);
 	return (print_error("Unknown environment identifier", *gc_list),
-		free_array(tokens), false);
+		free_array(&tokens), false);
 }

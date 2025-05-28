@@ -6,7 +6,7 @@
 #    By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/05/26 15:37:20 by dchrysov         ###   ########.fr        #
+#    Updated: 2025/05/28 16:37:35 by dchrysov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,10 @@ GNLDIR = ./lib/getnextline
 
 SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDIR)/scene_init.c\
 	\
-	$(SRCDIR)/parser/check.c $(SRCDIR)/parser/parse.c $(SRCDIR)/parser/environment.c $(SRCDIR)/parser/objects.c \
-	$(SRCDIR)/parser/parse_utils.c
+	$(SRCDIR)/parser/assign_param.c $(SRCDIR)/parser/check_name.c $(SRCDIR)/parser/check_range.c \
+	$(SRCDIR)/parser/environment.c $(SRCDIR)/parser/parse.c $(SRCDIR)/parser/objects.c \
+	\
+	$(SRCDIR)/vector/math1.c $(SRCDIR)/vector/math2.c $(SRCDIR)/vector/color.c
 
 OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 
@@ -45,6 +47,9 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< $(HEADERS) -o $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/parser/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< $(HEADERS) -o $@
+
+$(OBJDIR)/%.o: $(SRCDIR)/vector/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< $(HEADERS) -o $@
 
 $(OBJDIR):

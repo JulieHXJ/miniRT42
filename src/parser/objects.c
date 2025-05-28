@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/26 15:14:10 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:19:41 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
  */
 static void	connect_nodes(t_scene **scene, t_object **new_obj)
 {
-	t_object	*previous;
-
 	if (!scene || !new_obj || !(*new_obj))
 		return ;
 	// Prepend the new object to the head of the list
@@ -46,10 +44,10 @@ static bool	create_sphere(t_scene **scene, char **arr, t_gc_object **gc_list)
 	new_obj->type = SPHERE;
 	if (!assign_vector(arr[1], &new_obj->u_data.sphere.center, *gc_list))
 		return (print_error("Sphere center parse failed", *gc_list), false);
-	if (!assign_positive_num(arr[2], new_obj->u_data.sphere.diam, *gc_list))
-		return (print_error("Sphere diameter parse failed", gc_list), false);
-	if (!assign_color(arr[3], &new_obj->u_data.sphere.color, gc_list))
-		return (print_error("Sphere color parse failed", gc_list), false);
+	if (!assign_positive_num(arr[2], new_obj->u_data.sphere.diam))
+		return (print_error("Sphere diameter parse failed", *gc_list), false);
+	if (!assign_color(arr[3], &new_obj->u_data.sphere.color, *gc_list))
+		return (print_error("Sphere color parse failed", *gc_list), false);
 	new_obj->u_data.sphere.specular = 0.0;
 	new_obj->u_data.sphere.reflective = 0.0;
 	new_obj->content = NULL;
@@ -63,14 +61,14 @@ static bool	create_plane(t_scene **scene, char **arr, t_gc_object **gc_list)
 
 	new_obj = gc_alloc(sizeof(t_object), gc_list);
 	if (!new_obj)
-		return (print_error("Memory alloc failed for plane", gc_list), false);
+		return (print_error("Memory alloc failed for plane", *gc_list), false);
 	new_obj->type = PLANE;
-	if (!assign_vector(arr[1], &new_obj->u_data.plane.point, gc_list))
-		return (print_error("Plane point parse failed", gc_list), false);
-	if (!assign_normal(arr[2], &new_obj->u_data.plane.normal, gc_list))
-		return (print_error("Plane normal parse failed", gc_list), false);
-	if (!assign_color(arr[3], &new_obj->u_data.plane.color, gc_list))
-		return (print_error("Plane color parse failed", gc_list), false);
+	if (!assign_vector(arr[1], &new_obj->u_data.plane.point, *gc_list))
+		return (print_error("Plane point parse failed", *gc_list), false);
+	if (!assign_normal(arr[2], &new_obj->u_data.plane.normal, *gc_list))
+		return (print_error("Plane normal parse failed", *gc_list), false);
+	if (!assign_color(arr[3], &new_obj->u_data.plane.color, *gc_list))
+		return (print_error("Plane color parse failed", *gc_list), false);
 	new_obj->u_data.plane.specular = 0.0;
 	new_obj->u_data.plane.reflective = 0.0;
 	new_obj->content = NULL;
@@ -81,24 +79,21 @@ static bool	create_plane(t_scene **scene, char **arr, t_gc_object **gc_list)
 static bool	create_cylinder(t_scene **scene, char **arr, t_gc_object **gc_list)
 {
 	t_object	*new_obj;
-	t_vec3		normal;
-	t_color		color;
 
 	new_obj = gc_alloc(sizeof(t_object), gc_list);
 	if (!new_obj)
-		return (print_error("Memory allocation failed for cylinder", gc_list),
+		return (print_error("Memory allocation failed for cylinder", *gc_list),
 			false);
 	new_obj->type = CYLINDER;
-	if (!assign_vector(arr[1], &new_obj->u_data.cylinder.center, gc_list))
-		return (print_error("Cylinder center parse failed", gc_list), false);
-	if (!assign_normal(arr[2], &new_obj->u_data.cylinder.direction, gc_list))
-		return (print_error("Cylinder direction parse failed", gc_list), false);
-	if (!assign_positive_num(arr[3], new_obj->u_data.cylinder.diam, gc_list)
-		|| !assign_positive_num(arr[4], new_obj->u_data.cylinder.height,
-			gc_list))
-		return (print_error("Negative number detected", gc_list), false);
-	if (!assign_color(arr[5], &new_obj->u_data.cylinder.color, gc_list))
-		return (print_error("Cylinder color parse failed", gc_list), false);
+	if (!assign_vector(arr[1], &new_obj->u_data.cylinder.center, *gc_list))
+		return (print_error("Cylinder center parse failed", *gc_list), false);
+	if (!assign_normal(arr[2], &new_obj->u_data.cylinder.direction, *gc_list))
+		return (print_error("Cylinder dir parse failed", *gc_list), false);
+	if (!assign_positive_num(arr[3], new_obj->u_data.cylinder.diam)
+		|| !assign_positive_num(arr[4], new_obj->u_data.cylinder.height))
+		return (print_error("Negative number detected", *gc_list), false);
+	if (!assign_color(arr[5], &new_obj->u_data.cylinder.color, *gc_list))
+		return (print_error("Cylinder color parse failed", *gc_list), false);
 	new_obj->u_data.cylinder.specular = 0.0;
 	new_obj->u_data.cylinder.reflective = 0.0;
 	new_obj->content = NULL;
@@ -113,19 +108,19 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
 
 	trimmed = ft_strtrim(line, "\n");
 	if (!trimmed)
-		return (print_error("strtrim failed for objects", gc_list), false);
-	tokens = split(trimmed, ' ');
+		return (print_error("strtrim failed for objects", *gc_list), false);
+	tokens = ft_split(trimmed, ' ');
 	free(trimmed);
 	if (!tokens || !tokens[0])
-		return (print_error("Split failed for objects", gc_list), false);
+		return (print_error("Split failed for objects", *gc_list), false);
 	if (!ft_strcmp(tokens[0], "pl") && !create_plane(scene, tokens, gc_list))
-		return (free_array(tokens), false);
+		return (free_array(&tokens), false);
 	else if (!ft_strcmp(tokens[0], "sp")
 		&& !create_sphere(scene, tokens, gc_list))
-		return (free_array(tokens), false);
+		return (free_array(&tokens), false);
 	else if (!ft_strcmp(tokens[0], "cy")
 		&& !create_cylinder(scene, tokens, gc_list))
-		return (free_array(tokens), false);
-	return (print_error("Unknown object identifier", tokens[0]),
-		free_array(tokens), false);
+		return (free_array(&tokens), false);
+	return (print_error("Unknown object identifier", *gc_list),
+		free_array(&tokens), false);
 }

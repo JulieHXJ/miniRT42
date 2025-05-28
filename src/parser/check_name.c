@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:00:36 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/26 13:40:12 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:38:15 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,8 @@ static bool	check_ele_number(char **arr)
 		return (true);
 	else if (!ft_strcmp(arr[0], "cy") && arr_size == 6)
 		return (true);
-	else if (check_bonus(arr)) // todo
-	{
-		return (true);
-	}
+	// else if (check_bonus(arr)) // todo
+	// 	return (true);
 	return (print_error("Invalid number of parameters in .rt file", NULL),
 		false);
 }
@@ -61,6 +59,7 @@ static bool	check_file_contents(int fd)
 	amb_num = 0;
 	while ((line = get_next_line(fd)))
 	{
+		printf("'%s'\n", line);
 		arr = ft_split(line, ' ');
 		if (arr[0] == NULL || arr[0][0] == '\n' || arr[0][0] == '#')
 		{

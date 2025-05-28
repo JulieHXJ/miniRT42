@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:16:31 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/05/26 14:48:43 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:58:27 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,11 @@ void	print_scene(t_scene *scene)
 
 	// Print camera
 	printf("Camera:\n");
-	printf("  Position: (%.2f, %.2f, %.2f)\n", scene->camera.position.x,
-		scene->camera.position.y, scene->camera.position.z);
-	printf("  Direction: (%.2f, %.2f, %.2f)\n", scene->camera.direction.x,
-		scene->camera.direction.y, scene->camera.direction.z);
-	printf("  FOV: %.2f\n", scene->camera.fov);
+	printf("  Position: (%.2f, %.2f, %.2f)\n", scene->camera->position.x,
+		scene->camera->position.y, scene->camera->position.z);
+	printf("  Direction: (%.2f, %.2f, %.2f)\n", scene->camera->direction.x,
+		scene->camera->direction.y, scene->camera->direction.z);
+	printf("  FOV: %.2f\n", scene->camera->fov);
 	// Print ambient light
 	printf("Ambient Light:\n");
 	printf("  Ratio: %.2f\n", scene->amb_light->ratio);
