@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:00:36 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/28 16:38:15 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:09:35 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static bool	check_file_contents(int fd)
 	amb_num = 0;
 	while ((line = get_next_line(fd)))
 	{
-		printf("'%s'\n", line);
 		arr = ft_split(line, ' ');
 		if (arr[0] == NULL || arr[0][0] == '\n' || arr[0][0] == '#')
 		{
@@ -90,7 +89,7 @@ bool	valid_file(int ac, char **av)
 {
 	int		fd;
 	size_t	len;
-	char	*line;
+	char	*buf;
 
 	if (ac != 2 || !av[1])
 		return (print_error(USAGE_MSG, NULL), false);
@@ -102,11 +101,11 @@ bool	valid_file(int ac, char **av)
 	fd = open(av[1], O_RDONLY);
 	if (fd == -1)
 		return (print_error("Failed to open file", NULL), false);
-	// check empty file
-	line = get_next_line(fd);
-	if (!line)
-		return (print_error("Empty file", NULL), close(fd), false);
-	free(line);
+	// check if file is empty
+	if (read(fd, &buf, 1) == 0)
+		return (print_error(".rt file is empty", NULL), false);
+	close(fd);
+	fd = open(av[1], O_RDONLY);
 	if (!check_file_contents(fd))
 		return (close(fd), false);
 	close(fd);

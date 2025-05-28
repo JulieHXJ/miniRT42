@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:35:30 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/05/28 16:00:08 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:13:16 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ static void	light_init(t_scene **scene, t_gc_object **gc_list)
 	(*scene)->light = gc_alloc(sizeof(t_amb_light), gc_list);
 	if (!(*scene)->light)
 		return ((void)print_error("Light alloc failed", *gc_list));
+	(*scene)->light->color = (t_color){0, 0, 0};
 	(*scene)->light->position = (t_vec3){0.0, 0.0, 0.0};
 	(*scene)->light->brightness = 0.0;
-	(*scene)->light->color = (t_color){0, 0, 0};
 	(*scene)->light->next = NULL;
 }
 

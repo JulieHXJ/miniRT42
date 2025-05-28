@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:25:22 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/05/26 14:22:20 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:18:51 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,10 @@ void	*gc_alloc(size_t size, t_gc_object **gc_list)
 
 	mem = malloc(size);
 	if (!mem)
-		return (gc_free(*gc_list), NULL);
+		return (NULL);
 	obj = malloc(sizeof(t_gc_object));
 	if (!obj)
-	{
-		free(mem);
-		return (gc_free(*gc_list), NULL);
-	}
+		return (free(mem), NULL);
 	obj->ptr = mem;
 	obj->marked = false;
 	obj->next = *gc_list;
