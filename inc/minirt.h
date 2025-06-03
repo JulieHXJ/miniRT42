@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/25 20:30:23 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/03 17:49:07 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 # include "../lib/getnextline/inc/get_next_line.h"
 # include "../lib/libft/inc/libft.h"
-# include "intersect.h"
+// # include "intersect.h"
 # include "vector.h"
 # include <fcntl.h>
 # include <stdbool.h>
@@ -81,8 +81,8 @@ typedef struct s_camera
 	t_vec3				position;
 	t_vec3				direction;
 	double fov; // Field of view in degrees
-	// int    width;      // Viewport width
-	// int    height;     // Viewport height
+	int    width;      // Viewport width
+	int    height;     // Viewport height
 }						t_camera;
 
 /**
@@ -157,7 +157,6 @@ typedef struct s_cylinder
 /* Generic object structure                                                   */
 /* ************************************************************************** */
 
-// i put color and center into certain object's structure so can be used direct when calling the object
 typedef struct s_object
 {
 	t_obj_type			type;
@@ -219,8 +218,7 @@ bool					assign_vector(char *coordinates, t_vec3 v,
 							t_gc_object **gc_list);
 bool					assign_normal(char *normal, t_vec3 v,
 							t_gc_object **gc_list);
-bool					assign_positive_num(char *num, double value,
-							t_gc_object **gc_list);
+bool					assign_positive_num(char *num, double value);
 bool					create_environment(char *line, t_scene **scene,
 							t_gc_object **gc_list);
 bool					create_objects(char *line, t_scene **scene,
@@ -228,23 +226,27 @@ bool					create_objects(char *line, t_scene **scene,
 bool					parser(char *fname, t_scene **scene,
 							t_gc_object **gc_list);
 
-// Ray casting
+// Functions for calculating intersections in intersect.h
 
-t_vec3					ray_point_at(t_ray ray, double t);
-bool					ray_tracing(t_scene *scene, t_ray ray, t_hit *hit);
+// t_vec3					ray_point_at(t_ray ray, double t);
+// bool					ray_tracing(t_scene *scene, t_ray ray, t_hit *hit);
 
-// Intersections
-bool hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit);
-bool hit_plane(t_ray ray, t_plane plane, t_hit *hit);
-bool hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit);
-void					rgb_range_check(t_object **obj, char *rgb);
-void					normal_vector_range_check(t_object **obj,
-							t_obj_type type, char *vec);
-void					center_point_assign(t_object **obj, char *point);
+// bool hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit);
+// bool hit_plane(t_ray ray, t_plane plane, t_hit *hit);
+// bool hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit);
+// void					rgb_range_check(t_object **obj, char *rgb);
+// void					normal_vector_range_check(t_object **obj,
+// 							t_obj_type type, char *vec);
+// void					center_point_assign(t_object **obj, char *point);
 
-// Graphic
+// Functions for color difusion and lighting
+// t_ray					create_ray(t_vec3 camera, t_vec3 direction);
+
+
+
+
+//Render
 bool					render(t_scene *scene, t_gc_object **gc_list);
-t_ray					create_ray(t_vec3 camera, t_vec3 direction);
 
 // GC
 void					*gc_alloc(size_t size, t_gc_object **gc_list);

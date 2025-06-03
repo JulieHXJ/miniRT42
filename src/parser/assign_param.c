@@ -6,13 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:30:39 by xhuang            #+#    #+#             */
-/*   Updated: 2025/05/25 19:12:36 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/03 17:48:56 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-bool	assign_color(char *color, t_color *c, t_gc_object **gc_list)
+bool	assign_color(char *color, t_color c, t_gc_object **gc_list)
 {
 	char	**tokens;
 
@@ -36,7 +36,7 @@ bool	assign_color(char *color, t_color *c, t_gc_object **gc_list)
 	return (true);
 }
 
-bool	assign_vector(char *coordinates, t_vec3 *v, t_gc_object **gc_list)
+bool	assign_vector(char *coordinates, t_vec3 v, t_gc_object **gc_list)
 {
 	char	**tokens;
 
@@ -55,7 +55,7 @@ bool	assign_vector(char *coordinates, t_vec3 *v, t_gc_object **gc_list)
 	return (true);
 }
 
-bool	assign_normal(char *normal, t_vec3 *v, t_gc_object **gc_list)
+bool	assign_normal(char *normal, t_vec3 v, t_gc_object **gc_list)
 {
 	if (!assign_vector(normal, v, gc_list))
 	{
@@ -70,7 +70,7 @@ bool	assign_normal(char *normal, t_vec3 *v, t_gc_object **gc_list)
 	return (true);
 }
 
-bool	assign_positive_num(char *num, double value, t_gc_object **gc_list)
+bool	assign_positive_num(char *num, double value)
 {
 	value = ft_atod(num);
 	if (value <= 0)

@@ -6,13 +6,14 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 13:38:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/25 20:47:36 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/03 16:45:23 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RENDER_H
 # define RENDER_H
 
+# include "intersect.h"
 #include <pthread.h>
 
 

@@ -6,21 +6,11 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:22:35 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/21 17:34:33 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/03 17:08:31 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
-
-// t_color	new_color(int r, int g, int b)
-// {
-// 	t_color	c;
-
-// 	c.r = r;
-// 	c.g = g;
-// 	c.b = b;
-// 	return (c);
-// }
 
 t_color	color_scale(t_color c, double factor)
 {
@@ -29,6 +19,10 @@ t_color	color_scale(t_color c, double factor)
 	result.r = (int)(c.r * factor);
 	result.g = (int)(c.g * factor);
 	result.b = (int)(c.b * factor);
+
+	// result.r = fmin(c.r * factor, 255);
+    // result.g = fmin(c.g * factor, 255);
+    // result.b = fmin(c.b * factor, 255);
 	return (result);
 }
 
@@ -43,10 +37,10 @@ t_color	color_add(t_color c1, t_color c2)
 	return (result);
 }
 
-
-// Helper function to convert t_color to mlx color format
-int	convert_color(t_color color)
+/**
+ * @brief Converts a t_color to a 32-bit RGBA color for MLX42.
+ */
+static uint32_t	convert_color(t_color color)
 {
-	return ((color.r & 0xff) << 16) + ((color.g & 0xff) << 8)
-		+ (color.b & 0xff);
+	return ((color.r << 24) | (color.g << 16) | (color.b << 8) | 0xFF);
 }

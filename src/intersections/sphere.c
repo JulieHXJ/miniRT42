@@ -6,11 +6,11 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/25 20:24:32 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/03 16:48:10 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "intersect.h"
 
 /**
  * @note Solve the quadratic equation

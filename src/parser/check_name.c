@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:00:36 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/21 16:55:01 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/03 17:51:24 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ static bool	check_ele_number(char **arr)
 		return (true);
 	else if (!ft_strcmp(arr[0], "cy") && arr_size == 6)
 		return (true);
-	else if (check_bonus(arr)) // todo
-	{
-		return (true);
-	}
+	// else if (check_bonus(arr)) // todo
+	// {
+	// 	return (true);
+	// }
 	return (print_error("Invalid number of parameters in .rt file", NULL),
 		false);
 }

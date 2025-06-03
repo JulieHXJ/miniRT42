@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:16:31 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/05/21 19:15:36 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/03 16:47:04 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	print_scene(t_scene *scene)
 	printf("  FOV: %.2f\n", scene->camera.fov);
 	// Print ambient light
 	printf("Ambient Light:\n");
-	printf("  Intensity: %.2f\n", scene->amb_light.intensity);
+	printf("  Intensity: %.2f\n", scene->amb_light.ratio);
 	printf("  Color: (%d, %d, %d)\n", scene->amb_light.color.r,
 		scene->amb_light.color.g, scene->amb_light.color.b);
 	// Print lights
