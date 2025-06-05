@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/03 17:11:18 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/05 15:56:37 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ bool	render(t_scene *scene, t_gc_object **gc_list)
 
 	if (mlx_image_to_window(scene->mlx, scene->img, 0, 0) < 0)
     	return (print_error("Failed to attach image to window", gc_list), false);
+
 
 	
 	printf("Starting render...\n");

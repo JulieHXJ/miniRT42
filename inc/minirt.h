@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/03 17:49:07 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/05 16:39:43 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 # include "../lib/getnextline/inc/get_next_line.h"
 # include "../lib/libft/inc/libft.h"
-// # include "intersect.h"
+# include "intersect.h"
 # include "vector.h"
+# include "render.h"
+# include "matrix.h"
 # include <fcntl.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -119,6 +121,7 @@ typedef struct s_sphere
 	t_vec3				center;
 	t_color				color;
 	double				diam;
+	// t_matrix			transform; // For bonus transformations
 	double specular;   // For bonus specular lighting
 	double reflective; // For bonus reflections
 }						t_sphere;
@@ -226,7 +229,8 @@ bool					create_objects(char *line, t_scene **scene,
 bool					parser(char *fname, t_scene **scene,
 							t_gc_object **gc_list);
 
-// Functions for calculating intersections in intersect.h
+// Intersections
+bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 
 // t_vec3					ray_point_at(t_ray ray, double t);
 // bool					ray_tracing(t_scene *scene, t_ray ray, t_hit *hit);

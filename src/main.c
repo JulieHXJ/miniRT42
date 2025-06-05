@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/03 17:11:51 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/03 18:26:16 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ int	main(int ac, char **av)
 		gc_free(gc_list);
 		return (1);
 	}
-	// finish and clean up
 	mlx_terminate(scene->mlx);
 	gc_free(gc_list);
 	return (0);

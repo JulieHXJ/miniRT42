@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   calculate.c                                        :+:      :+:    :+:   */
+/*   ray.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/25 19:10:44 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/05 14:17:52 by xhuang           ###   ########.fr       */
+/*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
+/*   Updated: 2025/06/05 15:43:40 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "intersect.h"
 
-bool in_shadow(t_scene *scene, t_light *light, t_vec3 point)
+t_ray	create_ray(t_vec3 origin, t_vec3 direction)
 {
-    
+	t_ray	ray;
+
+	ray.origin = origin;
+	ray.direction = vec_normalize(direction); // Ensure direction is normalized
+	return (ray);
 }
 
-t_color calculate_lighting(t_scene *scene, t_light *light, t_vec3 point, t_vec3 normal)
+/**
+ * @brief Calculate a point along a ray at distance t
+ * @note P(t) = Origin + t × Direction
+ */
+t_vec3	ray_point_at(t_ray ray, double t)
 {
-    t_color color;
-
-    return color;
+	return (vec_add(ray.origin, vec_scale(ray.direction, t)));
 }
+
+

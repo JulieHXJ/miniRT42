@@ -6,11 +6,11 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/03 16:48:10 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/05 16:38:41 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "intersect.h"
+#include "minirt.h"
 
 /**
  * @note Solve the quadratic equation
@@ -18,7 +18,7 @@
  * If Δ == 0 → tangential hit (1 point)
  * If Δ > 0 → 2 intersections (we pick the closest t > 1)
  */
-double	solve_quadratic(double a, double b, double c, double hit_t)
+static double	solve_quadratic(double a, double b, double c, double hit_t)
 {
 	double	discriminant;
 	double	t0;
@@ -45,7 +45,7 @@ double	solve_quadratic(double a, double b, double c, double hit_t)
 
 /**
  * @brief Check if a ray intersects with a sphere
- *
+ * @note reserves the hit points and calculate normals
  * Sphere equation: |P - C|² = r²
  * Substituting: |O + t*D - C|² = r²
  * (D·D)*t² + 2*(oc·D)*t + (oc·oc - r²) = 0
@@ -56,12 +56,12 @@ double	solve_quadratic(double a, double b, double c, double hit_t)
  */
 bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit)
 {
-	t_vec3 oc; // from center to origin(camera)
 	double	a;
 	double	b;
 	double	c;
 	double	t;
 
+	t_vec3 oc; // from center to origin(camera)
 	oc = vec_sub(ray.origin, sphere.center);
 	a = vec_dot(ray.direction, ray.direction);
 	b = 2.0 * vec_dot(ray.direction, oc);

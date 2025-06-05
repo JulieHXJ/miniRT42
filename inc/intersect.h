@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 22:42:17 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/03 16:49:05 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/05 15:57:46 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,21 @@ typedef struct s_ray
 	t_vec3	direction;
 }			t_ray;
 
+// we call the visible interscet point a "hit"
 typedef struct s_hit
 {
 	double t;         // Distance from camera to hit point
-	t_vec3 point;     // Intersection point
+	t_vec3 point;     // closest hit point
 	t_vec3 normal;    // Surface normal at intersection
 	t_object *object; // Pointer to the hit object
 
-	t_vec3	color;
+	t_color	color;
 	double specular;   // For bonus specular lighting
 	double reflective; // For bonus reflections
 
 }			t_hit;
 
+
+t_vec3 ray_point_at(t_ray ray, double t);
+t_ray create_ray(t_vec3 origin, t_vec3 direction);
 #endif

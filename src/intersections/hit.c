@@ -1,41 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray_hit.c                                          :+:      :+:    :+:   */
+/*   hit.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/03 16:47:58 by xhuang           ###   ########.fr       */
+/*   Created: 2025/06/05 15:43:31 by xhuang            #+#    #+#             */
+/*   Updated: 2025/06/05 15:54:10 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "intersect.h"
-
-
-
-/**
- * @brief Calculate a point along a ray at distance t
- * @note P(t) = Origin + t × Direction
- */
-t_vec3 ray_point_at(t_ray ray, double t)
-{
-    return (vec_add(ray.origin, vec_scale(ray.direction, t)));
-}
-
-
-
-
-
-
-
-
-
+#include "minirt.h"
 
 /**
  * @brief Cast a ray through the scene and check for intersections with objects
+ * @return true if any object was hit, false otherwise
+ *
  */
-bool	ray_tracing(t_scene *scene, t_ray ray, t_hit *hit)
+bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit)
 {
 	t_object	*obj;
 	bool		hits;
