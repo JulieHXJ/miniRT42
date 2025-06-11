@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 13:37:03 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/03 16:21:05 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/11 16:53:41 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ t_vec3		vec3_reflect(t_vec3 v, t_vec3 normal);
 // t_color	new_color(int r, int g, int b);
 t_color		color_scale(t_color c, double factor);
 t_color		color_add(t_color c1, t_color c2);
+t_color color_blend(t_color c1, t_color c2, double ratio);
 
 #endif

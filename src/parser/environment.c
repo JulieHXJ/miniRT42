@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/03 18:01:23 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/11 19:33:37 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static bool	set_camera(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	fov = ft_atoi(tokens[3]);
 	if (!in_range_int(fov, 0, 180))
 		return (print_error("FOV out of range", *gc_list), false);
-	(*scene)->camera.position = position;
+	(*scene)->camera.origin = position;
 	(*scene)->camera.direction = vec_normalize(ori_vec);
 	(*scene)->camera.fov = fov;
 	return (true);
@@ -51,32 +51,17 @@ static bool	set_amb_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	if (!assign_color(tokens[2], color, gc_list))
 		return (print_error("Ambient light color parse failed", *gc_list),
 			false);
-	// (*scene)->amb_light = gc_alloc(sizeof(t_amb_light), gc_list);
-	// if (!(*scene)->amb_light)
-	// 	return (print_error("Ambient light allocation failed", gc_list), false);
 	(*scene)->amb_light.ratio = ratio;
 	(*scene)->amb_light.color = color;
 	return (true);
 }
 
-/**
-
-	* @brief Append a new light to the head of the linked list (because order doesn't matter)
- */
-static void	append_light(t_light **head, t_light *new_light)
-{
-	if (!head || !new_light)
-		return ;
-	(new_light)->next = *head;
-	*head = new_light;
-}
-
+// if there is a light then add to the list, if not keep light pointer as null, still return true
 static bool	set_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 {
 	double	brightness;
 	t_vec3	pos;
 	t_color	col;
-	t_light	*new_light;
 
 	pos = new_vector(0, 0, 0);
 	col = (t_color){0, 0, 0};
@@ -89,15 +74,12 @@ static bool	set_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	if (!assign_color(tokens[3], col, gc_list))
 		return (print_error("Light color parse failed", *gc_list), false);
 	// Allocate memory for the new light
-	new_light = gc_alloc(sizeof(t_light), gc_list);
-	if (!new_light)
+	(*scene)->light = gc_alloc(sizeof(t_light), gc_list);
+	if (!(*scene)->light)
 		return (print_error("Light allocatione failed", *gc_list), false);
-	new_light->position = pos;
-	new_light->color = col;
-	new_light->brightness = brightness;
-	// append to the list
-	append_light(&(*scene)->light, new_light);
-	(*scene)->light_num++;
+	(*scene)->light->position = pos;
+	(*scene)->light->color = col;
+	(*scene)->light->ratio = brightness;
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:20:00 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/25 19:32:14 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/11 16:28:26 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,19 @@ t_vec3	vec_sub(t_vec3 a, t_vec3 b)
 }
 
 /**
- * @brief for vector zooming in
+ * @brief for vector zooming in and out
  */
 t_vec3	vec_scale(t_vec3 v, double s)
 {
 	return (new_vector(v.x * s, v.y * s, v.z * s));
+}
+
+t_vec3 unit_vec(t_vec3 v)
+{
+	double	len;
+
+	len = vec_length(v);
+	if (len > 0)
+		return (vec_scale(v, 1.0 / len));
+	return (v);
 }

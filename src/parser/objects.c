@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/03 18:09:57 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/11 19:34:29 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static bool	create_sphere(t_scene **scene, char **arr, t_gc_object **gc_list)
 		return (print_error("Sphere color parse failed", *gc_list), false);
 	new_obj->data.sphere.specular = 0.0;   // No specular by default
 	new_obj->data.sphere.reflective = 0.0; // No reflection by default
-	new_obj->content = NULL;
 	connect_nodes(scene, &new_obj);
 	return (true);
 }
@@ -80,7 +79,6 @@ static bool	create_plane(t_scene **scene, char **arr, t_gc_object **gc_list)
 	// assign specular and reflective values
 	new_obj->data.plane.specular = 0.0;
 	new_obj->data.plane.reflective = 0.0;
-	new_obj->content = NULL;
 	connect_nodes(scene, &new_obj);
 	return (true);
 }
@@ -106,7 +104,6 @@ static bool	create_cylinder(t_scene **scene, char **arr, t_gc_object **gc_list)
 		return (print_error("Cylinder color parse failed", *gc_list), false);
 	new_obj->data.cylinder.specular = 0.0;   // No specular by default
 	new_obj->data.cylinder.reflective = 0.0; // No reflection by default
-	new_obj->content = NULL;
 	connect_nodes(scene, &new_obj);
 	return (true);
 }

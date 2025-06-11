@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:00:36 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/03 17:51:24 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/11 19:15:52 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static bool	check_ele_number(char **arr)
 		return (true);
 	else if ((*arr)[0] == 'C' && arr_size == 4)
 		return (true);
-	else if ((*arr)[0] == 'L' && arr_size == 3)
+	else if ((*arr)[0] == 'L' && arr_size == 4)
 		return (true);
 	else if (!ft_strcmp(arr[0], "sp") && arr_size == 4)
 		return (true);
@@ -38,12 +38,31 @@ static bool	check_ele_number(char **arr)
 		return (true);
 	else if (!ft_strcmp(arr[0], "cy") && arr_size == 6)
 		return (true);
-	// else if (check_bonus(arr)) // todo
-	// {
-	// 	return (true);
-	// }
 	return (print_error("Invalid number of parameters in .rt file", NULL),
 		false);
+}
+
+void	apply_num(char id, int *cam_num, int *amb_num, int *light_num)
+{
+	if (id == 'C')
+		(*cam_num)++;
+	else if (id == 'A')
+		(*amb_num)++;
+	else if (id == 'L')
+		(*light_num)++;
+	else
+		return ;
+}
+
+static bool	check_num(int *cam_num, int *amb_num, int *light_num)
+{
+	if (*cam_num != 1)
+		return (print_error("Only 1 camera is allowed", NULL), false);
+	if (*amb_num != 1)
+		return (print_error("Only 1 ambient light is allowed", NULL), false);
+	if (*light_num > 1)
+		return (print_error("0 or 1 light source is allowed", NULL), false);
+	return (true);
 }
 
 /**
@@ -56,9 +75,11 @@ static bool	check_file_contents(int fd)
 	char	*line;
 	int		cam_num;
 	int		amb_num;
+	int		light_num;
 
 	cam_num = 0;
 	amb_num = 0;
+	light_num = 0;
 	while ((line = get_next_line(fd)))
 	{
 		arr = ft_split(line, ' ');
@@ -70,16 +91,12 @@ static bool	check_file_contents(int fd)
 		}
 		if (!check_ele_number(arr))
 			return (free_array(&arr), free(line), false);
-		if (arr[0][0] == 'C')
-			cam_num++;
-		else if (arr[0][0] == 'A')
-			amb_num++;
+		apply_num(arr[0][0], &cam_num, &amb_num, &light_num);
 		free_array(&arr);
 		free(line);
 	}
-	if (cam_num != 1 || amb_num != 1)
-		return (print_error("Only 1 camera or ambient light is allowed", NULL),
-			false);
+	if (!check_num(&cam_num, &amb_num, &light_num))
+		return (false);
 	return (true);
 }
 

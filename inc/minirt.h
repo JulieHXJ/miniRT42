@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/05 16:39:43 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/11 19:32:04 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,13 @@
 # include "../lib/getnextline/inc/get_next_line.h"
 # include "../lib/libft/inc/libft.h"
 # include "intersect.h"
-# include "vector.h"
 # include "render.h"
-# include "matrix.h"
+# include "vector.h"
 # include <fcntl.h>
+# include <math.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <unistd.h>
-# include <math.h>
 
 /* ************************************************************************** */
 /* ENUMS & DEFINES                                                            */
@@ -76,15 +75,18 @@ typedef struct s_gc_object
 
 /**
  * @note orient range: [-1.0, 1.0]
- * @note fov range: [0, 180]
+ * @note fov range: [0, 180], vp_width is calculated based on fov
+ * @note screen_up and screen_right are used for camera rotation
  */
 typedef struct s_camera
 {
-	t_vec3				position;
-	t_vec3				direction;
-	double fov; // Field of view in degrees
-	int    width;      // Viewport width
-	int    height;     // Viewport height
+	t_vec3				origin;
+	t_vec3 direction; // normalized direction vector
+	double				fov;
+	int					viewpoint_width;
+	int					viewpoint_height;
+	t_vec3 screen_up;    // for rotating camera up and down
+	t_vec3 screen_right; // for rotating camera left and right
 }						t_camera;
 
 /**
@@ -99,14 +101,12 @@ typedef struct s_amb_light
 
 /**
  * @note brightness range: [0.0, 1.0]
- * @note better to use linked list cuz we will have more lights later
  */
 typedef struct s_light
 {
 	t_vec3				position;
-	double				brightness;
+	double				ratio;
 	t_color				color;
-	struct s_light		*next;
 }						t_light;
 
 /* ************************************************************************** */
@@ -121,7 +121,7 @@ typedef struct s_sphere
 	t_vec3				center;
 	t_color				color;
 	double				diam;
-	// t_matrix			transform; // For bonus transformations
+
 	double specular;   // For bonus specular lighting
 	double reflective; // For bonus reflections
 }						t_sphere;
@@ -170,7 +170,6 @@ typedef struct s_object
 		t_cylinder		cylinder;
 		// more objects
 	} data;
-	void *content; // added
 	struct s_object		*next;
 	struct s_object		*previous;
 }						t_object;
@@ -183,24 +182,18 @@ typedef struct s_scene
 {
 	t_camera			camera;
 	t_amb_light			amb_light;
-	t_light *light; // linked list
-	int					light_num;
+	t_light *light; // 0 or 1
 	t_object			*obj;
+	mlx_t				*mlx;
+	mlx_image_t			*img;
 
-	void *mlx;  // MLX pointer
-	void *win;  // MLX window pointer
-	void *img;  // MLX image pointer
-	char *addr; // Image data address
-	int					bits_per_pixel;
-	int					line_length;
-	int					endian;
 }						t_scene;
 
 /* ************************************************************************** */
 /* FUNCTION PROTOTYPES                                                        */
 /* ************************************************************************** */
 
-// Utils
+//Utils
 void					free_array(char ***arr);
 size_t					array_size(char **arr);
 void					print_error(char *str, t_gc_object *gc_list);
@@ -229,28 +222,12 @@ bool					create_objects(char *line, t_scene **scene,
 bool					parser(char *fname, t_scene **scene,
 							t_gc_object **gc_list);
 
-// Intersections
-bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit);
-
-// t_vec3					ray_point_at(t_ray ray, double t);
-// bool					ray_tracing(t_scene *scene, t_ray ray, t_hit *hit);
-
-// bool hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit);
-// bool hit_plane(t_ray ray, t_plane plane, t_hit *hit);
-// bool hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit);
-// void					rgb_range_check(t_object **obj, char *rgb);
-// void					normal_vector_range_check(t_object **obj,
-// 							t_obj_type type, char *vec);
-// void					center_point_assign(t_object **obj, char *point);
-
-// Functions for color difusion and lighting
-// t_ray					create_ray(t_vec3 camera, t_vec3 direction);
+// // Intersections
+// bool					if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 
 
-
-
-//Render
-bool					render(t_scene *scene, t_gc_object **gc_list);
+// // Render
+// bool					render(t_scene *scene, t_gc_object **gc_list);
 
 // GC
 void					*gc_alloc(size_t size, t_gc_object **gc_list);

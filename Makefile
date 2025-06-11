@@ -6,7 +6,7 @@
 #    By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/06/03 18:18:10 by xhuang           ###   ########.fr        #
+#    Updated: 2025/06/11 19:39:40 by xhuang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,12 @@ LIBFTDIR = ./lib/libft
 GNLDIR = ./lib/getnextline
 
 # remember to change
-SRCS := $(wildcard $(SRCDIR)/*.c) \
-        $(wildcard $(SRCDIR)/**/*.c) \
+SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDIR)/vector/math1.c\
+		$(SRCDIR)/parser/check_name.c $(SRCDIR)/parser/check_range.c \
+		$(SRCDIR)/parser/assign_param.c $(SRCDIR)/parser/environment.c \
+		$(SRCDIR)/parser/parse.c $(SRCDIR)/parser/objects.c \
+		$(SRCDIR)/vector/color.c  \
+		$(SRCDIR)/vector/math2.c 
 
 OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 

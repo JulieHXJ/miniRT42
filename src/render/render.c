@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/05 15:56:37 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/11 17:54:48 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	draw_pixel(mlx_image_t *img, int x, int y, t_color color)
 	// 			color = (t_color){0, 0, 0};
 	// 		}
 	// 		// Set pixel color
-	// 		mlx_put_pixel(scene->img, x, y, convert_color(color));
+			mlx_put_pixel(scene->img, x, y, convert_color(color));
 	// 	}
 	// }
 }
@@ -92,29 +92,7 @@ bool	render(t_scene *scene, t_gc_object **gc_list)
 
 	
 	printf("Starting render...\n");
-    // Render multiple samples in parallel
-    // while (condition)
-    // {
-    //     if (create_join_thread(scene, scene->img, gc_list))
-    //     {
-    //         return (false);
-    //     }
-    //     update_display(scene, scene->img);
-    // }
-	
-    
-    // Scale the ambient light color
-    background_color = color_scale(scene->amb_light.color, scene->amb_light.ratio);
-
-
-	// Draw the background
-	for (y = 0; y < scene->camera.height; y++)
-	{
-		for (x = 0; x < scene->camera.width; x++)
-		{
-			draw_pixel(scene->img, x, y, background_color);
-		}
-	}
+   
 
 	// Set up hooks
 	// mlx_loop_hook(scene->mlx, &hook_setup, scene);//todo
