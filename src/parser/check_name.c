@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:00:36 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/11 19:15:52 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/12 13:10:00 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /**
 
-	* @brief Check each element has correct number of parameters. (later will add bonus objects)
+	* @brief Check each element has correct number of parameters.
  *
  * @note A-3, C-4, L-3, sp-4, pl-4, cy-6.
  * (the correct range of numbers will be check in parser)
@@ -42,27 +42,28 @@ static bool	check_ele_number(char **arr)
 		false);
 }
 
-void	apply_num(char id, int *cam_num, int *amb_num, int *light_num)
+static void	apply_num(char id, int *cam_num, int *amb_num)
 {
 	if (id == 'C')
 		(*cam_num)++;
 	else if (id == 'A')
 		(*amb_num)++;
-	else if (id == 'L')
-		(*light_num)++;
 	else
 		return ;
 }
 
-static bool	check_num(int *cam_num, int *amb_num, int *light_num)
+static char	*skip_lines(int fd, char ***arr, char *line)
 {
-	if (*cam_num != 1)
-		return (print_error("Only 1 camera is allowed", NULL), false);
-	if (*amb_num != 1)
-		return (print_error("Only 1 ambient light is allowed", NULL), false);
-	if (*light_num > 1)
-		return (print_error("0 or 1 light source is allowed", NULL), false);
-	return (true);
+	while (line)
+	{
+		*arr = ft_split(line, ' ');
+		if (*arr && (*arr)[0] && (*arr)[0][0] != '\n' && (*arr)[0][0] != '#')
+			break ;
+		free_array(arr);
+		free(line);
+		line = get_next_line(fd);
+	}
+	return (line);
 }
 
 /**
@@ -75,28 +76,25 @@ static bool	check_file_contents(int fd)
 	char	*line;
 	int		cam_num;
 	int		amb_num;
-	int		light_num;
 
 	cam_num = 0;
 	amb_num = 0;
-	light_num = 0;
-	while ((line = get_next_line(fd)))
+	line = get_next_line(fd);
+	while (line)
 	{
-		arr = ft_split(line, ' ');
-		if (arr[0] == NULL || arr[0][0] == '\n' || arr[0][0] == '#')
-		{
-			free_array(&arr);
-			free(line);
-			continue ;
-		}
+		line = skip_lines(fd, &arr, line);
+		if (!line)
+			break ;
 		if (!check_ele_number(arr))
 			return (free_array(&arr), free(line), false);
-		apply_num(arr[0][0], &cam_num, &amb_num, &light_num);
+		apply_num(arr[0][0], &cam_num, &amb_num);
 		free_array(&arr);
 		free(line);
+		line = get_next_line(fd);
 	}
-	if (!check_num(&cam_num, &amb_num, &light_num))
-		return (false);
+	if (cam_num != 1 || amb_num != 1)
+		return (print_error("Only 1 camera or ambient light is allowed", NULL),
+			false);
 	return (true);
 }
 
@@ -112,15 +110,12 @@ bool	valid_file(int ac, char **av)
 
 	if (ac != 2 || !av[1])
 		return (print_error(USAGE_MSG, NULL), false);
-	// check file name
 	len = ft_strlen(av[1]);
 	if (len < 4 || ft_strncmp(av[1] + len - 3, ".rt", 3) != 0)
 		return (print_error("Incorrect file format", NULL), false);
-	// try to open file
 	fd = open(av[1], O_RDONLY);
 	if (fd == -1)
 		return (print_error("Failed to open file", NULL), false);
-	// check empty file
 	line = get_next_line(fd);
 	if (!line)
 		return (print_error("Empty file", NULL), close(fd), false);

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/11 19:19:02 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/12 12:22:48 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	camera_init(t_scene *scene)
 	
 	scene->camera.origin = new_vector(0, 0, 0);
 	scene->camera.direction = new_vector(0, 0, -1);
-	scene->camera.fov = 70.0;
+	scene->camera.fov = 90.0;
 	//default camera facing down
 	scene->camera.screen_up = new_vector(0, 1, 0);
 	scene->camera.screen_right = new_vector(1, 0, 0);
@@ -67,12 +67,13 @@ static t_scene	*scene_init(t_gc_object **list)
 	return (scene);
 }
 
+
+
+
 int	main(int ac, char **av)
 {
 	t_gc_object	*gc_list;
 	t_scene		*scene;
-	(void)ac;
-	(void)av;
 
 	gc_list = NULL;
 	if (!valid_file(ac, av))
@@ -80,13 +81,8 @@ int	main(int ac, char **av)
 	scene = scene_init(&gc_list);
 	if (!scene)
 		return (gc_free(gc_list), 1);
-
-
-
-
-	
-	// if (!parser(av[1], &scene, &gc_list))
-	// 	return (gc_free(gc_list), 1);
+	if (!parser(av[1], &scene, &gc_list))
+		return (gc_free(gc_list), 1);
 	// if (!render(scene, &gc_list))
 	// {
 	// 	if (scene->mlx)
@@ -95,6 +91,16 @@ int	main(int ac, char **av)
 	// 	return (1);
 	// }
 
+	printf("============ Scene ============\n");
+	print_camera(&scene->camera);
+	print_ambient(&scene->amb_light);
+	print_light(scene->light);
+	print_object(scene->obj);
+	printf("================================\n");
+
+
+
+	
 
 	scene->mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "miniRT", true);
     if (!scene->mlx)
@@ -113,7 +119,7 @@ int	main(int ac, char **av)
 	if (mlx_image_to_window(scene->mlx, scene->img, 0, 0) < 0)
     	return (print_error("Failed to attach image to window", gc_list), false);
 
-	// mlx_put_string(scene->mlx, "Hello, miniRT!", 10, 10);
+	mlx_put_string(scene->mlx, "Hello, miniRT!", 10, 10);
 
 	// Set up hooks
 	// mlx_loop_hook(scene->mlx, &hook_setup, scene);//todo

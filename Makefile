@@ -6,7 +6,7 @@
 #    By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/06/11 19:39:40 by xhuang           ###   ########.fr        #
+#    Updated: 2025/06/12 13:08:20 by xhuang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,14 +22,16 @@ LIBFTDIR = ./lib/libft
 GNLDIR = ./lib/getnextline
 
 # remember to change
-SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDIR)/vector/math1.c\
+SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDIR)/debugging.c $(SRCDIR)/vector/math1.c\
 		$(SRCDIR)/parser/check_name.c $(SRCDIR)/parser/check_range.c \
 		$(SRCDIR)/parser/assign_param.c $(SRCDIR)/parser/environment.c \
 		$(SRCDIR)/parser/parse.c $(SRCDIR)/parser/objects.c \
 		$(SRCDIR)/vector/color.c  \
 		$(SRCDIR)/vector/math2.c 
 
-OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
+# OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
+OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+
 
 RM = rm -f
 
@@ -40,18 +42,16 @@ NAME = minirt
 
 all: gitclone libmlx libft $(NAME)
 
-$(NAME): $(OBJDIR) $(OBJS) $(MLX) $(LIBFT) $(GNL)
+$(NAME): $(OBJS) $(MLX) $(LIBFT) $(GNL)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(MLX) $(MLX_FLAGS) -L$(LIBFTDIR) -lft -L$(GNLDIR) -lgnl -lm
 	@echo "$(NAME) compiled \033[32msuccessfully\033[0m!"
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< $(HEADERS) -o $@
 
-$(OBJDIR)/%.o: $(SRCDIR)/parser/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< $(HEADERS) -o $@
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
+
 
 $(GNL):
 	$(MAKE) -C $(GNLDIR) LIBFTDIR=../libft

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:25:22 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/05/21 19:12:27 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/12 11:31:23 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ char	**gc_split(const char *s, char c, t_gc_object **gc_list)
 				free(res[--i]);
 			return (NULL);
 		}
-		res[i] = gc_alloc(ft_strlen(res[i]) + 1, gc_list);
 		i++;
 	}
 	res[word_count] = NULL;

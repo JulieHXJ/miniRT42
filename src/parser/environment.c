@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/11 19:33:37 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/12 12:36:05 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ static bool	set_camera(t_scene **scene, char **tokens, t_gc_object **gc_list)
 
 	position = new_vector(0, 0, 0);
 	ori_vec = new_vector(0, 0, -1);
-	fov = 70; // Default FOV
-	if (!assign_vector(tokens[1], position, gc_list))
+	fov = 0;
+	if (!assign_vector(tokens[1], &position, gc_list))
 		return (print_error("Camera position parse failed", *gc_list), false);
-	if (!assign_normal(tokens[2], ori_vec, gc_list))
+	if (!assign_normal(tokens[2], &ori_vec, gc_list))
 		return (print_error("Camera orientation parse failed", *gc_list),
 			false);
 	fov = ft_atoi(tokens[3]);
@@ -48,7 +48,7 @@ static bool	set_amb_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	if (!valid_ratio(ratio))
 		return (print_error("Ambient light ratio out of range", *gc_list),
 			false);
-	if (!assign_color(tokens[2], color, gc_list))
+	if (!assign_color(tokens[2], &color, gc_list))
 		return (print_error("Ambient light color parse failed", *gc_list),
 			false);
 	(*scene)->amb_light.ratio = ratio;
@@ -56,24 +56,29 @@ static bool	set_amb_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	return (true);
 }
 
-// if there is a light then add to the list, if not keep light pointer as null, still return true
+/**
+ * @brief Parse and create a light source
+ * @note add light to the list if there is one, otherwith keep pointer to null
+ */
 static bool	set_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 {
 	double	brightness;
 	t_vec3	pos;
 	t_color	col;
 
+	// if light exist then error
+	if ((*scene)->light != NULL)
+	return (print_error("Multiple lights are not allowed", *gc_list), false);
+
+	brightness = ft_atod(tokens[2]);
 	pos = new_vector(0, 0, 0);
 	col = (t_color){0, 0, 0};
-	// Parse brightness, and color
-	brightness = ft_atod(tokens[2]);
 	if (!valid_ratio(brightness))
 		return (print_error("Light brightness out of range", *gc_list), false);
-	if (!assign_vector(tokens[1], pos, gc_list))
+	if (!assign_vector(tokens[1], &pos, gc_list))
 		return (print_error("Light position parse failed", *gc_list), false);
-	if (!assign_color(tokens[3], col, gc_list))
+	if (!assign_color(tokens[3], &col, gc_list))
 		return (print_error("Light color parse failed", *gc_list), false);
-	// Allocate memory for the new light
 	(*scene)->light = gc_alloc(sizeof(t_light), gc_list);
 	if (!(*scene)->light)
 		return (print_error("Light allocatione failed", *gc_list), false);
@@ -101,7 +106,7 @@ bool	create_environment(char *line, t_scene **scene, t_gc_object **gc_list)
 	if (!tokens || !tokens[0])
 		return (print_error("Split failed for environment", *gc_list), false);
 	flag = true;
-	if (tokens[0][0] == 'A' && !tokens[0][1])
+	if (ft_strcmp(tokens[0], "A") == 0)
 		flag = set_amb_light(scene, tokens, gc_list);
 	else if (tokens[0][0] == 'C' && !tokens[0][1])
 		flag = set_camera(scene, tokens, gc_list);

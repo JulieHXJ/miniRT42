@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/11 19:32:04 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/12 12:24:57 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,6 @@ typedef struct s_sphere
  */
 typedef struct s_plane
 {
-	// double		normal[3];
 	t_vec3				point;
 	t_vec3				normal;
 	t_color				color;
@@ -146,7 +145,6 @@ typedef struct s_plane
  */
 typedef struct s_cylinder
 {
-	// double		normal[3];
 	t_vec3				center;
 	t_vec3				direction;
 	double				diam;
@@ -168,7 +166,6 @@ typedef struct s_object
 		t_sphere		sphere;
 		t_plane			plane;
 		t_cylinder		cylinder;
-		// more objects
 	} data;
 	struct s_object		*next;
 	struct s_object		*previous;
@@ -182,7 +179,7 @@ typedef struct s_scene
 {
 	t_camera			camera;
 	t_amb_light			amb_light;
-	t_light *light; // 0 or 1
+	t_light *light;
 	t_object			*obj;
 	mlx_t				*mlx;
 	mlx_image_t			*img;
@@ -208,13 +205,13 @@ bool					valid_ratio(double ratio);
 bool					valid_normal(t_vec3 normal);
 
 // Parser
-bool					assign_color(char *color, t_color c,
+bool					assign_color(char *color, t_color *c,
 							t_gc_object **gc_list);
-bool					assign_vector(char *coordinates, t_vec3 v,
+bool					assign_vector(char *coordinates, t_vec3 *v,
 							t_gc_object **gc_list);
-bool					assign_normal(char *normal, t_vec3 v,
+bool					assign_normal(char *normal, t_vec3 *v,
 							t_gc_object **gc_list);
-bool					assign_positive_num(char *num, double value);
+bool					assign_positive_num(char *num, double *value);
 bool					create_environment(char *line, t_scene **scene,
 							t_gc_object **gc_list);
 bool					create_objects(char *line, t_scene **scene,
@@ -223,11 +220,11 @@ bool					parser(char *fname, t_scene **scene,
 							t_gc_object **gc_list);
 
 // // Intersections
-// bool					if_hit(t_scene *scene, t_ray ray, t_hit *hit);
+bool					if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 
 
 // // Render
-// bool					render(t_scene *scene, t_gc_object **gc_list);
+bool					render(t_scene *scene, t_gc_object **gc_list);
 
 // GC
 void					*gc_alloc(size_t size, t_gc_object **gc_list);
@@ -236,4 +233,11 @@ void					gc_free(t_gc_object *gc_list);
 char					**gc_split(const char *s, char c,
 							t_gc_object **gc_list);
 
+//debugging
+void	print_object(t_object *obj);
+void	print_camera(t_camera *cam);
+void	print_ambient(t_amb_light *amb);
+void	print_light(t_light *light);
+
+							
 #endif

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:22:35 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/11 16:53:16 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/11 19:47:44 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ t_color color_blend(t_color c1, t_color c2, double ratio)
 }
 
 
-/**
- * @brief Converts a t_color to a 32-bit RGBA color for MLX42.
- */
-static uint32_t	convert_color(t_color color)
-{
-	return ((color.r << 24) | (color.g << 16) | (color.b << 8) | 0xFF);
-}
+// /**
+//  * @brief Converts a t_color to a 32-bit RGBA color for MLX42.
+//  */
+// static uint32_t	convert_color(t_color color)
+// {
+// 	return ((color.r << 24) | (color.g << 16) | (color.b << 8) | 0xFF);
+// }
