@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 22:42:17 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/05 15:57:46 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/12 18:31:31 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,20 @@
 
 // Forward declaration of t_object
 typedef struct s_object t_object;
+
+typedef struct s_viewpoint
+{
+    double fov;
+    double aspect_ratio;
+	double distance; // Distance from camera to viewport
+    int view_width;  // Width of the viewport
+    int view_height; // Height of the viewport
+    t_vec3 up;    // for rotating camera up and down
+	t_vec3 right; // for rotating camera left and right
+	t_vec3 normal;
+	t_vec3 up_left_corner;
+
+}				t_viewpoint;
 
 typedef struct s_ray
 {

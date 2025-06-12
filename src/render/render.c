@@ -6,30 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/11 17:54:48 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/12 18:27:35 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-// /**
-//  * @brief Create a new ray with origin and direction
-//  */
-// t_ray	create_ray(t_vec3 camera, t_vec3 direction)
-// {
-// 	t_ray	ray;
 
-// 	ray.origin = camera;
-// 	ray.direction = vec_normalize(direction);
-// 	return (ray);
-// }
-
-// /**
-//  * @brief Generate a ray from camera through a specific pixel
-//  */
-// t_ray get_cam_ray()
-// {
-// }
 
 /**
  * @brief Draw each pixel of the scene to the image
@@ -75,29 +58,32 @@ bool	render(t_scene *scene, t_gc_object **gc_list)
 {
 	int		x;
     int		y;
-    t_color	background_color;
-	
-	// Initialize MLX42 and create a window
-    scene->mlx = mlx_init(scene->camera.width, scene->camera.height, "miniRT", true);
+
+	scene->mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "miniRT", true);
     if (!scene->mlx)
         return (print_error("Failed to initialize MLX42", gc_list), false);
 	
-	scene->img = mlx_new_image(scene->mlx, scene->camera.width, scene->camera.height);
+	scene->img = mlx_new_image(scene->mlx, WIN_WIDTH, WIN_HEIGHT);
 	if (!scene->img)
 		return (print_error("Failed to create image", gc_list), false);
 
+
+
+	// render the image here 
+	
+	
+	
 	if (mlx_image_to_window(scene->mlx, scene->img, 0, 0) < 0)
     	return (print_error("Failed to attach image to window", gc_list), false);
 
-
-	
-	printf("Starting render...\n");
-   
+	mlx_put_string(scene->mlx, "Hello, miniRT!", 10, 10);
 
 	// Set up hooks
 	// mlx_loop_hook(scene->mlx, &hook_setup, scene);//todo
 	// mlx_key_hook(scene->mlx, key_hook, scene);
 	// mlx_close_hook(scene->mlx, close_hook, scene);
-	mlx_loop(scene->mlx);
+
+
+	mlx_loop(scene->mlx); 
 	return (true);
 }

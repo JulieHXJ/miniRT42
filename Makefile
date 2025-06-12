@@ -6,7 +6,7 @@
 #    By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/06/12 13:08:20 by xhuang           ###   ########.fr        #
+#    Updated: 2025/06/12 17:30:16 by xhuang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,12 +22,12 @@ LIBFTDIR = ./lib/libft
 GNLDIR = ./lib/getnextline
 
 # remember to change
-SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDIR)/debugging.c $(SRCDIR)/vector/math1.c\
-		$(SRCDIR)/parser/check_name.c $(SRCDIR)/parser/check_range.c \
-		$(SRCDIR)/parser/assign_param.c $(SRCDIR)/parser/environment.c \
-		$(SRCDIR)/parser/parse.c $(SRCDIR)/parser/objects.c \
-		$(SRCDIR)/vector/color.c  \
-		$(SRCDIR)/vector/math2.c 
+SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDIR)/debugging.c \
+		$(SRCDIR)/parser/check_name.c $(SRCDIR)/parser/check_range.c $(SRCDIR)/parser/assign_param.c \
+		$(SRCDIR)/parser/environment.c $(SRCDIR)/parser/parse.c $(SRCDIR)/parser/objects.c \
+		$(SRCDIR)/vector/color.c $(SRCDIR)/vector/math1.c $(SRCDIR)/vector/math2.c \
+		$(SRCDIR)render/render.c
+		 
 
 # OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

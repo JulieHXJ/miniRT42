@@ -6,11 +6,20 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 15:43:31 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/05 15:54:10 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/12 18:31:18 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+/**
+ * @brief Calculate a point along a ray at distance t
+ * @note P(t) = Origin + t × Direction
+ */
+t_vec3	ray_point_at(t_ray ray, double t)
+{
+	return (vec_add(ray.origin, vec_scale(ray.direction, t)));
+}
 
 /**
  * @brief Cast a ray through the scene and check for intersections with objects
@@ -59,3 +68,4 @@ bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit)
 	}
 	return (hits);
 }
+

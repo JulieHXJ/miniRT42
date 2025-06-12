@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/12 12:24:57 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/12 18:19:02 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,10 @@ typedef struct s_gc_object
 typedef struct s_camera
 {
 	t_vec3				origin;
-	t_vec3 direction; // normalized direction vector
+	t_vec3 direction;
 	double				fov;
-	int					viewpoint_width;
-	int					viewpoint_height;
-	t_vec3 screen_up;    // for rotating camera up and down
-	t_vec3 screen_right; // for rotating camera left and right
+	t_viewpoint viewpoint;
+
 }						t_camera;
 
 /**

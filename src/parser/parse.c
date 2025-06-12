@@ -6,12 +6,11 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/12 13:15:41 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/12 17:06:41 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
 
 bool	parser(char *fname, t_scene **scene, t_gc_object **gc_list)
 {
