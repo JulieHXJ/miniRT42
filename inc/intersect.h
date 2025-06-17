@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 22:42:17 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/13 10:51:44 by junjun           ###   ########.fr       */
+/*   Updated: 2025/06/17 16:12:03 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,4 @@ typedef struct s_hit
 
 
 t_vec3 ray_point_at(t_ray ray, double t);
-t_ray create_ray(t_vec3 origin, t_vec3 direction);
 #endif

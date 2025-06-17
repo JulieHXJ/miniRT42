@@ -3,132 +3,164 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 13:37:22 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/13 10:29:50 by junjun           ###   ########.fr       */
+/*   Updated: 2025/06/17 19:05:55 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+/** if hit on caps (top or bottom):
+Center C of cylinder
+Direction V (normalized) of cylinder (points from bottom to top)
+Ray: P(t) = O + t * D
+Bottom center  Cb = C
+Top center  Ct = C + h * V
+Radius r
+Height h
+Solve plane-ray intersection:
+dot((P - C_plane), N) = 0
+Where:
+C_plane = cap center (Cb or Ct)
+N = normal (V or -V)
+Solve t:
+t = -dot(O - C_plane, N) / dot(D, N)
 
-//if hit on caps (top or bottom):
-// Center C of cylinder
-// Direction V (normalized) of cylinder (points from bottom to top)
-// Ray: P(t) = O + t * D
-// Bottom center  Cb = C
-// Top center  Ct = C + h * V
-// Radius r
-// Height h
-// Solve plane-ray intersection:
-// dot((P - C_plane), N) = 0
-// Where:
-// C_plane = cap center (Cb or Ct)
-// N = normal (V or -V)
-// Solve t:
-// t = -dot(O - C_plane, N) / dot(D, N)
-// Important: If dot(D, N) == 0, the ray is parallel to the cap and doesn't intersect.
+Important:
+If	dot(D, N) == 0, the ray is parallel to the cap and doesn't intersect.
 
-// Check if the hit point is inside the circle (within radius):
-// P_hit = O + t * D
-// Check: length(P_hit - C_plane) <= r
-// If true → hit is inside the cap ✅
-// If false → hit is outside ❌
+Check if the hit point is inside the circle (within radius):
+P_hit = O + t * D
+Check: length(P_hit - C_plane) <= r
+If true → hit is inside the cap ✅
+If false → hit is outside ❌ */
 
-bool hit_cylinder_caps(t_ray ray, t_cylinder *cylinder, t_hit *hit)
+static bool	check_cap(t_ray ray, t_cylinder cylinder, t_vec3 center,
+		double *t_out)
 {
-    // Calculate intersection with top and bottom caps
-    // Top cap: z = cylinder->height / 2
-    // Bottom cap: z = -cylinder->height / 2
-    double t_top = (cylinder->height / 2 - ray.origin.z) / ray.direction.z;
-    double t_bottom = (-cylinder->height / 2 - ray.origin.z) / ray.direction.z;
+	t_vec3	dir;
+	t_vec3	point;
+	double	r;
+	double	denom;
+	double	t;
 
-    if (t_top < 0 && t_bottom < 0)
-        return false; // Both caps are behind the ray
-
-    // Check if the intersection points are within the cylinder's radius
-    t_vec3 top_intersection = vec_add(ray.origin, vec_scale(ray.direction, t_top));
-    t_vec3 bottom_intersection = vec_add(ray.origin, vec_scale(ray.direction, t_bottom));
-
-    if (vec_length(vec_sub(top_intersection, cylinder->center)) <= cylinder->radius)
-    {
-        hit->t = t_top;
-        hit->point = top_intersection;
-        hit->normal = (t_vec3){0, 0, 1}; // Normal pointing up
-        return true;
-    }
-    
-    if (vec_length(vec_sub(bottom_intersection, cylinder->center)) <= cylinder->radius)
-    {
-        hit->t = t_bottom;
-        hit->point = bottom_intersection;
-        hit->normal = (t_vec3){0, 0, -1}; // Normal pointing down
-        return true;
-    }
-
-    return false;
+	dir = cylinder.direction;
+	r = cylinder.radius;
+	denom = vec_dot(ray.direction, dir);
+	if (fabs(denom) < 1e-6)
+		return (false);
+	t = vec_dot(vec_sub(center, ray.origin), dir) / denom;
+	if (t < 0)
+		return (false);
+	point = ray_point_at(ray, t);
+	if (vec_length(vec_sub(point, center)) > r)
+		return (false);
+	*t_out = t;
+	return (true);
 }
 
-int hit_cylinder_cap(t_ray ray, t_vec3 center, t_vec3 normal, double radius, t_hit *hit)
+/**
+ * @brief Check if the ray hits the cylinder caps (top and bottom)
+ * @note if both caps are hitten, the one with the smaller t will be returned.
+ */
+bool	hit_caps(t_ray ray, t_cylinder cylinder, t_hit *hit)
 {
-    double denom, t;
-    t_vec3 hit_point;
-    
-    // Check if ray and cap plane are parallel
-    denom = vec_dot(normal, ray.direction);
-    if (fabs(denom) < 0.0001)
-        return (0);
-    
-    // Calculate distance to intersection with cap plane
-    t = vec_dot(vec_sub(center, ray.origin), normal) / denom;
-    
-    // Check if intersection is behind the ray or farther than an existing hit
-    if (t < 0.001 || (hit->t > 0 && hit->t < t))
-        return (0);
-    
-    // Calculate the hit point
-    hit_point = vec_add(ray.origin, vec_scale(ray.direction, t));
-    
-    // Check if hit point is within the cap radius
-    if (vec_length(vec_sub(hit_point, center)) > radius)
-        return (0); // Hit point outside cap radius
-    
-    // Update hit information
-    hit->t = t;
-    hit->point = hit_point;
-    hit->normal = denom < 0 ? normal : vec_scale(normal, -1);
-    
-    return (1);
+	t_hit	hit_record;
+	bool	hit_any;
+	t_vec3	dir;
+
+	hit_any = false;
+	hit_record.t = hit->t;
+	// check bottom cap
+	if (check_cap(ray, cylinder, cylinder.bottom_center, &hit_record.t))
+	{
+		hit_record.point = ray_point_at(ray, hit_record.t);
+		hit_record.normal = vec_scale(cylinder.direction, -1);
+		hit_record.color = cylinder.color;
+		hit_record.specular = cylinder.specular;
+		hit_record.reflective = cylinder.reflective;
+		*hit = hit_record;
+		hit_any = true;
+	}
+	// check top cap
+	hit_record.t = hit->t;
+	if (check_cap(ray, cylinder, cylinder.top_center, &hit_record.t))
+	{
+		hit_record.point = ray_point_at(ray, hit_record.t);
+		hit_record.normal = cylinder.direction;
+		hit_record.color = cylinder.color;
+		hit_record.specular = cylinder.specular;
+		hit_record.reflective = cylinder.reflective;
+		*hit = hit_record;
+		hit_any = true;
+	}
+	return (hit_any);
 }
 
-
-
-//if hit on curve sides
-// Formula: The distance from the point on the ray to the cylinder axis should be equal to the radius.
+// if hit on curve sides
+// Formula: point to the cylinder axis equals to the radius.
 // |(P(t) - C) - proj_V(P(t) - C)|² = r²
 // Projection:
-// Get possible values of t.:
+// Get possible values of t:
 // p(t) = O + t * D
 // Let: X = O - C (vector from cylinder base to ray origin)
 // a = dot(D - dot(D, V) * V, D - dot(D, V) * V)
 // b = 2 * dot(D - dot(D, V) * V, X - dot(X, V) * V)
 // c = dot(X - dot(X, V) * V, X - dot(X, V) * V) - r²
 // a*t² + b*t + c = 0
-bool hit_cylinder_sides()
+
+// projection:
+t_vec3	proj_on_axis(t_vec3 point, t_vec3 axis)
 {
-    
+	double	dot_product;
+
+	dot_product = vec_dot(point, axis);
+	return (vec_scale(axis, dot_product));
 }
 
-
-//projection:
-t_vec3 project_onto_axis(t_vec3 point, t_vec3 axis)
+double	t_side(t_vec3 d_perp, t_vec3 x_perp, double r, double t)
 {
-    double dot_product = vec_dot(point, axis);
-    return vec_scale(axis, dot_product);
+	double	a;
+	double	b;
+	double	c;
+
+	a = vec_dot(d_perp, d_perp);
+	b = 2.0 * vec_dot(d_perp, x_perp);
+	c = vec_dot(x_perp, x_perp) - r * r;
+	return (solve_quadratic(a, b, c, t));
 }
 
-bool hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit)
+bool	hit_sides(t_ray ray, t_cylinder cylinder, t_hit *hit)
 {
-    
+	t_vec3	x;
+	t_vec3	d_perp;
+	t_vec3	x_perp;
+	double	t;
+	t_vec3	point;
+
+	x = vec_sub(ray.origin, cylinder.center);
+	d_perp = vec_sub(ray.direction, proj_on_axis(ray.direction,
+				cylinder.direction));
+	x_perp = vec_sub(x, proj_on_axis(x, cylinder.direction));
+	t = t_side(d_perp, x_perp, cylinder.radius, hit->t);
+	if (t < 0)
+		return (false);
+	point = ray_point_at(ray, t);
+    // Check if the point is within the cylinder's height  
+	if (vec_dot(vec_sub(point, cylinder.center), cylinder.direction) < 0.0
+		|| vec_dot(vec_sub(point, cylinder.center),
+			cylinder.direction) > cylinder.height)
+		return (false);
+	hit->t = t;
+	hit->point = point;
+	hit->normal = vec_normalize(vec_sub(vec_sub(point, cylinder.bottom_center),
+				proj_on_axis(vec_sub(point, cylinder.bottom_center),
+					cylinder.direction)));
+	hit->color = cylinder.color;
+	hit->specular = cylinder.specular;
+	hit->reflective = cylinder.reflective;
+	return (true);
 }
+

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/12 13:08:09 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/17 18:15:39 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static bool	create_plane(t_scene **scene, char **arr, t_gc_object **gc_list)
 static bool	create_cylinder(t_scene **scene, char **arr, t_gc_object **gc_list)
 {
 	t_object	*new_obj;
+	double		diameter;
 
 	new_obj = gc_alloc(sizeof(t_object), gc_list);
 	if (!new_obj)
@@ -87,11 +88,16 @@ static bool	create_cylinder(t_scene **scene, char **arr, t_gc_object **gc_list)
 	if (!assign_normal(arr[2], &new_obj->data.cylinder.direction, gc_list))
 		return (print_error("Cylinder direction parse failed", *gc_list),
 			false);
-	if (!assign_positive_num(arr[3], &new_obj->data.cylinder.diam)
-		|| !assign_positive_num(arr[4], &new_obj->data.cylinder.height))
+	if (!assign_positive_num(arr[3], &diameter) || !assign_positive_num(arr[4],
+			&new_obj->data.cylinder.height))
 		return (print_error("Negative number detected", *gc_list), false);
+	new_obj->data.cylinder.radius = diameter / 2.0;
 	if (!assign_color(arr[5], &new_obj->data.cylinder.color, gc_list))
 		return (print_error("Cylinder color parse failed", *gc_list), false);
+	new_obj->data.cylinder.bottom_center = new_obj->data.cylinder.center;
+	new_obj->data.cylinder.top_center = vec_add(new_obj->data.cylinder.center,
+			vec_scale(new_obj->data.cylinder.direction,
+				new_obj->data.cylinder.height));
 	// new_obj->data.cylinder.specular = 0.0;
 	// new_obj->data.cylinder.reflective = 0.0;
 	connect_nodes(scene, &new_obj);

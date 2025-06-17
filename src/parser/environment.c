@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/12 12:36:05 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/17 16:23:40 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static bool	set_camera(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	(*scene)->camera.origin = position;
 	(*scene)->camera.direction = vec_normalize(ori_vec);
 	(*scene)->camera.fov = fov;
+	// Set the viewport based on the camera parameters
+	set_viewport(&(*scene)->camera.viewport, &(*scene)->camera);
 	return (true);
 }
 

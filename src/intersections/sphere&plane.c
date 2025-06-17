@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sphere.c                                           :+:      :+:    :+:   */
+/*   sphere&plane.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/05 16:38:41 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/17 19:05:01 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * If Δ == 0 → tangential hit (1 point)
  * If Δ > 0 → 2 intersections (we pick the closest t > 1)
  */
-static double	solve_quadratic(double a, double b, double c, double hit_t)
+double	solve_quadratic(double a, double b, double c, double hit_t)
 {
 	double	discriminant;
 	double	t0;
@@ -27,7 +27,7 @@ static double	solve_quadratic(double a, double b, double c, double hit_t)
 
 	discriminant = b * b - 4 * a * c;
 	if (discriminant < 0)
-		return (printf("No intersection (discriminant < 0)\n"), -1.0);
+		return (printf("No intersection found\n"), -1.0);
 	t0 = (-b - sqrt(discriminant)) / (2.0 * a);
 	t1 = (-b + sqrt(discriminant)) / (2.0 * a);
 	// Choose the closest positive intersection
@@ -36,10 +36,7 @@ static double	solve_quadratic(double a, double b, double c, double hit_t)
 	else if (t1 > 0.001)
 		t = t1;
 	else
-		return (printf("Both intersections behind ray origin\n"), -1.0);
-	// Check if we already have a closer hit
-	if (hit_t > 0 && hit_t < t)
-		return (-1.0);
+		return (printf("Both intersections are behind camera\n"), -1.0);
 	return (t);
 }
 
@@ -65,10 +62,10 @@ bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit)
 	oc = vec_sub(ray.origin, sphere.center);
 	a = vec_dot(ray.direction, ray.direction);
 	b = 2.0 * vec_dot(ray.direction, oc);
-	c = vec_dot(oc, oc) - (sphere.diam / 2.0) * (sphere.diam / 2.0);
+	c = vec_dot(oc, oc) - (sphere.diam * 0.5) * (sphere.diam * 0.5);
 	t = solve_quadratic(a, b, c, hit->t);
 	if (t < 0)
-		return (printf("No valid intersection found\n"), false);
+		return (false);
 	// Calculate intersection point and normal
 	hit->t = t;
 	hit->point = ray_point_at(ray, t);
@@ -77,4 +74,67 @@ bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit)
 	hit->specular = sphere.specular;
 	hit->reflective = sphere.reflective;
 	return (true);
+}
+
+/**
+ * Plane equation: dot(P - A, N) = 0
+ * Where:
+ * P = point on plane
+ * A = known point on plane
+ * N = plane normal (normalized)
+ *
+ * Ray equation: P(t) = O + t * D
+ * Substitute: dot((O + t*D) - A, N) = 0
+ * Expand: dot(O - A, N) + t * dot(D, N) = 0
+ * Solve for t: t = -dot(O - A, N) / dot(D, N)
+ */
+bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit)
+{
+	t_vec3	oa;
+	double	denom;
+	double	numerator;
+	double	t;
+
+	oa = vec_sub(ray.origin, plane.point);
+	numerator = vec_dot(oa, plane.normal);
+	denom = vec_dot(ray.direction, plane.normal);
+	// Ray is parallel to the plane, no intersection
+	if (fabs(denom) < 0.0001)
+		return (false);
+	t = -numerator / denom;
+	// Check if intersection is behind the ray origin or closer than existing hit
+	if (t < 0.001 || (hit->t > 0 && hit->t < t))
+		return (false);
+	hit->t = t;
+	hit->point = ray_point_at(ray, t);
+	if (denom < 0)
+		hit->normal = plane.normal;
+	else
+		hit->normal = vec_scale(plane.normal, -1); // Flip normal
+	hit->color = plane.color;
+	hit->specular = plane.specular;
+	hit->reflective = plane.reflective;
+	return (true);
+}
+
+
+bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit)
+{
+	bool	hit_any;
+	t_hit	temp_hit;
+
+	hit_any = false;
+	temp_hit.t = hit->t;
+	if (hit_sides(ray, cylinder, &temp_hit) && temp_hit.t < hit->t)
+	{
+		*hit = temp_hit;
+		hit_any = true;
+	}
+	temp_hit.t = hit->t;
+	if (hit_caps(ray, cylinder, &temp_hit) && temp_hit.t < hit->t)
+	{
+		*hit = temp_hit;
+		hit_any = true;
+	}
+	return (hit_any);
 }

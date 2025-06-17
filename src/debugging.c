@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debugging.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:23:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/13 10:52:24 by junjun           ###   ########.fr       */
+/*   Updated: 2025/06/17 17:17:31 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	print_cylinder(t_cylinder *cy)
 	printf("  - Cylinder\n");
 	print_vec3("Center", cy->center);
 	print_vec3("Direction", cy->direction);
-	printf("Diameter: %.2f | Height: %.2f\n", cy->diam, cy->height);
+	printf("Radius: %.2f | Height: %.2f\n", cy->radius, cy->height);
 	print_color("Color", cy->color);
 	printf("Specular: %.2f | Reflective: %.2f\n", cy->specular, cy->reflective);
 }

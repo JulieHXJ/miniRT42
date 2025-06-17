@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/13 10:52:16 by junjun           ###   ########.fr       */
+/*   Updated: 2025/06/17 19:02:41 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,9 @@ typedef struct s_gc_object
 typedef struct s_camera
 {
 	t_vec3				origin;
-	t_vec3 direction;
+	t_vec3				direction;
 	double				fov;
-	t_viewport viewport;
+	t_viewport			viewport;
 
 }						t_camera;
 
@@ -145,9 +145,11 @@ typedef struct s_cylinder
 {
 	t_vec3				center;
 	t_vec3				direction;
-	double				diam;
+	double				radius; // Diameter / 2
 	double				height;
 	t_color				color;
+	t_vec3				top_center;
+	t_vec3				bottom_center;
 	double specular;   // For bonus specular lighting
 	double reflective; // For bonus reflections
 }						t_cylinder;
@@ -177,7 +179,7 @@ typedef struct s_scene
 {
 	t_camera			camera;
 	t_amb_light			amb_light;
-	t_light *light;
+	t_light				*light;
 	t_object			*obj;
 	mlx_t				*mlx;
 	mlx_image_t			*img;
@@ -188,7 +190,7 @@ typedef struct s_scene
 /* FUNCTION PROTOTYPES                                                        */
 /* ************************************************************************** */
 
-//Utils
+// Utils
 void					free_array(char ***arr);
 size_t					array_size(char **arr);
 void					print_error(char *str, t_gc_object *gc_list);
@@ -217,11 +219,22 @@ bool					create_objects(char *line, t_scene **scene,
 bool					parser(char *fname, t_scene **scene,
 							t_gc_object **gc_list);
 
-// // Intersections
+// Intersections
+void					set_viewport(t_viewport *vp, t_camera *camera);
+t_ray					ray_to_vp(t_scene *scene, double x, double y);
+double					solve_quadratic(double a, double b, double c,
+							double hit_t);
+bool					hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit);
+bool					hit_plane(t_ray ray, t_plane plane, t_hit *hit);
+bool	hit_sides(t_ray ray, t_cylinder cylinder, t_hit *hit);
+bool	hit_caps(t_ray ray, t_cylinder cylinder, t_hit *hit);
+bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit);
 bool					if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 
+// Lighting
+t_color					calculate_lighting(t_scene *scene, t_hit *hit);
 
-// // Render
+// Render
 bool					render(t_scene *scene, t_gc_object **gc_list);
 
 // GC
@@ -231,11 +244,10 @@ void					gc_free(t_gc_object *gc_list);
 char					**gc_split(const char *s, char c,
 							t_gc_object **gc_list);
 
-//debugging
-void	print_object(t_object *obj);
-void	print_camera(t_camera *cam);
-void	print_ambient(t_amb_light *amb);
-void	print_light(t_light *light);
+// debugging
+void					print_object(t_object *obj);
+void					print_camera(t_camera *cam);
+void					print_ambient(t_amb_light *amb);
+void					print_light(t_light *light);
 
-							
 #endif
