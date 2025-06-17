@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/12 18:27:04 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/13 10:52:41 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-static void	viewpoint_init(t_viewpoint *vp)
+static void	viewport_init(t_viewport *vp)
 {
 	vp->fov = 60.0 * M_PI / 180.0;
 	vp->aspect_ratio = (double)WIN_WIDTH / (double)WIN_HEIGHT;
@@ -30,7 +30,7 @@ static void	camera_init(t_scene *scene)
 	scene->camera.origin = new_vector(0, 0, 0);
 	scene->camera.direction = vec_normalize(new_vector(0, -1, 0));
 	scene->camera.fov = 60.0;
-	viewpoint_init(&scene->camera.viewpoint);
+	viewport_init(&scene->camera.viewport);
 }
 
 /**

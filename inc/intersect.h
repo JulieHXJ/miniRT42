@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 22:42:17 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/12 18:31:31 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/13 10:51:44 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 // Forward declaration of t_object
 typedef struct s_object t_object;
 
-typedef struct s_viewpoint
+typedef struct s_viewport
 {
     double fov;
     double aspect_ratio;
@@ -32,7 +32,7 @@ typedef struct s_viewpoint
 	t_vec3 normal;
 	t_vec3 up_left_corner;
 
-}				t_viewpoint;
+}				t_viewport;
 
 typedef struct s_ray
 {

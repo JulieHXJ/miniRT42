@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 13:37:26 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/25 21:28:27 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/13 10:29:57 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "intersect.h"
+#include "minirt.h"
 
 /**
  * Plane equation: dot(P - A, N) = 0

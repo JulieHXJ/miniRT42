@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debugging.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:23:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/12 12:23:23 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/13 10:52:24 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	print_camera(t_camera *cam)
 	print_vec3("Origin", cam->origin);
 	print_vec3("Direction", cam->direction);
 	printf("FOV: %.2f\n", cam->fov);
-	printf("Viewport: %d x %d\n", cam->viewpoint_width, cam->viewpoint_height);
-	print_vec3("Screen Up", cam->screen_up);
-	print_vec3("Screen Right", cam->screen_right);
+	// printf("Viewport: %d x %d\n", cam->viewport_width, cam->viewport_height);
+	// print_vec3("Screen Up", cam->screen_up);
+	// print_vec3("Screen Right", cam->screen_right);
 }
 
 void	print_ambient(t_amb_light *amb)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/12 18:19:02 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/13 10:52:16 by junjun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct s_camera
 	t_vec3				origin;
 	t_vec3 direction;
 	double				fov;
-	t_viewpoint viewpoint;
+	t_viewport viewport;
 
 }						t_camera;
 
