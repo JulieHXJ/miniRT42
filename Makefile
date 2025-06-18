@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: junjun <junjun@student.42.fr>              +#+  +:+       +#+         #
+#    By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/06/13 10:11:58 by junjun           ###   ########.fr        #
+#    Updated: 2025/06/18 17:08:24 by xhuang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,24 @@ LIBFTDIR = ./lib/libft
 GNLDIR = ./lib/getnextline
 
 # remember to change
-SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDIR)/debugging.c \
-		$(SRCDIR)/parser/check_name.c $(SRCDIR)/parser/check_range.c $(SRCDIR)/parser/assign_param.c \
-		$(SRCDIR)/parser/environment.c $(SRCDIR)/parser/parse.c $(SRCDIR)/parser/objects.c \
-		$(SRCDIR)/vector/color.c $(SRCDIR)/vector/math1.c $(SRCDIR)/vector/math2.c \
-		$(SRCDIR)/render/render.c
+SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c \
+		$(SRCDIR)/debugging.c \
+		$(SRCDIR)/vector/color.c \
+		$(SRCDIR)/vector/math1.c \
+		$(SRCDIR)/vector/math2.c \
+		$(SRCDIR)/parser/check_name.c \
+		$(SRCDIR)/parser/check_range.c \
+		$(SRCDIR)/parser/assign_param.c \
+		$(SRCDIR)/parser/environment.c \
+		$(SRCDIR)/parser/parse.c \
+		$(SRCDIR)/parser/objects.c \
+		$(SRCDIR)/intersections/ray_trace.c \
+		$(SRCDIR)/intersections/sphere_plane.c \
+		$(SRCDIR)/intersections/cylinder.c \
+		$(SRCDIR)/render/render.c \
+		$(SRCDIR)/render/hook.c \
+		$(SRCDIR)/render/hook_utils.c \
+		# $(SRCDIR)/lighting/calculate.c \
 		 
 
 # OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))

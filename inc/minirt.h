@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/17 19:02:41 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/18 17:07:54 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ typedef struct s_cylinder
 {
 	t_vec3				center;
 	t_vec3				direction;
-	double				radius; // Diameter / 2
+	double radius; // Diameter / 2
 	double				height;
 	t_color				color;
 	t_vec3				top_center;
@@ -220,21 +220,30 @@ bool					parser(char *fname, t_scene **scene,
 							t_gc_object **gc_list);
 
 // Intersections
-void					set_viewport(t_viewport *vp, t_camera *camera);
+void	set_viewport(t_viewport *vp, t_camera *camera);
 t_ray					ray_to_vp(t_scene *scene, double x, double y);
-double					solve_quadratic(double a, double b, double c,
-							double hit_t);
+double					solve_quadratic(double a, double b, double c);
 bool					hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit);
 bool					hit_plane(t_ray ray, t_plane plane, t_hit *hit);
-bool	hit_sides(t_ray ray, t_cylinder cylinder, t_hit *hit);
-bool	hit_caps(t_ray ray, t_cylinder cylinder, t_hit *hit);
-bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit);
+bool					hit_sides(t_ray ray, t_cylinder cylinder, t_hit *hit);
+bool					hit_caps(t_ray ray, t_cylinder cylinder, t_hit *hit);
+bool					hit_cylinder(t_ray ray, t_cylinder cylinder,
+							t_hit *hit);
 bool					if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 
 // Lighting
 t_color					calculate_lighting(t_scene *scene, t_hit *hit);
 
 // Render
+void	translate_horizontal(t_scene *scene, double step);
+void	translate_vertical(t_scene *scene, double step);
+void	translate_forward(t_scene *scene, double step);
+void					key_hook(mlx_key_data_t keydata, void *param);
+void					mouse_hook(mouse_key_t button, action_t action,
+							modifier_key_t mods, void *param);
+void					hook_setup(mlx_t *mlx, mlx_keyfunc key_hook,
+							mlx_mousefunc mouse_hook, void *param);
+void					draw_img(t_scene *scene);
 bool					render(t_scene *scene, t_gc_object **gc_list);
 
 // GC

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 13:37:22 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/17 19:05:55 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/18 13:22:50 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ bool	hit_caps(t_ray ray, t_cylinder cylinder, t_hit *hit)
 {
 	t_hit	hit_record;
 	bool	hit_any;
-	t_vec3	dir;
 
 	hit_any = false;
 	hit_record.t = hit->t;
@@ -114,13 +113,10 @@ bool	hit_caps(t_ray ray, t_cylinder cylinder, t_hit *hit)
 // projection:
 t_vec3	proj_on_axis(t_vec3 point, t_vec3 axis)
 {
-	double	dot_product;
-
-	dot_product = vec_dot(point, axis);
-	return (vec_scale(axis, dot_product));
+	return (vec_scale(axis, vec_dot(point, axis)));
 }
 
-double	t_side(t_vec3 d_perp, t_vec3 x_perp, double r, double t)
+double	t_side(t_vec3 d_perp, t_vec3 x_perp, double r)
 {
 	double	a;
 	double	b;
@@ -129,7 +125,7 @@ double	t_side(t_vec3 d_perp, t_vec3 x_perp, double r, double t)
 	a = vec_dot(d_perp, d_perp);
 	b = 2.0 * vec_dot(d_perp, x_perp);
 	c = vec_dot(x_perp, x_perp) - r * r;
-	return (solve_quadratic(a, b, c, t));
+	return (solve_quadratic(a, b, c));
 }
 
 bool	hit_sides(t_ray ray, t_cylinder cylinder, t_hit *hit)
@@ -144,7 +140,7 @@ bool	hit_sides(t_ray ray, t_cylinder cylinder, t_hit *hit)
 	d_perp = vec_sub(ray.direction, proj_on_axis(ray.direction,
 				cylinder.direction));
 	x_perp = vec_sub(x, proj_on_axis(x, cylinder.direction));
-	t = t_side(d_perp, x_perp, cylinder.radius, hit->t);
+	t = t_side(d_perp, x_perp, cylinder.radius);
 	if (t < 0)
 		return (false);
 	point = ray_point_at(ray, t);

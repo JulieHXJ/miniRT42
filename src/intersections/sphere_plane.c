@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sphere&plane.c                                     :+:      :+:    :+:   */
+/*   sphere_plane.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/17 19:05:01 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/18 15:24:18 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * If Δ == 0 → tangential hit (1 point)
  * If Δ > 0 → 2 intersections (we pick the closest t > 1)
  */
-double	solve_quadratic(double a, double b, double c, double hit_t)
+double	solve_quadratic(double a, double b, double c)
 {
 	double	discriminant;
 	double	t0;
@@ -27,7 +27,7 @@ double	solve_quadratic(double a, double b, double c, double hit_t)
 
 	discriminant = b * b - 4 * a * c;
 	if (discriminant < 0)
-		return (printf("No intersection found\n"), -1.0);
+		return (-1.0);
 	t0 = (-b - sqrt(discriminant)) / (2.0 * a);
 	t1 = (-b + sqrt(discriminant)) / (2.0 * a);
 	// Choose the closest positive intersection
@@ -63,7 +63,7 @@ bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit)
 	a = vec_dot(ray.direction, ray.direction);
 	b = 2.0 * vec_dot(ray.direction, oc);
 	c = vec_dot(oc, oc) - (sphere.diam * 0.5) * (sphere.diam * 0.5);
-	t = solve_quadratic(a, b, c, hit->t);
+	t = solve_quadratic(a, b, c);
 	if (t < 0)
 		return (false);
 	// Calculate intersection point and normal

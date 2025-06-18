@@ -6,11 +6,41 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/17 16:23:40 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/18 17:05:41 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+/**
+ * @brief Set up the viewport based on the camera parameters
+ * @note The viewport is the scene that the camera can see.
+ */
+void	set_viewport(t_viewport *vp, t_camera *camera)
+{
+	t_vec3	world_up;
+	t_vec3	screen_center;
+	t_vec3	half_width;
+	t_vec3	half_height;
+
+	world_up = new_vector(0, 1, 0);
+	if (fabs(vec_dot(camera->direction, world_up)) > 0.999)
+		world_up = new_vector(0, 0, 1);
+	vp->fov = camera->fov * M_PI / 180.0;
+	vp->aspect_ratio = (double)WIN_WIDTH / (double)WIN_HEIGHT;
+	vp->view_height = 2.0 * tan(vp->fov / 2.0);
+	vp->view_width = vp->aspect_ratio * vp->view_height;
+	vp->normal = camera->direction;
+	vp->right = vec_normalize(vec_cross(world_up, vp->normal));
+	vp->up = vec_normalize(vec_cross(vp->normal, vp->right));
+	// Calculate the top-left corner of the viewport
+	screen_center = vec_add(camera->origin, vec_scale(camera->direction,
+				1.0));
+	half_width = vec_scale(vp->right, vp->view_width / 2.0);
+	half_height = vec_scale(vp->up, vp->view_height / 2.0);
+	vp->up_left_corner = vec_sub(vec_add(screen_center, half_height),
+			half_width);
+}
 
 /**
  * @brief Check number range and parse position, orientation and fov
@@ -35,7 +65,6 @@ static bool	set_camera(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	(*scene)->camera.origin = position;
 	(*scene)->camera.direction = vec_normalize(ori_vec);
 	(*scene)->camera.fov = fov;
-	// Set the viewport based on the camera parameters
 	set_viewport(&(*scene)->camera.viewport, &(*scene)->camera);
 	return (true);
 }

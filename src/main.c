@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junjun <junjun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/13 10:52:41 by junjun           ###   ########.fr       */
+/*   Updated: 2025/06/18 16:42:08 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	viewport_init(t_viewport *vp)
 {
 	vp->fov = 60.0 * M_PI / 180.0;
 	vp->aspect_ratio = (double)WIN_WIDTH / (double)WIN_HEIGHT;
-	vp->distance = 1.0; // Default distance from camera to viewport
+	// vp->focal_len = 1.0; // Default distance from camera to viewport
 	vp->view_width = 0.0;
 	vp->view_height = 0.0;
 	vp->up = new_vector(0, 0, 0);
@@ -70,12 +70,6 @@ int	main(int ac, char **av)
 		return (gc_free(gc_list), 1);
 	if (!parser(av[1], &scene, &gc_list))
 		return (gc_free(gc_list), 1);
-	// printf("============ Scene ============\n");
-	// print_camera(&scene->camera);
-	// print_ambient(&scene->amb_light);
-	// print_light(scene->light);
-	// print_object(scene->obj);
-	// printf("================================\n");
 	if (!render(scene, &gc_list))
 	{
 		if (scene->mlx)

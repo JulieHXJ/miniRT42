@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 22:42:17 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/17 16:12:03 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/18 16:42:23 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ typedef struct s_viewport
 {
     double fov;
     double aspect_ratio;
-	double distance; // Distance from camera to viewport
-    int view_width;  // Width of the viewport
-    int view_height; // Height of the viewport
+	// double focal_len; // Distance from camera to viewport
+    double view_width;  // Width of the viewport
+    double view_height; // Height of the viewport
     t_vec3 up;    // for rotating camera up and down
 	t_vec3 right; // for rotating camera left and right
 	t_vec3 normal;
