@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/18 15:26:54 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/22 16:01:36 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,16 @@ bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit)
 		obj = obj->next;
 	}
 	return (hit_obj);
+}
+
+bool	check_height(t_vec3 point, t_cylinder cylinder)
+{
+	t_vec3	axis;
+	t_vec3	from_bottom;
+	double	proj;
+
+	axis = vec_normalize(vec_sub(cylinder.top_center, cylinder.bottom_center));
+	from_bottom = vec_sub(point, cylinder.bottom_center);
+	proj = vec_dot(from_bottom, axis);
+	return (proj >= 0.0 && proj <= cylinder.height);
 }

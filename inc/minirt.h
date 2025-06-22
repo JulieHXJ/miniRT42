@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/18 17:07:54 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/22 14:53:57 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,7 @@ bool					assign_vector(char *coordinates, t_vec3 *v,
 bool					assign_normal(char *normal, t_vec3 *v,
 							t_gc_object **gc_list);
 bool					assign_positive_num(char *num, double *value);
+void	get_cylinder_ends(t_cylinder c);
 bool					create_environment(char *line, t_scene **scene,
 							t_gc_object **gc_list);
 bool					create_objects(char *line, t_scene **scene,
@@ -225,6 +226,7 @@ t_ray					ray_to_vp(t_scene *scene, double x, double y);
 double					solve_quadratic(double a, double b, double c);
 bool					hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit);
 bool					hit_plane(t_ray ray, t_plane plane, t_hit *hit);
+bool	check_height(t_vec3 point, t_cylinder cylinder);
 bool					hit_sides(t_ray ray, t_cylinder cylinder, t_hit *hit);
 bool					hit_caps(t_ray ray, t_cylinder cylinder, t_hit *hit);
 bool					hit_cylinder(t_ray ray, t_cylinder cylinder,
@@ -238,6 +240,9 @@ t_color					calculate_lighting(t_scene *scene, t_hit *hit);
 void	translate_horizontal(t_scene *scene, double step);
 void	translate_vertical(t_scene *scene, double step);
 void	translate_forward(t_scene *scene, double step);
+// t_vec3	rotate_x(t_vec3 direction, double angle);
+// t_vec3	rotate_z(t_vec3 direction, double angle);
+void	rotate_camera(t_scene *scene, double pitch, double yaw);
 void					key_hook(mlx_key_data_t keydata, void *param);
 void					mouse_hook(mouse_key_t button, action_t action,
 							modifier_key_t mods, void *param);

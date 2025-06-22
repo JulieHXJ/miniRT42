@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:30:39 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/12 13:04:52 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/20 15:26:44 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ bool	assign_normal(char *normal, t_vec3 *v, t_gc_object **gc_list)
 	if (!valid_normal(*v))
 		return (print_error("Normal vector out of range [-1.0, 1.0]", NULL),
 			false);
+	*v = vec_normalize(*v);
 	return (true);
 }
 

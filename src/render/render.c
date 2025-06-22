@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/18 17:04:33 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/22 16:40:05 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,26 @@ void	draw_img(t_scene *scene)
 	{
 		for (x = 0; x < scene->img->width; x++)
 		{
-			// Generate ray from camera through this pixel
+			// Generate ray from camera through the pixel
 			ray = ray_to_vp(scene, x, y);
-			
-				
 			if (if_hit(scene, ray, &hit))
 			{
-				color = hit.color;
+				// color = hit.color;
+				//pre_check; normal of hit  * L : (0, 1)
+				if (condition)
+				{
+					//part on surface lighted by the light
+					color = calculate_lighting(scene, &hit);
+				}
+				else
+				{
+					//shadow
+					color = scene->amb_light.color; // todo: set ambient color
+				}
+				
 			}
-				// color = calculate_lighting(scene, &hit);
 			else
-				color = (t_color){0, 0, 0}; // todo: set background color
+				color = scene->amb_light.color; // todo: set ambient color
 			// Set pixel color
 			mlx_put_pixel(scene->img, x, y, convert_color(color));
 		}

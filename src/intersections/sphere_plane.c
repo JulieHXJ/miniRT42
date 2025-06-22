@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/18 15:24:18 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/20 16:47:21 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ double	solve_quadratic(double a, double b, double c)
 	else if (t1 > 0.001)
 		t = t1;
 	else
-		return (printf("Both intersections are behind camera\n"), -1.0);
+		return (-1.0);
 	return (t);
 }
 

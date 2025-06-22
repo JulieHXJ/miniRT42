@@ -6,7 +6,7 @@
 #    By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/06/18 17:08:24 by xhuang           ###   ########.fr        #
+#    Updated: 2025/06/22 14:35:56 by xhuang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c \
 		$(SRCDIR)/intersections/cylinder.c \
 		$(SRCDIR)/render/render.c \
 		$(SRCDIR)/render/hook.c \
-		$(SRCDIR)/render/hook_utils.c \
+		$(SRCDIR)/render/hook_camera.c \
 		# $(SRCDIR)/lighting/calculate.c \
 		 
 

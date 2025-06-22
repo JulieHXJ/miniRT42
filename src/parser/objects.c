@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/17 18:15:39 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/20 16:36:46 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,9 @@ static bool	create_cylinder(t_scene **scene, char **arr, t_gc_object **gc_list)
 	new_obj->data.cylinder.radius = diameter / 2.0;
 	if (!assign_color(arr[5], &new_obj->data.cylinder.color, gc_list))
 		return (print_error("Cylinder color parse failed", *gc_list), false);
-	new_obj->data.cylinder.bottom_center = new_obj->data.cylinder.center;
-	new_obj->data.cylinder.top_center = vec_add(new_obj->data.cylinder.center,
-			vec_scale(new_obj->data.cylinder.direction,
-				new_obj->data.cylinder.height));
-	// new_obj->data.cylinder.specular = 0.0;
-	// new_obj->data.cylinder.reflective = 0.0;
+	get_cylinder_ends(new_obj->data.cylinder);
+	new_obj->data.cylinder.specular = 0.0;
+	new_obj->data.cylinder.reflective = 0.0;
 	connect_nodes(scene, &new_obj);
 	return (true);
 }
