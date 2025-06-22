@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 16:01:36 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/22 19:36:01 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,12 @@ static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 	}
 	else if (obj->type == CYLINDER)
 	{
+		// printf("Checking cylinder\n");
+		// printf("Cylinder center: (%f, %f, %f)\n", 
+		// 	obj->data.cylinder.center.x, obj->data.cylinder.center.y, obj->data.cylinder.center.z);
+		// printf("Cylinder direction: (%f, %f, %f)\n", 
+		// 	obj->data.cylinder.direction.x, obj->data.cylinder.direction.y, obj->data.cylinder.direction.z);
+		// printf("Cylinder radius: %f\n", obj->data.cylinder.radius);
 		if (hit_cylinder(ray, obj->data.cylinder, hit))
 		{
 			hit->object = obj;

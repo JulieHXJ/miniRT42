@@ -6,35 +6,34 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 13:37:22 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/20 16:58:10 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/22 19:43:15 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-/** 1. standard formula for infinite cylinder:
-|(P(t) - C) - proj_V(P(t) - C)|² = r²
-(point to the cylinder axis equals to the radius.)
-Get values of t:
-p(t) = O + t * D
-Let: X = O - C (vector from cylinder base to ray origin)
-a = dot(D - dot(D, V) * V, D - dot(D, V) * V)
-b = 2 * dot(D - dot(D, V) * V, X - dot(X, V) * V)
-c = dot(X - dot(X, V) * V, X - dot(X, V) * V) - r²
-a*t² + b*t + c = 0
+/** 
+ * Ray-Cylinder Intersection Implementation
+ * 
+ * Standard formula for infinite cylinder:
+ * |(P(t) - C) - proj_V(P(t) - C)|² = r²
+ * (point to the cylinder axis equals to the radius.)
+ * 
+ * P(t) = O + t * D (ray equation)
+ Where:
+ * X = O - C (vector from cylinder center to ray origin)
+ * D_perp = D - dot(D, V) * V (ray direction perpendicular to cylinder axis)
+ * X_perp = X - dot(X, V) * V (displacement perpendicular to cylinder axis)
+ * a = dot(D_perp, D_perp)
+ * b = 2 * dot(D_perp, X_perp)
+ * c = dot(X_perp, X_perp) - r²
+ * 
 2. limit the height:
 height = dot(P - C, V)
 height < 0 || height > cylinder.height*/
 
-/**
- * @brief Project a point onto an axis
- */
-// static t_vec3	proj_on_axis(t_vec3 point, t_vec3 axis)
-// {
-// 	return (vec_scale(axis, vec_dot(point, axis)));
-// }
 
-static double	get_t_side(t_vec3 x, t_vec3 v, t_cylinder cylinder)
+static double	get_t_side(t_vec3 x, t_vec3 ray_dir, t_cylinder cylinder)
 {
 	t_vec3	d_perp;
 	t_vec3	x_perp;
@@ -42,19 +41,18 @@ static double	get_t_side(t_vec3 x, t_vec3 v, t_cylinder cylinder)
 	double	b;
 	double	c;
 
-	// Project x onto the cylinder axis
-	d_perp = vec_sub(x, vec_scale(v, vec_dot(x, v)));
-	// Project ray direction onto the cylinder axis
-	x_perp = vec_sub(v, vec_scale(cylinder.direction, vec_dot(v,
-					cylinder.direction)));
+	//  D_perp = D - dot(D, V) * V Project x onto the cylinder axis
+	d_perp = vec_sub(ray_dir, vec_scale(cylinder.direction, vec_dot(ray_dir, cylinder.direction)));
+	
+	//  X_perp = X - dot(X, V) * V Project ray direction onto the cylinder axis
+	x_perp = vec_sub(x, vec_scale(cylinder.direction, vec_dot(x, cylinder.direction)));
 	a = vec_dot(d_perp, d_perp);
 	b = 2.0 * vec_dot(d_perp, x_perp);
 	c = vec_dot(x_perp, x_perp) - cylinder.radius * cylinder.radius;
 	return (solve_quadratic(a, b, c));
 }
 
-void	update_cy_hit(t_hit *hit, t_cylinder cylinder, t_vec3 point,
-		t_vec3 normal)
+static void	update_cy_hit(t_hit *hit, t_cylinder cylinder, t_vec3 point, t_vec3 normal)
 {
 	hit->point = point;
 	hit->normal = vec_normalize(normal);
@@ -63,83 +61,139 @@ void	update_cy_hit(t_hit *hit, t_cylinder cylinder, t_vec3 point,
 	hit->reflective = cylinder.reflective;
 }
 
-bool	hit_sides(t_ray ray, t_cylinder cylinder, t_hit *hit)
+static bool	check_sides(t_ray ray, t_cylinder cylinder, t_hit *hit)
 {
-	t_vec3	x;
 	double	t;
 	t_vec3	point;
 	t_vec3	normal;
+	t_vec3 axis_to_point;
+	double projection_length;
 
-	x = vec_sub(ray.origin, cylinder.center);
-	t = get_t_side(x, ray.direction, cylinder);
+	t = get_t_side(vec_sub(ray.origin, cylinder.bottom_center), ray.direction, cylinder);
 	if (t < 0.0 || t > hit->t)
 		return (false);
 	point = ray_point_at(ray, t);
+
 	// Check if the point is within the cylinder's height
 	if (!check_height(point, cylinder))
 		return (false);
-	normal = vec_sub(point, cylinder.bottom_center);
-	normal = vec_sub(normal, vec_scale(cylinder.direction, vec_dot(normal,
-					cylinder.direction)));
+
+	// Calculate normal: vector from cylinder axis to hit point
+	// First, find the closest point on the cylinder axis to the hit point
+	axis_to_point = vec_sub(point, cylinder.center);
+	projection_length = vec_dot(axis_to_point, cylinder.direction);
+		
+	// Normal is from axis point to hit point
+	normal = vec_sub(point, vec_add(cylinder.center, vec_scale(cylinder.direction, projection_length)));
 	update_cy_hit(hit, cylinder, point, normal);
 	hit->t = t;
 	return (true);
 }
 
-/**
- * if the point to cap center is less than the radius, hit
- */
-static bool	check_cap(t_ray ray, t_cylinder cylinder, t_vec3 center,
-		double *t_out)
+static bool	check_cap(t_ray ray, t_cylinder cylinder, t_vec3 center, double *t_out)
 {
-	t_vec3	dir;
 	t_vec3	point;
-	double	r;
 	double	denom;
 	double	t;
 
-	dir = cylinder.direction;
-	r = cylinder.radius;
-	denom = vec_dot(ray.direction, dir);
+	denom = vec_dot(ray.direction, cylinder.direction);
+	// ray is parallel to the cap plane
 	if (fabs(denom) < 1e-6)
 		return (false);
-	t = vec_dot(vec_sub(center, ray.origin), dir) / denom;
+	t = vec_dot(vec_sub(center, ray.origin), cylinder.direction) / denom;
 	if (t < 0)
 		return (false);
 	point = ray_point_at(ray, t);
-	if (vec_length(vec_sub(point, center)) > r)
+	if (vec_length(vec_sub(point, center)) > cylinder.radius)
 		return (false);
 	*t_out = t;
 	return (true);
 }
 
-/**
- * @brief Check if the ray hits the cylinder caps (top and bottom)
- * @note if both caps are hitten, the one with the smaller t will be returned.
- */
-bool	hit_caps(t_ray ray, t_cylinder cylinder, t_hit *hit)
+bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit)
 {
-	t_hit	hit_record;
 	bool	hit_any;
+	// bool hit_bottom;
+	// bool hit_top;
+	double t_bottom;
+	double t_top;
 
+
+	double t_min = hit->t;
+
+	// hit_bottom = false;
+	// hit_top = false;
 	hit_any = false;
-	hit_record.t = hit->t;
-	if (check_cap(ray, cylinder, cylinder.bottom_center, &hit_record.t)
-		&& hit_record.t < hit->t)
+
+	
+	t_hit hit_side;
+	hit_side.t = hit->t;
+	if (check_sides(ray, cylinder, &hit_side) && hit_side.t < hit->t)
 	{
-		update_cy_hit(hit, cylinder, ray_point_at(ray, hit_record.t),
-			vec_scale(cylinder.direction, -1));
-		hit->t = hit_record.t;
+		*hit = hit_side;
+		t_min = hit->t;
 		hit_any = true;
 	}
-	hit_record.t = hit->t;
-	if (check_cap(ray, cylinder, cylinder.top_center, &hit_record.t)
-		&& hit_record.t < hit->t)
+	
+	if (check_cap(ray, cylinder, cylinder.bottom_center, &t_bottom) && t_bottom < t_min && t_bottom > 0)
 	{
-		update_cy_hit(hit, cylinder, ray_point_at(ray, hit_record.t),
-			cylinder.direction);
-		hit->t = hit_record.t;
+		update_cy_hit(hit, cylinder, ray_point_at(ray, t_bottom), vec_scale(cylinder.direction, -1));
+		hit->t = t_bottom;
+		t_min = t_bottom;
 		hit_any = true;
 	}
+
+	if (check_cap(ray, cylinder, cylinder.top_center, &t_top) && t_top < t_min && t_top > 0)
+	{
+		update_cy_hit(hit, cylinder, ray_point_at(ray, t_top), cylinder.direction);
+		hit->t = t_top;
+		t_min = t_top;
+		hit_any = true;
+	}
+
+
+
+
+
+
+
+
+
+
+	
+	// if (check_cap(ray, cylinder, cylinder.bottom_center, &t_bottom) && t_bottom < hit->t && t_bottom > 0)
+	// 	hit_bottom = true;
+	// if (check_cap(ray, cylinder, cylinder.top_center, &t_top) && t_top < hit->t && t_top > 0)
+	// 	hit_top = true;
+	// if (hit_bottom && hit_top)
+	// {
+	// 	if (t_bottom < t_top)
+    //     {
+    //         update_cy_hit(hit, cylinder, ray_point_at(ray, t_bottom),
+    //                      vec_scale(cylinder.direction, -1));
+    //         hit->t = t_bottom;
+    //     }
+    //     else
+    //     {
+    //         update_cy_hit(hit, cylinder, ray_point_at(ray, t_top),
+    //                      cylinder.direction); // Top cap normal points up
+    //         hit->t = t_top;
+    //     }
+    //     hit_any = true; // Both caps hit, return the closest one
+	// }
+	// else if (hit_bottom)
+	// {
+	// 	update_cy_hit(hit, cylinder, ray_point_at(ray, t_bottom),
+    //                  vec_scale(cylinder.direction, -1));
+    //     hit->t = t_bottom;
+    //     hit_any = true;
+	// }
+	// else if (hit_top)
+	// {
+	// 	update_cy_hit(hit, cylinder, ray_point_at(ray, t_top),
+    //                  cylinder.direction);
+    //     hit->t = t_top;
+    //     hit_any = true;
+	// }
 	return (hit_any);
 }

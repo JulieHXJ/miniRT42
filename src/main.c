@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/20 14:41:47 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/22 19:37:54 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	viewport_init(t_viewport *vp)
 {
 	vp->fov = 60.0 * M_PI / 180.0;
 	vp->aspect_ratio = (double)WIN_WIDTH / (double)WIN_HEIGHT;
-	// vp->focal_len = 1.0; // Default distance from camera to viewport
 	vp->view_width = 0.0;
 	vp->view_height = 0.0;
 	vp->up = new_vector(0, 0, 0);
@@ -71,15 +70,6 @@ int	main(int ac, char **av)
 	if (!parser(av[1], &scene, &gc_list))
 		return (gc_free(gc_list), 1);
 	
-
-
-	printf("============ Scene ============\n");
-	print_camera(&scene->camera);
-	print_ambient(&scene->amb_light);
-	print_light(scene->light);
-	print_object(scene->obj);
-	printf("================================\n");
-
 	
 	if (!render(scene, &gc_list))
 	{

@@ -6,19 +6,19 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/20 16:35:58 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/22 19:34:02 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	get_cylinder_ends(t_cylinder c)
+void	get_cylinder_ends(t_cylinder *c)
 {
 	t_vec3	half;
 
-	half = vec_scale(c.direction, c.height * 0.5);
-	c.bottom_center = vec_sub(c.center, half);
-	c.top_center = vec_add(c.center, half);
+	half = vec_scale(c->direction, c->height * 0.5);
+	c->bottom_center = vec_sub(c->center, half);
+	c->top_center = vec_add(c->center, half);
 }
 
 

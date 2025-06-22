@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/20 16:47:21 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/22 17:58:49 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,24 +117,3 @@ bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit)
 	return (true);
 }
 
-
-bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit)
-{
-	bool	hit_any;
-	t_hit	temp_hit;
-
-	hit_any = false;
-	temp_hit.t = hit->t;
-	if (hit_sides(ray, cylinder, &temp_hit) && temp_hit.t < hit->t)
-	{
-		*hit = temp_hit;
-		hit_any = true;
-	}
-	temp_hit.t = hit->t;
-	if (hit_caps(ray, cylinder, &temp_hit) && temp_hit.t < hit->t)
-	{
-		*hit = temp_hit;
-		hit_any = true;
-	}
-	return (hit_any);
-}

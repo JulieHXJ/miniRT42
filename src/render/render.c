@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 16:40:05 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/22 19:38:59 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,22 @@ void	draw_img(t_scene *scene)
 			ray = ray_to_vp(scene, x, y);
 			if (if_hit(scene, ray, &hit))
 			{
-				// color = hit.color;
-				//pre_check; normal of hit  * L : (0, 1)
-				if (condition)
-				{
-					//part on surface lighted by the light
-					color = calculate_lighting(scene, &hit);
-				}
-				else
-				{
-					//shadow
-					color = scene->amb_light.color; // todo: set ambient color
-				}
+				color = hit.color;
+				// // pre_check; normal of hit  * L : (0, 1)
+				// if (condition)
+				// {
+				// 	//part on surface lighted by the light
+				// 	color = calculate_lighting(scene, &hit);
+				// }
+				// else
+				// {
+				// 	//shadow
+				// 	color = scene->amb_light.color; // todo: set ambient color
+				// }
 				
 			}
 			else
-				color = scene->amb_light.color; // todo: set ambient color
+				color = (t_color){0, 0, 0}; // todo: set ambient color
 			// Set pixel color
 			mlx_put_pixel(scene->img, x, y, convert_color(color));
 		}
@@ -74,7 +74,7 @@ bool	render(t_scene *scene, t_gc_object **gc_list)
 			false);
 	mlx_put_string(scene->mlx, "Hello, miniRT!", 10, 10);
 	// Set up hooks
-	hook_setup(scene->mlx, key_hook, mouse_hook, scene);
+	mlx_key_hook(scene->mlx, key_hook, scene);
 	mlx_loop(scene->mlx);
 	return (true);
 }
