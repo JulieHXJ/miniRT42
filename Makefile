@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+         #
+#    By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/06/22 14:35:56 by xhuang           ###   ########.fr        #
+#    Updated: 2025/06/22 19:20:00 by dchrysov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c \
 		$(SRCDIR)/render/render.c \
 		$(SRCDIR)/render/hook.c \
 		$(SRCDIR)/render/hook_camera.c \
-		# $(SRCDIR)/lighting/calculate.c \
+		$(SRCDIR)/lighting/calculate.c
 		 
 
 # OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))

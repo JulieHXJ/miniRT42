@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 13:37:03 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/18 13:04:30 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/22 18:43:55 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <math.h>
 # include <stdio.h>
-#include <stdint.h>
+# include <stdint.h>
 
 /**
  * @brief structure for vectors and points
@@ -48,7 +48,7 @@ t_vec3		vec3_reflect(t_vec3 v, t_vec3 normal);
 // t_color	new_color(int r, int g, int b);
 t_color		color_scale(t_color c, double factor);
 t_color		color_add(t_color c1, t_color c2);
-t_color color_blend(t_color c1, t_color c2, double ratio);
+t_color		color_blend(t_color c1, t_color c2, double ratio);
 uint32_t	convert_color(t_color color);
 
 #endif

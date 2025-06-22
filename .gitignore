@@ -1,1 +1,17 @@
-lib/MLX42
+.DS_Store
+.gitignore
+.vscode
+APPLYME.md
+
+# Ignore everything
+*
+
+# Allow all directories
+!*/# Allow C source and header files
+!*.c
+!*.h
+!.*
+!*.cub
+
+# Allow Makefile
+!Makefile

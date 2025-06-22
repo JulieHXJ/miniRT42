@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_trace.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 16:01:36 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/22 19:00:02 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 {
 	if (obj->type == SPHERE)
 	{
-		if (hit_sphere(ray, obj->data.sphere, hit))
+		if (hit_sphere(ray, *obj, hit))
 		{
 			hit->object = obj;
 			return (true);
@@ -67,7 +67,7 @@ static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 	}
 	else if (obj->type == PLANE)
 	{
-		if (hit_plane(ray, obj->data.plane, hit))
+		if (hit_plane(ray, *obj, hit))
 		{
 			hit->object = obj;
 			return (true);
@@ -75,7 +75,7 @@ static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 	}
 	else if (obj->type == CYLINDER)
 	{
-		if (hit_cylinder(ray, obj->data.cylinder, hit))
+		if (hit_cylinder(ray, *obj, hit))
 		{
 			hit->object = obj;
 			return (true);
@@ -93,7 +93,7 @@ static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit)
 {
 	t_object	*obj;
-	t_hit	hit_record;
+	t_hit		hit_record;
 	bool		hit_obj;
 
 	hit_obj = false;
@@ -101,7 +101,7 @@ bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit)
 	obj = scene->obj;
 	while (obj)
 	{
-		hit_record.t = INFINITY; // Reset hit record for each object
+		hit_record.t = INFINITY;
 		if (hit_object(obj, ray, &hit_record) && hit_record.t < hit->t)
 		{
 			*hit = hit_record;

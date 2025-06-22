@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_plane.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/20 16:47:21 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/22 19:11:06 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,28 +51,28 @@ double	solve_quadratic(double a, double b, double c)
  * c = dot(O - C, O - C) - r²
  * t = (-b ± sqrt(b² - 4ac)) / (2a)
  */
-bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit)
+bool	hit_sphere(t_ray ray, t_object obj, t_hit *hit)
 {
 	double	a;
 	double	b;
 	double	c;
 	double	t;
-
 	t_vec3 oc; // from center to origin(camera)
-	oc = vec_sub(ray.origin, sphere.center);
+
+	oc = vec_sub(ray.origin, obj.u_data.sphere.center);
 	a = vec_dot(ray.direction, ray.direction);
 	b = 2.0 * vec_dot(ray.direction, oc);
-	c = vec_dot(oc, oc) - (sphere.diam * 0.5) * (sphere.diam * 0.5);
+	c = vec_dot(oc, oc) - (obj.u_data.sphere.diam * 0.5) * (obj.u_data.sphere.diam * 0.5);
 	t = solve_quadratic(a, b, c);
 	if (t < 0)
 		return (false);
 	// Calculate intersection point and normal
 	hit->t = t;
 	hit->point = ray_point_at(ray, t);
-	hit->normal = vec_normalize(vec_sub(hit->point, sphere.center));
-	hit->color = sphere.color;
-	hit->specular = sphere.specular;
-	hit->reflective = sphere.reflective;
+	hit->normal = vec_normalize(vec_sub(hit->point, obj.u_data.sphere.center));
+	hit->color = obj.color;
+	hit->specular = obj.u_data.sphere.specular;
+	hit->reflective = obj.u_data.sphere.reflective;
 	return (true);
 }
 
@@ -88,13 +88,15 @@ bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit)
  * Expand: dot(O - A, N) + t * dot(D, N) = 0
  * Solve for t: t = -dot(O - A, N) / dot(D, N)
  */
-bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit)
+bool	hit_plane(t_ray ray, t_object obj, t_hit *hit)
 {
+	t_plane	plane;
 	t_vec3	oa;
 	double	denom;
 	double	numerator;
 	double	t;
 
+	plane = obj.u_data.plane;
 	oa = vec_sub(ray.origin, plane.point);
 	numerator = vec_dot(oa, plane.normal);
 	denom = vec_dot(ray.direction, plane.normal);
@@ -111,27 +113,27 @@ bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit)
 		hit->normal = plane.normal;
 	else
 		hit->normal = vec_scale(plane.normal, -1); // Flip normal
-	hit->color = plane.color;
+	hit->color = obj.color;
 	hit->specular = plane.specular;
 	hit->reflective = plane.reflective;
 	return (true);
 }
 
 
-bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit)
+bool	hit_cylinder(t_ray ray, t_object obj, t_hit *hit)
 {
-	bool	hit_any;
-	t_hit	temp_hit;
+	bool		hit_any;
+	t_hit		temp_hit;
 
 	hit_any = false;
 	temp_hit.t = hit->t;
-	if (hit_sides(ray, cylinder, &temp_hit) && temp_hit.t < hit->t)
+	if (hit_sides(ray, obj, &temp_hit) && temp_hit.t < hit->t)
 	{
 		*hit = temp_hit;
 		hit_any = true;
 	}
 	temp_hit.t = hit->t;
-	if (hit_caps(ray, cylinder, &temp_hit) && temp_hit.t < hit->t)
+	if (hit_caps(ray, obj, &temp_hit) && temp_hit.t < hit->t)
 	{
 		*hit = temp_hit;
 		hit_any = true;

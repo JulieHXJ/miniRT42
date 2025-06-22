@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 13:37:22 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/20 16:58:10 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/22 19:15:52 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,23 +53,27 @@ static double	get_t_side(t_vec3 x, t_vec3 v, t_cylinder cylinder)
 	return (solve_quadratic(a, b, c));
 }
 
-void	update_cy_hit(t_hit *hit, t_cylinder cylinder, t_vec3 point,
-		t_vec3 normal)
+void	update_cy_hit(t_hit *hit, t_object obj, t_vec3 point, t_vec3 normal)
 {
+	t_cylinder	cylinder;
+
+	cylinder = obj.u_data.cylinder;
 	hit->point = point;
 	hit->normal = vec_normalize(normal);
-	hit->color = cylinder.color;
+	hit->color = obj.color;
 	hit->specular = cylinder.specular;
 	hit->reflective = cylinder.reflective;
 }
 
-bool	hit_sides(t_ray ray, t_cylinder cylinder, t_hit *hit)
+bool	hit_sides(t_ray ray, t_object obj, t_hit *hit)
 {
-	t_vec3	x;
-	double	t;
-	t_vec3	point;
-	t_vec3	normal;
+	t_cylinder	cylinder;
+	t_vec3		x;
+	double		t;
+	t_vec3		point;
+	t_vec3		normal;
 
+	cylinder = obj.u_data.cylinder;
 	x = vec_sub(ray.origin, cylinder.center);
 	t = get_t_side(x, ray.direction, cylinder);
 	if (t < 0.0 || t > hit->t)
@@ -81,7 +85,7 @@ bool	hit_sides(t_ray ray, t_cylinder cylinder, t_hit *hit)
 	normal = vec_sub(point, cylinder.bottom_center);
 	normal = vec_sub(normal, vec_scale(cylinder.direction, vec_dot(normal,
 					cylinder.direction)));
-	update_cy_hit(hit, cylinder, point, normal);
+	update_cy_hit(hit, obj, point, normal);
 	hit->t = t;
 	return (true);
 }
@@ -117,17 +121,19 @@ static bool	check_cap(t_ray ray, t_cylinder cylinder, t_vec3 center,
  * @brief Check if the ray hits the cylinder caps (top and bottom)
  * @note if both caps are hitten, the one with the smaller t will be returned.
  */
-bool	hit_caps(t_ray ray, t_cylinder cylinder, t_hit *hit)
+bool	hit_caps(t_ray ray, t_object obj, t_hit *hit)
 {
-	t_hit	hit_record;
-	bool	hit_any;
+	t_cylinder	cylinder;
+	t_hit		hit_record;
+	bool		hit_any;
 
+	cylinder = obj.u_data.cylinder;
 	hit_any = false;
 	hit_record.t = hit->t;
 	if (check_cap(ray, cylinder, cylinder.bottom_center, &hit_record.t)
 		&& hit_record.t < hit->t)
 	{
-		update_cy_hit(hit, cylinder, ray_point_at(ray, hit_record.t),
+		update_cy_hit(hit, obj, ray_point_at(ray, hit_record.t),
 			vec_scale(cylinder.direction, -1));
 		hit->t = hit_record.t;
 		hit_any = true;
@@ -136,7 +142,7 @@ bool	hit_caps(t_ray ray, t_cylinder cylinder, t_hit *hit)
 	if (check_cap(ray, cylinder, cylinder.top_center, &hit_record.t)
 		&& hit_record.t < hit->t)
 	{
-		update_cy_hit(hit, cylinder, ray_point_at(ray, hit_record.t),
+		update_cy_hit(hit, obj, ray_point_at(ray, hit_record.t),
 			cylinder.direction);
 		hit->t = hit_record.t;
 		hit_any = true;
