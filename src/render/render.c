@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 18:03:01 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/22 20:24:37 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ void	draw_img(t_scene *scene)
 			ray = ray_to_vp(scene, x, y);
 			if (if_hit(scene, ray, &hit))
 			{
-				if (is_colored_pixel(*scene, hit))
-					color = color_pixel(scene, &hit);
-				else
-					color = scene->amb_light.color;
+				// if (is_colored_pixel(*scene, hit))
+				// 	color = color_pixel(scene, &hit);
+				// else
+				// 	color = scene->amb_light.color;
+				color = hit.object->color;
 			}
 			else
 				color = scene->amb_light.color;
