@@ -6,15 +6,15 @@
 #    By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/06/22 19:20:00 by dchrysov         ###   ########.fr        #
+#    Updated: 2025/06/23 10:39:03 by dchrysov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 MAKEFLAGS += -s
 CFLAGS = -Wall -Wextra -Werror -Wunreachable-code -g -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I./inc
-# MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw -pthread
-MLX_FLAGS = -ldl -lglfw -pthread
+MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw -pthread
+# MLX_FLAGS = -ldl -lglfw -pthread
 
 OBJDIR = ./obj
 SRCDIR = ./src

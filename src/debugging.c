@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:23:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/22 19:04:34 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/23 12:32:37 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	print_sphere(t_object obj)
 	print_vec3("Center", sp.center);
 	printf("Diameter: %.2f\n", sp.diam);
 	print_color("Color", obj.color);
-	printf("Specular: %.2f | Reflective: %.2f\n", sp.specular, sp.reflective);
+	// printf("Specular: %.2f | Reflective: %.2f\n", sp.specular, sp.reflective);
 }
 
 static void	print_plane(t_object obj)
@@ -43,8 +43,9 @@ static void	print_plane(t_object obj)
 	print_vec3("Point", pl.point);
 	print_vec3("Normal", pl.normal);
 	print_color("Color", obj.color);
-	printf("Specular: %.2f | Reflective: %.2f\n", pl.specular, pl.reflective);
+	// printf("Specular: %.2f | Reflective: %.2f\n", pl.specular, pl.reflective);
 }
+
 static void	print_cylinder(t_object obj)
 {
 	t_cylinder	cy;
@@ -55,7 +56,7 @@ static void	print_cylinder(t_object obj)
 	print_vec3("Direction", cy.direction);
 	printf("Radius: %.2f | Height: %.2f\n", cy.radius, cy.height);
 	print_color("Color", obj.color);
-	printf("Specular: %.2f | Reflective: %.2f\n", cy.specular, cy.reflective);
+	// printf("Specular: %.2f | Reflective: %.2f\n", cy.specular, cy.reflective);
 }
 
 void	print_camera(t_camera *cam)

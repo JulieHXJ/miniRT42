@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 19:19:27 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/23 15:32:38 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef enum e_obj_type
 	CONE,
 	HYPERBOLOID,
 	PARABOLOID
-}						t_obj_type;
+}	t_obj_type;
 
 /* ************************************************************************** */
 /* CORE MATH STRUCTURES                                                       */
@@ -80,12 +80,11 @@ typedef struct s_gc_object
  */
 typedef struct s_camera
 {
-	t_vec3				origin;
-	t_vec3				direction;
-	double				fov;
-	t_viewport			viewport;
-
-}						t_camera;
+	t_vec3		origin;
+	t_vec3		direction;
+	double		fov;
+	t_viewport	viewport;
+}				t_camera;
 
 /**
  * @note ratio range: [0.0, 1.0]
@@ -93,19 +92,19 @@ typedef struct s_camera
  */
 typedef struct s_amb_light
 {
-	double				ratio;
-	t_color				color;
-}						t_amb_light;
+	double	ratio;
+	t_color	color;
+}			t_amb_light;
 
 /**
  * @note brightness range: [0.0, 1.0]
  */
 typedef struct s_light
 {
-	t_vec3				position;
-	double				ratio;
-	t_color				color;
-}						t_light;
+	t_vec3	position;
+	double	ratio;
+	t_color	color;
+}			t_light;
 
 /* ************************************************************************** */
 /* OBJECTS                                                                    */
@@ -128,11 +127,11 @@ typedef struct s_sphere
  */
 typedef struct s_plane
 {
-	t_vec3				point;
-	t_vec3				normal;
-	double specular;   // For bonus specular lighting
-	double reflective; // For bonus reflections
-}						t_plane;
+	t_vec3	point;
+	t_vec3	normal;
+	double	specular;   // For bonus specular lighting
+	double	reflective; // For bonus reflections
+}			t_plane;
 
 /**
  * @note normal range: [-1.0, 1.0]
@@ -140,14 +139,14 @@ typedef struct s_plane
  */
 typedef struct s_cylinder
 {
-	t_vec3				center;
-	t_vec3				direction;
-	double radius; // Diameter / 2
-	double				height;
-	t_vec3				top_center;
-	t_vec3				bottom_center;
-	double specular;   // For bonus specular lighting
-	double reflective; // For bonus reflections
+	t_vec3	center;
+	t_vec3	direction;
+	double	radius; // Diameter / 2
+	double	height;
+	t_vec3	top_center;
+	t_vec3	bottom_center;
+	double 	specular;   // For bonus specular lighting
+	double	reflective; // For bonus reflections
 }						t_cylinder;
 
 /* ************************************************************************** */
@@ -156,17 +155,17 @@ typedef struct s_cylinder
 
 typedef struct s_object
 {
-	t_obj_type			type;
+	t_obj_type		type;
 	union
 	{
-		t_sphere		sphere;
-		t_plane			plane;
-		t_cylinder		cylinder;
+		t_sphere	sphere;
+		t_plane		plane;
+		t_cylinder	cylinder;
 	}	u_data;
-	t_color				color;
-	struct s_object		*next;
-	struct s_object		*previous;
-}						t_object;
+	t_color			color;
+	struct s_object	*next;
+	struct s_object	*previous;
+}					t_object;
 
 /* ************************************************************************** */
 /* SCENE STRUCTURE                                                            */
@@ -174,14 +173,13 @@ typedef struct s_object
 
 typedef struct s_scene
 {
-	t_camera			camera;
-	t_amb_light			amb_light;
-	t_light				*light;
-	t_object			*obj;
-	mlx_t				*mlx;
-	mlx_image_t			*img;
-
-}						t_scene;
+	t_camera	camera;
+	t_amb_light	amb_light;
+	t_light		*light;
+	t_object	*obj;
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+}				t_scene;
 
 /* ************************************************************************** */
 /* FUNCTION PROTOTYPES                                                        */
@@ -230,8 +228,9 @@ bool	hit_cylinder(t_ray ray, t_object obj, t_hit *hit);
 bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 
 // Lighting
-bool	is_colored_pixel(t_scene scene, t_hit hit);
-t_color	color_pixel(t_scene *scene, t_hit *hit);
+bool	is_lighted_pixel(t_scene scene, t_hit hit);
+t_color	lighted_pixel(t_scene scene, t_hit hit);
+t_color	unlighted_pixel(t_scene scene, t_hit hit);
 
 // Render
 void	translate_horizontal(t_scene *scene, double step);

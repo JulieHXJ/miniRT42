@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 20:24:37 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:01:19 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,17 @@ void	draw_img(t_scene *scene)
 			ray = ray_to_vp(scene, x, y);
 			if (if_hit(scene, ray, &hit))
 			{
-				// if (is_colored_pixel(*scene, hit))
-				// 	color = color_pixel(scene, &hit);
-				// else
-				// 	color = scene->amb_light.color;
-				color = hit.object->color;
+				if (is_lighted_pixel(*scene, hit))
+					color = lighted_pixel(*scene, hit);
+				else
+					color = unlighted_pixel(*scene, hit);
 			}
 			else
-				color = scene->amb_light.color;
+			{
+				color.r = 0 + scene->amb_light.color.r * scene->amb_light.ratio;
+				color.g = 0 + scene->amb_light.color.g * scene->amb_light.ratio;
+				color.b = 0 + scene->amb_light.color.b * scene->amb_light.ratio;
+			}
 			mlx_put_pixel(scene->img, x, y, convert_color(color));
 		}
 	}

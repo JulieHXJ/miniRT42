@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/20 14:41:47 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/23 12:42:36 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ int	main(int ac, char **av)
 		return (gc_free(gc_list), 1);
 	if (!parser(av[1], &scene, &gc_list))
 		return (gc_free(gc_list), 1);
-	
-
 
 	printf("============ Scene ============\n");
 	print_camera(&scene->camera);
@@ -80,7 +78,6 @@ int	main(int ac, char **av)
 	print_object(scene->obj);
 	printf("================================\n");
 
-	
 	if (!render(scene, &gc_list))
 	{
 		if (scene->mlx)

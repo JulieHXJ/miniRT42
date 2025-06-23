@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:22:35 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/17 14:19:32 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/23 16:05:06 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,5 @@ t_color	color_blend(t_color c1, t_color c2, double ratio)
  */
 uint32_t	convert_color(t_color color)
 {
-	int	r;
-	int	g;
-	int	b;
-
-	r = (int)(fmin(color.r, 1.0) * 255.999);
-	g = (int)(fmin(color.g, 1.0) * 255.999);
-	b = (int)(fmin(color.b, 1.0) * 255.999);
-	return (r << 24 | g << 16 | b << 8 | 0xFF);
+	return (color.r << 24 | color.g << 16 | color.b << 8 | 0xFF);
 }
