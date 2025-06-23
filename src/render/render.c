@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/23 17:01:19 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:20:41 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@ void	draw_img(t_scene *scene)
 	t_hit		hit;
 	t_color		color;
 
-	for (y = 0; y < scene->img->height; y++)
+	y = -1;
+	while (++y < scene->img->height)
 	{
-		for (x = 0; x < scene->img->width; x++)
+		x = -1;
+		while (++x < scene->img->width)
 		{
 			ray = ray_to_vp(scene, x, y);
 			if (if_hit(scene, ray, &hit))
