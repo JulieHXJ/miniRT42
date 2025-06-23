@@ -6,7 +6,7 @@
 #    By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/06/23 10:39:03 by dchrysov         ###   ########.fr        #
+#    Updated: 2025/06/23 17:30:04 by dchrysov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,8 @@ SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c \
 		$(SRCDIR)/render/render.c \
 		$(SRCDIR)/render/hook.c \
 		$(SRCDIR)/render/hook_camera.c \
-		$(SRCDIR)/lighting/calculate.c
+		$(SRCDIR)/lighting/calculate.c \
+		$(SRCDIR)/lighting/calculate2.c
 		 
 
 # OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))

@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/23 15:32:38 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:29:25 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,6 +231,7 @@ bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 bool	is_lighted_pixel(t_scene scene, t_hit hit);
 t_color	lighted_pixel(t_scene scene, t_hit hit);
 t_color	unlighted_pixel(t_scene scene, t_hit hit);
+t_color	ambient_pixel(t_scene scene);
 
 // Render
 void	translate_horizontal(t_scene *scene, double step);

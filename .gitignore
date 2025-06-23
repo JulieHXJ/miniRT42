@@ -7,11 +7,11 @@ APPLYME.md
 *
 
 # Allow all directories
-!*/# Allow C source and header files
+!*/
 !*.c
 !*.h
 !.*
-!*.cub
+!*.rt
 
 # Allow Makefile
 !Makefile
