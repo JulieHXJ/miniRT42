@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/23 18:18:24 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/24 12:58:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_amb_light
  */
 typedef struct s_light
 {
+	int		id;
 	t_vec3	position;
 	double	ratio;
 	t_color	color;
@@ -155,6 +156,7 @@ typedef struct s_cylinder
 
 typedef struct s_object
 {
+	int				id;
 	t_obj_type		type;
 	union
 	{
@@ -200,20 +202,14 @@ bool	valid_ratio(double ratio);
 bool	valid_normal(t_vec3 normal);
 
 // Parser
-bool	assign_color(char *color, t_color *c,
-			t_gc_object **gc_list);
-bool	assign_vector(char *coordinates, t_vec3 *v,
-			t_gc_object **gc_list);
-bool	assign_normal(char *normal, t_vec3 *v,
-			t_gc_object **gc_list);
+bool	assign_color(char *color, t_color *c, t_gc_object **gc_list);
+bool	assign_vector(char *coordinates, t_vec3 *v,	t_gc_object **gc_list);
+bool	assign_normal(char *normal, t_vec3 *v, t_gc_object **gc_list);
 bool	assign_positive_num(char *num, double *value);
 void	get_cylinder_ends(t_cylinder c);
-bool	create_environment(char *line, t_scene **scene,
-			t_gc_object **gc_list);
-bool	create_objects(char *line, t_scene **scene,
-			t_gc_object **gc_list);
-bool	parser(char *fname, t_scene **scene,
-			t_gc_object **gc_list);
+bool	create_environment(char *line, t_scene **scene, t_gc_object **gc_list);
+bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list);
+bool	parser(char *fname, t_scene **scene, t_gc_object **gc_list);
 
 // Intersections
 void	set_viewport(t_viewport *vp, t_camera *camera);
@@ -231,7 +227,7 @@ bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 bool	is_lighted_pixel(t_scene scene, t_hit hit);
 t_color	lighted_pixel(t_scene scene, t_hit hit);
 t_color	unlighted_pixel(t_scene scene, t_hit hit);
-t_color	ambient_pixel(uint32_t x, uint32_t y);
+t_color	checkered_background(uint32_t x, uint32_t y);
 
 // Render
 void	translate_horizontal(t_scene *scene, double step);

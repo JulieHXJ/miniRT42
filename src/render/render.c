@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/23 18:18:46 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/24 12:21:34 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	draw_img(t_scene *scene)
 					color = unlighted_pixel(*scene, hit);
 			}
 			else
-				color = ambient_pixel(x, y);
+				color = checkered_background(x, y);
 			mlx_put_pixel(scene->img, x, y, convert_color(color));
 		}
 	}

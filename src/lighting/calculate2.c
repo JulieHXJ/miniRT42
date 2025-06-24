@@ -6,14 +6,14 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:26:36 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/06/23 18:17:58 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/24 13:29:16 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #define TILE_SIZE 100
 
-t_color	ambient_pixel(uint32_t x, uint32_t y)
+t_color	checkered_background(uint32_t x, uint32_t y)
 {
 	int	tile_x;
 	int	tile_y;
