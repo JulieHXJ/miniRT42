@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:10:44 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/23 17:21:35 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/24 15:38:35 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,40 @@ static float	fallout(float base_intensity, float distance)
 	return (base_intensity / denominator);
 }
 
-/**
- * @brief Restricts the value between the range [0, 255].
- */
-static int	clamp_color(float value)
+static t_color	indirect_light(t_amb_light ambient)
 {
-	if (value < 0.0f)
-		return (0);
-	if (value > 255.0f)
-		return (255);
-	return ((int)(value + 0.5f));
+	return (color_scale(ambient.color, ambient.ratio));
+}
+
+static t_color	direct_light(t_light light, t_vec3 light_vec, t_hit hit)
+{
+	float	angle;
+	float	diffuse_fallout;
+	t_color	diffuse_color;
+	t_color	result;
+
+	angle = fmaxf(vec_dot(hit.normal, light_vec), 0.0f);
+	diffuse_fallout = fallout(light.ratio, vec_length(light_vec));
+	diffuse_color = color_scale(light.color, light.ratio);
+	result = color_scale(diffuse_color, angle * diffuse_fallout);
+	return (result);
+}
+
+t_color	lighted_pixel(t_scene scene, t_hit hit)
+{
+	t_vec3		l;
+	t_light		light;
+	t_amb_light	ambient;
+	t_object	obj;
+	t_color		result;
+
+	light = *scene.light;
+	l = vec_sub(light.position, hit.point);
+	ambient = scene.amb_light;
+	obj.color = hit.object->color;
+	// obj.color = color_scale(hit.object->color, 1 / 255.0f);
+	result = color_add(indirect_light(ambient), direct_light(light, l, hit));
+	return (clamp_color(color_mult(obj.color, result)));
 }
 
 /**
@@ -55,48 +79,4 @@ bool	is_lighted_pixel(t_scene scene, t_hit hit)
 	if (angle >= 0 && angle <= 1)
 		return (true);
 	return (false);
-}
-
-t_color	lighted_pixel(t_scene scene, t_hit hit)
-{
-	t_vec3		light_v;
-	t_light		light;
-	t_amb_light	ambient;
-	t_color		obj_clr;
-	t_color		result;
-
-	light_v = vec_sub(scene.light->position, hit.point);
-	ambient = scene.amb_light;
-	light = *scene.light;
-	obj_clr = hit.object->color;
-	result.r = clamp_color(obj_clr.r / 255.0f * (ambient.color.r * ambient.ratio
-				+ light.color.r * light.ratio
-				* fallout(light.ratio, vec_length(light_v))
-				* fmaxf(vec_dot(hit.normal, light_v), 0.0f)));
-	result.g = clamp_color(obj_clr.g / 255.0f * (ambient.color.g * ambient.ratio
-				+ light.color.g * light.ratio
-				* fallout(light.ratio, vec_length(light_v))
-				* fmaxf(vec_dot(hit.normal, light_v), 0.0f)));
-	result.b = clamp_color(obj_clr.b / 255.0f * (ambient.color.b * ambient.ratio
-				+ light.color.b * light.ratio
-				* fallout(light.ratio, vec_length(light_v))
-				* fmaxf(vec_dot(hit.normal, light_v), 0.0f)));
-	return (result);
-}
-
-t_color	unlighted_pixel(t_scene scene, t_hit hit)
-{
-	t_amb_light	ambient;
-	t_color		obj_clr;
-	t_color		result;
-
-	ambient = scene.amb_light;
-	obj_clr = hit.object->color;
-	obj_clr.r *= (ambient.color.r * ambient.ratio) / 255.0f;
-	obj_clr.g *= (ambient.color.g * ambient.ratio) / 255.0f;
-	obj_clr.b *= (ambient.color.b * ambient.ratio) / 255.0f;
-	result.r = clamp_color(obj_clr.r);
-	result.g = clamp_color(obj_clr.g);
-	result.b = clamp_color(obj_clr.b);
-	return (result);
 }
