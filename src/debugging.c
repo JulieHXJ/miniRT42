@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:23:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/23 12:32:37 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/24 15:51:30 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	print_sphere(t_object obj)
 
 	sp = obj.u_data.sphere;
 	printf("  - Sphere\n");
+	printf("id: %d\n", obj.id);
 	print_vec3("Center", sp.center);
 	printf("Diameter: %.2f\n", sp.diam);
 	print_color("Color", obj.color);
@@ -40,6 +41,7 @@ static void	print_plane(t_object obj)
 
 	pl = obj.u_data.plane;
 	printf("  - Plane\n");
+	printf("id: %d\n", obj.id);
 	print_vec3("Point", pl.point);
 	print_vec3("Normal", pl.normal);
 	print_color("Color", obj.color);
@@ -52,6 +54,7 @@ static void	print_cylinder(t_object obj)
 
 	cy = obj.u_data.cylinder;
 	printf("  - Cylinder\n");
+	printf("id: %d\n", obj.id);
 	print_vec3("Center", cy.center);
 	print_vec3("Direction", cy.direction);
 	printf("Radius: %.2f | Height: %.2f\n", cy.radius, cy.height);

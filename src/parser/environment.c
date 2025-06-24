@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/18 17:05:41 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/24 15:43:07 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,13 @@ static bool	set_amb_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
  */
 static bool	set_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 {
-	double	brightness;
-	t_vec3	pos;
-	t_color	col;
+	static int	i = 0;
+	double		brightness;
+	t_vec3		pos;
+	t_color		col;
 
-	// if light exist then error
 	if ((*scene)->light != NULL)
-	return (print_error("Multiple lights are not allowed", *gc_list), false);
-
+		return (print_error("Light creation failed", *gc_list), false);
 	brightness = ft_atod(tokens[2]);
 	pos = new_vector(0, 0, 0);
 	col = (t_color){0, 0, 0};
@@ -113,6 +112,7 @@ static bool	set_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	(*scene)->light = gc_alloc(sizeof(t_light), gc_list);
 	if (!(*scene)->light)
 		return (print_error("Light allocatione failed", *gc_list), false);
+	(*scene)->light->id = i;
 	(*scene)->light->position = pos;
 	(*scene)->light->color = col;
 	(*scene)->light->ratio = brightness;

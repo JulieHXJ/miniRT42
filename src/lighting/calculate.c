@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:10:44 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/24 15:38:35 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/24 15:46:33 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ t_color	lighted_pixel(t_scene scene, t_hit hit)
 	l = vec_sub(light.position, hit.point);
 	ambient = scene.amb_light;
 	obj.color = hit.object->color;
-	// obj.color = color_scale(hit.object->color, 1 / 255.0f);
 	result = color_add(indirect_light(ambient), direct_light(light, l, hit));
 	return (clamp_color(color_mult(obj.color, result)));
 }
