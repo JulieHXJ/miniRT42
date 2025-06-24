@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 19:38:59 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/24 14:18:13 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,20 @@
 void	draw_img(t_scene *scene)
 {
 	uint32_t	x;
-	uint32_t		y;
-	t_ray	ray;
-	t_hit	hit;
-	t_color	color;
+	uint32_t	y;
+	t_ray		ray;
+	t_hit		hit;
+	t_color		color;
 
-	// For each pixel in the viewport
+	// need to change to while loop
 	for (y = 0; y < scene->img->height; y++)
 	{
 		for (x = 0; x < scene->img->width; x++)
 		{
-			// Generate ray from camera through the pixel
 			ray = ray_to_vp(scene, x, y);
 			if (if_hit(scene, ray, &hit))
 			{
 				color = hit.color;
-				// // pre_check; normal of hit  * L : (0, 1)
 				// if (condition)
 				// {
 				// 	//part on surface lighted by the light
@@ -44,7 +42,6 @@ void	draw_img(t_scene *scene)
 				// 	//shadow
 				// 	color = scene->amb_light.color; // todo: set ambient color
 				// }
-				
 			}
 			else
 				color = (t_color){0, 0, 0}; // todo: set ambient color
@@ -66,14 +63,12 @@ bool	render(t_scene *scene, t_gc_object **gc_list)
 		mlx_close_window(scene->mlx);
 		return (print_error("Failed to create image", *gc_list), false);
 	}
-	// draw the image here
-	draw_img(scene);
 
+	draw_img(scene);
 	if (mlx_image_to_window(scene->mlx, scene->img, 0, 0) < 0)
 		return (print_error("Failed to attach image to window", *gc_list),
 			false);
 	mlx_put_string(scene->mlx, "Hello, miniRT!", 10, 10);
-	// Set up hooks
 	mlx_key_hook(scene->mlx, key_hook, scene);
 	mlx_loop(scene->mlx);
 	return (true);
