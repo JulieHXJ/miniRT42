@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "vector.h": "c",
-        "algorithm": "c",
-        "intersect.h": "c",
-        "fcntl.h": "c",
-        "minirt.h": "c"
-    }
-}

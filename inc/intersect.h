@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 22:42:17 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 14:08:37 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 15:06:05 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,13 @@ typedef struct s_ray
 // we call the visible interscet point a "hit"
 typedef struct s_hit
 {
-	double				t;
-	t_vec3				point;
-	t_vec3				normal;
-	t_object			*object;
+	double t;         // Distance from camera to hit point
+	t_vec3 point;     // closest hit point
+	t_vec3 normal;    // Surface normal at intersection
+	t_object *object; // Pointer to the hit object
+	// t_color	color;			// -------> Why since there already is a pointer to the object?
+}			t_hit;
 
-	t_color				color;
-	double				specular;
-	double				reflective;
-
-}						t_hit;
 
 t_vec3					ray_point_at(t_ray ray, double t);
 #endif

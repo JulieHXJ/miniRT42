@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_plane.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 17:58:49 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 15:16:00 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit)
 	double	b;
 	double	c;
 	double	t;
-
 	t_vec3 oc; // from center to origin(camera)
+
 	oc = vec_sub(ray.origin, sphere.center);
 	a = vec_dot(ray.direction, ray.direction);
 	b = 2.0 * vec_dot(ray.direction, oc);
@@ -67,12 +67,12 @@ bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit)
 	if (t < 0)
 		return (false);
 	// Calculate intersection point and normal
-	hit->t = t;
-	hit->point = ray_point_at(ray, t);
-	hit->normal = vec_normalize(vec_sub(hit->point, sphere.center));
-	hit->color = sphere.color;
-	hit->specular = sphere.specular;
-	hit->reflective = sphere.reflective;
+	if (hit)
+	{
+		hit->t = t;
+		hit->point = ray_point_at(ray, t);
+		hit->normal = vec_normal(vec_sub(hit->point, sphere.center));
+	}
 	return (true);
 }
 
@@ -111,9 +111,5 @@ bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit)
 		hit->normal = plane.normal;
 	else
 		hit->normal = vec_scale(plane.normal, -1); // Flip normal
-	hit->color = plane.color;
-	hit->specular = plane.specular;
-	hit->reflective = plane.reflective;
 	return (true);
 }
-

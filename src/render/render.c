@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 14:18:13 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 15:07:14 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,22 @@ void	draw_img(t_scene *scene)
 	t_hit		hit;
 	t_color		color;
 
-	// need to change to while loop
-	for (y = 0; y < scene->img->height; y++)
+	y = -1;
+	while (++y < scene->img->height)
 	{
-		for (x = 0; x < scene->img->width; x++)
+		x = -1;
+		while (++x < scene->img->width)
 		{
 			ray = ray_to_vp(scene, x, y);
 			if (if_hit(scene, ray, &hit))
 			{
-				color = hit.color;
-				// if (condition)
-				// {
-				// 	//part on surface lighted by the light
-				// 	color = calculate_lighting(scene, &hit);
-				// }
-				// else
-				// {
-				// 	//shadow
-				// 	color = scene->amb_light.color; // todo: set ambient color
-				// }
+				if (is_lighted_pixel(*scene, hit))
+					color = lighted_pixel(*scene, hit);
+				else
+					color = unlighted_pixel(*scene, hit);
 			}
 			else
-				color = (t_color){0, 0, 0}; // todo: set ambient color
-			// Set pixel color
+				color = checkered_background(x, y);
 			mlx_put_pixel(scene->img, x, y, convert_color(color));
 		}
 	}
@@ -63,7 +56,6 @@ bool	render(t_scene *scene, t_gc_object **gc_list)
 		mlx_close_window(scene->mlx);
 		return (print_error("Failed to create image", *gc_list), false);
 	}
-
 	draw_img(scene);
 	if (mlx_image_to_window(scene->mlx, scene->img, 0, 0) < 0)
 		return (print_error("Failed to attach image to window", *gc_list),

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 14:30:17 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 14:56:08 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	viewport_init(t_viewport *vp)
 static void	camera_init(t_scene *scene)
 {
 	scene->camera.origin = new_vector(0, 0, 0);
-	scene->camera.direction = vec_normalize(new_vector(0, -1, 0));
+	scene->camera.direction = vec_normal(new_vector(0, -1, 0));
 	scene->camera.fov = 60.0;
 	viewport_init(&scene->camera.viewport);
 }
@@ -69,6 +69,14 @@ int	main(int ac, char **av)
 		return (gc_free(gc_list), 1);
 	if (!parser(av[1], &scene, &gc_list))
 		return (gc_free(gc_list), 1);
+
+	printf("============ Scene ============\n");
+	print_camera(&scene->camera);
+	print_ambient(&scene->amb_light);
+	print_light(scene->light);
+	print_object(scene->obj);
+	printf("================================\n");
+
 	if (!render(scene, &gc_list))
 	{
 		if (scene->mlx)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_trace.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 19:36:01 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 15:10:37 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_ray	ray_to_vp(t_scene *scene, double x, double y)
 	
 	// Create ray from camera origin through viewport point
 	ray.origin = scene->camera.origin;
-	ray.direction = vec_normalize(vec_sub(pixel_position, ray.origin));
+	ray.direction = vec_normal(vec_sub(pixel_position, ray.origin));
 	return (ray);
 }
 
@@ -59,7 +59,7 @@ static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 {
 	if (obj->type == SPHERE)
 	{
-		if (hit_sphere(ray, obj->data.sphere, hit))
+		if (hit_sphere(ray, (*obj).u_data.sphere, hit))
 		{
 			hit->object = obj;
 			return (true);
@@ -67,7 +67,7 @@ static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 	}
 	else if (obj->type == PLANE)
 	{
-		if (hit_plane(ray, obj->data.plane, hit))
+		if (hit_plane(ray, (*obj).u_data.plane, hit))
 		{
 			hit->object = obj;
 			return (true);
@@ -75,13 +75,7 @@ static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 	}
 	else if (obj->type == CYLINDER)
 	{
-		// printf("Checking cylinder\n");
-		// printf("Cylinder center: (%f, %f, %f)\n", 
-		// 	obj->data.cylinder.center.x, obj->data.cylinder.center.y, obj->data.cylinder.center.z);
-		// printf("Cylinder direction: (%f, %f, %f)\n", 
-		// 	obj->data.cylinder.direction.x, obj->data.cylinder.direction.y, obj->data.cylinder.direction.z);
-		// printf("Cylinder radius: %f\n", obj->data.cylinder.radius);
-		if (hit_cylinder(ray, obj->data.cylinder, hit))
+		if (hit_cylinder(ray, (*obj).u_data.cylinder, hit))
 		{
 			hit->object = obj;
 			return (true);
@@ -94,28 +88,27 @@ static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
  * @brief check if the ray hits any object in the scene
  * @return true if any object was hit, false otherwise
  * @note the interscetion record is stored in the hit struct
- *
  */
 bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit)
 {
 	t_object	*obj;
-	t_hit	hit_record;
-	bool		hit_obj;
+	t_hit		hit_record;
+	bool		result;
 
-	hit_obj = false;
+	result = false;
 	hit->t = INFINITY;
 	obj = scene->obj;
-	while (obj)
+	while (!result && obj)
 	{
-		hit_record.t = INFINITY; // Reset hit record for each object
+		hit_record.t = INFINITY;
 		if (hit_object(obj, ray, &hit_record) && hit_record.t < hit->t)
 		{
 			*hit = hit_record;
-			hit_obj = true;
+			result = true;
 		}
 		obj = obj->next;
 	}
-	return (hit_obj);
+	return (result);
 }
 
 bool	check_height(t_vec3 point, t_cylinder cylinder)
@@ -124,7 +117,7 @@ bool	check_height(t_vec3 point, t_cylinder cylinder)
 	t_vec3	from_bottom;
 	double	proj;
 
-	axis = vec_normalize(vec_sub(cylinder.top_center, cylinder.bottom_center));
+	axis = vec_normal(vec_sub(cylinder.top_center, cylinder.bottom_center));
 	from_bottom = vec_sub(point, cylinder.bottom_center);
 	proj = vec_dot(from_bottom, axis);
 	return (proj >= 0.0 && proj <= cylinder.height);

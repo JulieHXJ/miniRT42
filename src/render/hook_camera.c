@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hook_camera.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:54:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/22 14:53:28 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/24 16:34:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,12 @@ void	rotate_camera(t_scene *scene, double pitch, double yaw)
 	if (yaw != 0.0)
 		dir = rotate_axis(dir, vp->up, yaw);
 
-	scene->camera.direction = vec_normalize(dir);
+	scene->camera.direction = vec_normal(dir);
 
 	// Apply pitch (x-axis), then yaw (z-axis)
 	// scene->camera.direction = rotate_x(scene->camera.direction, pitch);
 	// scene->camera.direction = rotate_z(scene->camera.direction, yaw);
-	// scene->camera.direction = vec_normalize(scene->camera.direction);
+	// scene->camera.direction = vec_normal(scene->camera.direction);
 
 	set_viewport(&scene->camera.viewport, &scene->camera);
 	draw_img(scene);

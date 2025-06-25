@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 14:10:43 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 15:13:09 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef enum e_obj_type
 	CONE,
 	HYPERBOLOID,
 	PARABOLOID
-}						t_obj_type;
+}	t_obj_type;
 
 /* ************************************************************************** */
 /* CORE MATH STRUCTURES                                                       */
@@ -80,12 +80,11 @@ typedef struct s_gc_object
  */
 typedef struct s_camera
 {
-	t_vec3				origin;
-	t_vec3				direction;
-	double				fov;
-	t_viewport			viewport;
-
-}						t_camera;
+	t_vec3		origin;
+	t_vec3		direction;
+	double		fov;
+	t_viewport	viewport;
+}				t_camera;
 
 /**
  * @note ratio range: [0.0, 1.0]
@@ -93,19 +92,20 @@ typedef struct s_camera
  */
 typedef struct s_amb_light
 {
-	double				ratio;
-	t_color				color;
-}						t_amb_light;
+	double	ratio;
+	t_color	color;
+}			t_amb_light;
 
 /**
  * @note brightness range: [0.0, 1.0]
  */
 typedef struct s_light
 {
-	t_vec3				position;
-	double				ratio;
-	t_color				color;
-}						t_light;
+	int		id;
+	t_vec3	position;
+	double	ratio;
+	t_color	color;
+}			t_light;
 
 /* ************************************************************************** */
 /* OBJECTS                                                                    */
@@ -116,13 +116,9 @@ typedef struct s_light
  */
 typedef struct s_sphere
 {
-	t_vec3				center;
-	t_color				color;
-	double				diam;
-
-	double specular;   // For bonus specular lighting
-	double reflective; // For bonus reflections
-}						t_sphere;
+	t_vec3	center;
+	double	diam;
+}			t_sphere;
 
 /**
  * @note normal range: [-1.0, 1.0]
@@ -130,12 +126,9 @@ typedef struct s_sphere
  */
 typedef struct s_plane
 {
-	t_vec3				point;
-	t_vec3				normal;
-	t_color				color;
-	double specular;   // For bonus specular lighting
-	double reflective; // For bonus reflections
-}						t_plane;
+	t_vec3	point;
+	t_vec3	normal;
+}			t_plane;
 
 /**
  * @note normal range: [-1.0, 1.0]
@@ -143,15 +136,12 @@ typedef struct s_plane
  */
 typedef struct s_cylinder
 {
-	t_vec3				center;
-	t_vec3				direction;
-	double				radius;
-	double				height;
-	t_color				color;
-	t_vec3				top_center;
-	t_vec3				bottom_center;
-	double specular;   // For bonus specular lighting
-	double reflective; // For bonus reflections
+	t_vec3	center;
+	t_vec3	direction;
+	double	radius;
+	double	height;
+	t_vec3	top_center;
+	t_vec3	bottom_center;
 }						t_cylinder;
 
 /* ************************************************************************** */
@@ -160,16 +150,20 @@ typedef struct s_cylinder
 
 typedef struct s_object
 {
-	t_obj_type			type;
+	int				id;
+	t_obj_type		type;
 	union
 	{
-		t_sphere		sphere;
-		t_plane			plane;
-		t_cylinder		cylinder;
-	} data;
-	struct s_object		*next;
-	struct s_object		*previous;
-}						t_object;
+		t_sphere	sphere;
+		t_plane		plane;
+		t_cylinder	cylinder;
+	}	u_data;
+	t_color			color;
+	double 			specular;   // For bonus specular lighting
+	double			reflective; // For bonus reflections
+	struct s_object	*next;
+	struct s_object	*previous;
+}					t_object;
 
 /* ************************************************************************** */
 /* SCENE STRUCTURE                                                            */
@@ -177,48 +171,41 @@ typedef struct s_object
 
 typedef struct s_scene
 {
-	t_camera			camera;
-	t_amb_light			amb_light;
-	t_light				*light;
-	t_object			*obj;
-	mlx_t				*mlx;
-	mlx_image_t			*img;
-
-}						t_scene;
+	t_camera	camera;
+	t_amb_light	amb_light;
+	t_light		*light;
+	t_object	*obj;
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+}				t_scene;
 
 /* ************************************************************************** */
 /* FUNCTION PROTOTYPES                                                        */
 /* ************************************************************************** */
 
 // Utils
-void					free_array(char ***arr);
-size_t					array_size(char **arr);
-void					print_error(char *str, t_gc_object *gc_list);
-double					ft_atod(const char *str);
+void	free_array(char ***arr);
+size_t	array_size(char **arr);
+void	print_error(char *str, t_gc_object *gc_list);
+double	ft_atod(const char *str);
 
 // Check
-bool					valid_file(int ac, char **av);
-bool					in_range_int(int value, int min, int max);
-bool					in_range_double(double value, double min, double max);
-bool					valid_color(t_color color);
-bool					valid_ratio(double ratio);
-bool					valid_normal(t_vec3 normal);
+bool	valid_file(int ac, char **av);
+bool	in_range_int(int value, int min, int max);
+bool	in_range_double(double value, double min, double max);
+bool	valid_color(t_color color);
+bool	valid_ratio(double ratio);
+bool	valid_normal(t_vec3 normal);
 
 // Parser
-bool					assign_color(char *color, t_color *c,
-							t_gc_object **gc_list);
-bool					assign_vector(char *coordinates, t_vec3 *v,
-							t_gc_object **gc_list);
-bool					assign_normal(char *normal, t_vec3 *v,
-							t_gc_object **gc_list);
-bool					assign_positive_num(char *num, double *value);
-void					get_cylinder_ends(t_cylinder *c);
-bool					create_environment(char *line, t_scene **scene,
-							t_gc_object **gc_list);
-bool					create_objects(char *line, t_scene **scene,
-							t_gc_object **gc_list);
-bool					parser(char *fname, t_scene **scene,
-							t_gc_object **gc_list);
+bool	assign_color(char *color, t_color *c, t_gc_object **gc_list);
+bool	assign_vector(char *coordinates, t_vec3 *v,	t_gc_object **gc_list);
+bool	assign_normal(char *normal, t_vec3 *v, t_gc_object **gc_list);
+bool	assign_positive_num(char *num, double *value);
+void	get_cylinder_ends(t_cylinder *c);
+bool	create_environment(char *line, t_scene **scene, t_gc_object **gc_list);
+bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list);
+bool	parser(char *fname, t_scene **scene, t_gc_object **gc_list);
 
 // Intersections
 void					set_viewport(t_viewport *vp, t_camera *camera);
@@ -232,7 +219,11 @@ bool					hit_cylinder(t_ray ray, t_cylinder cylinder,
 bool					if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 
 // Lighting
-t_color					calculate_lighting(t_scene *scene, t_hit *hit);
+bool	is_lighted_pixel(t_scene scene, t_hit hit);
+bool	is_shadowed_pixel(t_scene scene, t_hit hit);
+t_color	lighted_pixel(t_scene scene, t_hit hit);
+t_color	unlighted_pixel(t_scene scene, t_hit hit);
+t_color	checkered_background(uint32_t x, uint32_t y);
 
 // Render
 void					translate_horizontal(t_scene *scene, double step);
@@ -244,16 +235,17 @@ void					draw_img(t_scene *scene);
 bool					render(t_scene *scene, t_gc_object **gc_list);
 
 // GC
-void					*gc_alloc(size_t size, t_gc_object **gc_list);
-void					gc_mark(void *ptr, t_gc_object *gc_list);
-void					gc_free(t_gc_object *gc_list);
-char					**gc_split(const char *s, char c,
-							t_gc_object **gc_list);
+void	*gc_alloc(size_t size, t_gc_object **gc_list);
+void	gc_mark(void *ptr, t_gc_object *gc_list);
+void	gc_free(t_gc_object *gc_list);
+char	**gc_split(const char *s, char c,
+			t_gc_object **gc_list);
 
 // debugging
-void					print_object(t_object *obj);
-void					print_camera(t_camera *cam);
-void					print_ambient(t_amb_light *amb);
-void					print_light(t_light *light);
+void	print_vec3(const char *name, t_vec3 v);
+void	print_object(t_object *obj);
+void	print_camera(t_camera *cam);
+void	print_ambient(t_amb_light *amb);
+void	print_light(t_light *light);
 
 #endif

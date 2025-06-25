@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debugging.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:23:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/17 17:17:31 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 13:46:07 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,49 @@ void	print_vec3(const char *name, t_vec3 v)
 	printf("%s: (%.2f, %.2f, %.2f)\n", name, v.x, v.y, v.z);
 }
 
-void	print_color(const char *name, t_color c)
+static void	print_color(const char *name, t_color c)
 {
 	printf("%s: (%d, %d, %d)\n", name, c.r, c.g, c.b);
+}
+
+static void	print_sphere(t_object obj)
+{
+	t_sphere	sp;
+
+	sp = obj.u_data.sphere;
+	printf("  - Sphere\n");
+	printf("id: %d\n", obj.id);
+	print_vec3("Center", sp.center);
+	printf("Diameter: %.2f\n", sp.diam);
+	print_color("Color", obj.color);
+	// printf("Specular: %.2f | Reflective: %.2f\n", sp.specular, sp.reflective);
+}
+
+static void	print_plane(t_object obj)
+{
+	t_plane	pl;
+
+	pl = obj.u_data.plane;
+	printf("  - Plane\n");
+	printf("id: %d\n", obj.id);
+	print_vec3("Point", pl.point);
+	print_vec3("Normal", pl.normal);
+	print_color("Color", obj.color);
+	// printf("Specular: %.2f | Reflective: %.2f\n", pl.specular, pl.reflective);
+}
+
+static void	print_cylinder(t_object obj)
+{
+	t_cylinder	cy;
+
+	cy = obj.u_data.cylinder;
+	printf("  - Cylinder\n");
+	printf("id: %d\n", obj.id);
+	print_vec3("Center", cy.center);
+	print_vec3("Direction", cy.direction);
+	printf("Radius: %.2f | Height: %.2f\n", cy.radius, cy.height);
+	print_color("Color", obj.color);
+	// printf("Specular: %.2f | Reflective: %.2f\n", cy.specular, cy.reflective);
 }
 
 void	print_camera(t_camera *cam)
@@ -53,32 +93,6 @@ void	print_light(t_light *light)
 	print_color("Color", light->color);
 }
 
-void	print_sphere(t_sphere *sp)
-{
-	printf("  - Sphere\n");
-	print_vec3("Center", sp->center);
-	printf("Diameter: %.2f\n", sp->diam);
-	print_color("Color", sp->color);
-	printf("Specular: %.2f | Reflective: %.2f\n", sp->specular, sp->reflective);
-}
-
-void	print_plane(t_plane *pl)
-{
-	printf("  - Plane\n");
-	print_vec3("Point", pl->point);
-	print_vec3("Normal", pl->normal);
-	print_color("Color", pl->color);
-	printf("Specular: %.2f | Reflective: %.2f\n", pl->specular, pl->reflective);
-}
-void	print_cylinder(t_cylinder *cy)
-{
-	printf("  - Cylinder\n");
-	print_vec3("Center", cy->center);
-	print_vec3("Direction", cy->direction);
-	printf("Radius: %.2f | Height: %.2f\n", cy->radius, cy->height);
-	print_color("Color", cy->color);
-	printf("Specular: %.2f | Reflective: %.2f\n", cy->specular, cy->reflective);
-}
 void	print_object(t_object *obj)
 {
 	int	count;
@@ -88,11 +102,11 @@ void	print_object(t_object *obj)
 	{
 		printf("== Object #%d ==\n", count++);
 		if (obj->type == SPHERE)
-			print_sphere(&obj->data.sphere);
+			print_sphere(*obj);
 		else if (obj->type == PLANE)
-			print_plane(&obj->data.plane);
+			print_plane(*obj);
 		else if (obj->type == CYLINDER)
-			print_cylinder(&obj->data.cylinder);
+			print_cylinder(*obj);
 		else
 			printf("  - Unknown object type\n");
 		obj = obj->next;
