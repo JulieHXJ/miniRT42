@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 15:10:37 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:30:25 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_ray	ray_to_vp(t_scene *scene, double x, double y)
 	return (ray);
 }
 
-static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
+bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 {
 	if (obj->type == SPHERE)
 	{

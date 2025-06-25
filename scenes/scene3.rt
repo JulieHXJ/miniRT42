@@ -1,4 +1,4 @@
-# identifier: A. Ambient lighting ratio in range [0.0,1.0]. R,G,B colors in range [0-255].
+# # identifier: A. Ambient lighting ratio in range [0.0,1.0]. R,G,B colors in range [0-255].
 # A 0.2 255,255,255
 
 # # X,y,z coordinates of the view point. 3d normalized orientation vector. In range [-1,1] for each x,y,z axis. Horizontal field of view in degrees in range [0,180].
@@ -15,25 +15,25 @@
 # cy 0,0,2    1,0,0   2.0 10.0 0,255,0
 
 
-# A 0.2 255,255,255
-# C 0,0,10 0,-0.3,-1 70
+A 0.2 255,255,255
+C 0,0,10 0,-0.3,-1 70
 
-# L 0,10,20 1.0 255,255,255
+L 0,10,20 1.0 255,255,255
 # Plane for reference
-# pl 0,-5,0 0,1,0 200,200,200
+pl 0,-5,0 0,1,0 200,200,200
 
 
 # Vertical Cylinder (up/down along Y-axis)
-# cy -15,-5,0 0,1,0 2.0 10.0 255,0,0
+cy -15,-5,0 0,1,0 2.0 10.0 255,0,0
 # Horizontal Cylinder (sideways along X-axis)
 # Angled Cylinder (diagonal)
-# cy 15,-5,0 1,1,0 2.0 10.0 0,0,255
+cy 15,-5,0 1,1,0 2.0 10.0 0,0,255
 
 
-A 0.2 255,255,255
-C 0,0,0   0,0,1    70
-L -15.0,13.0,10   0.9  255,255,255
-sp -7.5,6.5,20 5 0,255,255
-sp 0,0,30 5 0,0,255
-# pl 0,0,45   0,0,1    255,255,0
-cy 7.5,6.5,100  1,0,0  10 50 255,0,0
+# A 0.2 255,255,255
+# C 0,0,0   0,0,1    70
+# L -15.0,13.0,10   0.9  255,255,255
+# sp -7.5,6.5,20 5 0,255,255
+# sp 0,0,30 5 0,0,255
+# # pl 0,0,45   0,0,1    255,255,0
+# cy 7.5,6.5,100  1,0,0  10 50 255,0,0

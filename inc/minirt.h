@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 15:13:09 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:30:06 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,8 @@ typedef struct s_object
 		t_cylinder	cylinder;
 	}	u_data;
 	t_color			color;
-	double 			specular;   // For bonus specular lighting
-	double			reflective; // For bonus reflections
+	double			specular;
+	double			reflective;
 	struct s_object	*next;
 	struct s_object	*previous;
 }					t_object;
@@ -208,15 +208,15 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list);
 bool	parser(char *fname, t_scene **scene, t_gc_object **gc_list);
 
 // Intersections
-void					set_viewport(t_viewport *vp, t_camera *camera);
-t_ray					ray_to_vp(t_scene *scene, double x, double y);
-double					solve_quadratic(double a, double b, double c);
-bool					hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit);
-bool					hit_plane(t_ray ray, t_plane plane, t_hit *hit);
-bool					check_height(t_vec3 point, t_cylinder cylinder);
-bool					hit_cylinder(t_ray ray, t_cylinder cylinder,
-							t_hit *hit);
-bool					if_hit(t_scene *scene, t_ray ray, t_hit *hit);
+void	set_viewport(t_viewport *vp, t_camera *camera);
+t_ray	ray_to_vp(t_scene *scene, double x, double y);
+double	solve_quadratic(double a, double b, double c);
+bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit);
+bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit);
+bool	check_height(t_vec3 point, t_cylinder cylinder);
+bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit);
+bool	hit_object(t_object *obj, t_ray ray, t_hit *hit);
+bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 
 // Lighting
 bool	is_lighted_pixel(t_scene scene, t_hit hit);
@@ -226,13 +226,13 @@ t_color	unlighted_pixel(t_scene scene, t_hit hit);
 t_color	checkered_background(uint32_t x, uint32_t y);
 
 // Render
-void					translate_horizontal(t_scene *scene, double step);
-void					translate_vertical(t_scene *scene, double step);
-void					translate_forward(t_scene *scene, double step);
-void					rotate_camera(t_scene *scene, double pitch, double yaw);
-void					key_hook(mlx_key_data_t keydata, void *param);
-void					draw_img(t_scene *scene);
-bool					render(t_scene *scene, t_gc_object **gc_list);
+void	translate_horizontal(t_scene *scene, double step);
+void	translate_vertical(t_scene *scene, double step);
+void	translate_forward(t_scene *scene, double step);
+void	rotate_camera(t_scene *scene, double pitch, double yaw);
+void	key_hook(mlx_key_data_t keydata, void *param);
+void	draw_img(t_scene *scene);
+bool	render(t_scene *scene, t_gc_object **gc_list);
 
 // GC
 void	*gc_alloc(size_t size, t_gc_object **gc_list);
