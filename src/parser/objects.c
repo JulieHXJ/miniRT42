@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 12:38:27 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:41:11 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ static bool	create_sphere(int id, t_scene **scene, char **arr, t_gc_object **gc)
 			false);
 	if (!assign_color(arr[3], &new_obj->color, gc))
 		return (print_error("Sphere color parse failed", *gc), false);
-	new_obj->u_data.sphere.specular = 0.0;
-	new_obj->u_data.sphere.reflective = 0.0;
+	new_obj->specular = 0.0;
+	new_obj->reflective = 0.0;
 	connect_nodes(scene, &new_obj);
 	return (true);
 }
@@ -69,8 +69,8 @@ static bool	create_plane(int id, t_scene **scene, char **arr, t_gc_object **gc)
 		return (print_error("Plane normal parse failed", *gc), false);
 	if (!assign_color(arr[3], &new_obj->color, gc))
 		return (print_error("Plane color parse failed", *gc), false);
-	new_obj->u_data.plane.specular = 0.0;
-	new_obj->u_data.plane.reflective = 0.0;
+	new_obj->specular = 0.0;
+	new_obj->reflective = 0.0;
 	connect_nodes(scene, &new_obj);
 	return (true);
 }
@@ -98,8 +98,8 @@ static bool	create_cylinder(int id, t_scene **scn, char **arr, t_gc_object **gc)
 	if (!assign_color(arr[5], &new_obj->color, gc))
 		return (print_error("Cylinder color parse failed", *gc), false);
 	get_cylinder_ends(new_obj->u_data.cylinder);
-	new_obj->u_data.cylinder.specular = 0.0;
-	new_obj->u_data.cylinder.reflective = 0.0;
+	new_obj->specular = 0.0;
+	new_obj->reflective = 0.0;
 	connect_nodes(scn, &new_obj);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 13:37:22 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 12:37:09 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:43:24 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ void	update_cy_hit(t_hit *hit, t_object obj, t_vec3 point, t_vec3 normal)
 	cylinder = obj.u_data.cylinder;
 	hit->point = point;
 	hit->normal = vec_normal(normal);
-	hit->color = obj.color;
-	hit->specular = cylinder.specular;
-	hit->reflective = cylinder.reflective;
+	// hit->color = obj.color;
+	// hit->specular = obj.specular;
+	// hit->reflective = obj.reflective;
 }
 
 bool	hit_sides(t_ray ray, t_object obj, t_hit *hit)

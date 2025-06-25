@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 22:42:17 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 12:35:17 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:43:03 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,7 @@ typedef struct s_hit
 	t_vec3 point;     // closest hit point
 	t_vec3 normal;    // Surface normal at intersection
 	t_object *object; // Pointer to the hit object
-
-	t_color	color;
-	double specular;   // For bonus specular lighting
-	double reflective; // For bonus reflections
-
+	// t_color	color;			// -------> Why since there already is a pointer to the object?
 }			t_hit;
 
 

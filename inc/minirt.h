@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 12:36:31 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:40:37 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,6 @@ typedef struct s_sphere
 {
 	t_vec3	center;
 	double	diam;
-	double 			specular;   // For bonus specular lighting
-	double			reflective; // For bonus reflections
 }			t_sphere;
 
 /**
@@ -130,8 +128,6 @@ typedef struct s_plane
 {
 	t_vec3	point;
 	t_vec3	normal;
-	double 			specular;   // For bonus specular lighting
-	double			reflective; // For bonus reflections
 }			t_plane;
 
 /**
@@ -146,8 +142,6 @@ typedef struct s_cylinder
 	double	height;
 	t_vec3	top_center;
 	t_vec3	bottom_center;
-	double 			specular;   // For bonus specular lighting
-	double			reflective; // For bonus reflections
 }						t_cylinder;
 
 /* ************************************************************************** */
@@ -165,6 +159,8 @@ typedef struct s_object
 		t_cylinder	cylinder;
 	}	u_data;
 	t_color			color;
+	double 			specular;   // For bonus specular lighting
+	double			reflective; // For bonus reflections
 	struct s_object	*next;
 	struct s_object	*previous;
 }					t_object;
