@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 15:12:01 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 18:50:12 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit)
 	hit->t = t;
 	hit->point = ray_point_at(ray, t);
 	hit->normal = vec_normalize(vec_sub(hit->point, sphere.center));
-	hit->color = sphere.color;
-	hit->specular = sphere.specular;
-	hit->reflective = sphere.reflective;
+	// hit->color = sphere.color;
+	// hit->specular = sphere.specular;
+	// hit->reflective = sphere.reflective;
 	return (true);
 }
 
@@ -107,8 +107,8 @@ bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit)
 		hit->normal = plane.normal;
 	else
 		hit->normal = vec_scale(plane.normal, -1);
-	hit->color = plane.color;
-	hit->specular = plane.specular;
-	hit->reflective = plane.reflective;
+	// hit->color = plane.color;
+	// hit->specular = plane.specular;
+	// hit->reflective = plane.reflective;
 	return (true);
 }

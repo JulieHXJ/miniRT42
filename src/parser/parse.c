@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 15:10:41 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 18:42:28 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,34 +21,35 @@ void	get_cylinder_ends(t_cylinder *c)
 	c->top_center = vec_add(c->center, half);
 }
 
-bool	parser(char *fname, t_scene **scene, t_gc_object **gc_list)
+bool	parser(int fd, t_scene **scene, t_gc_object **gc_list)
 {
-	int		fd;
 	char	*line;
+	char *start;
 	bool	flag;
 
-	fd = open(fname, O_RDONLY);
-	if (fd == -1)
-		return (print_error("Failed to open file", NULL), false);
 	flag = true;
 	while (flag)
 	{
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		if (ft_strlen(line) > 0 && line[0] != '#' && line[0] != '\n')
+		start = line;
+		while (*start == ' ' || *start == '\t')
+			start++;
+		if (*start && *start != '#' && *start != '\n')
 		{
-			if (line[0] == 'A' || line[0] == 'C' || line[0] == 'L')
+			if (*start == 'A' || *start == 'C' || *start == 'L')
 				flag = create_environment(line, scene, gc_list);
 			else
 				flag = create_objects(line, scene, gc_list);
-			if (!flag)
-			{
-				free(line);
-				break ;
-			}
 		}
 		free(line);
+		if (!flag)
+			return (close(fd), false);
 	}
-	return (close(fd), flag);
+	close(fd);
+	if ((!(*scene)->camera.cam_num) != 1 || (!(*scene)->amb_light.amb_num) != 1)
+		return (print_error("Only 1 camera or ambient light is allowed", NULL),
+			false);
+	return (flag);
 }

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 15:16:25 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 18:53:27 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "../lib/getnextline/inc/get_next_line.h"
 # include "../lib/libft/inc/libft.h"
 # include "intersect.h"
-# include "render.h"
+# include "material.h"
 # include "vector.h"
 # include <fcntl.h>
 # include <math.h>
@@ -30,6 +30,7 @@
 /* ************************************************************************** */
 
 # define USAGE_MSG "Usage: ./minirt scenes/<file_name>.rt"
+# define MATERIAL_MSG "specular, reflective, roughness, transparency, refractive_index"
 # define RED "\033[31m"
 # define RST "\033[0m"
 
@@ -83,6 +84,7 @@ typedef struct s_camera
 	t_vec3				origin;
 	t_vec3				direction;
 	double				fov;
+	int 	cam_num;
 	t_viewport			viewport;
 
 }						t_camera;
@@ -95,6 +97,7 @@ typedef struct s_amb_light
 {
 	double				ratio;
 	t_color				color;
+	int amb_num;
 }						t_amb_light;
 
 /**
@@ -117,9 +120,8 @@ typedef struct s_light
 typedef struct s_sphere
 {
 	t_vec3				center;
-	t_color				color;
+	// t_color				color;
 	double				diam;
-
 }						t_sphere;
 
 /**
@@ -130,7 +132,7 @@ typedef struct s_plane
 {
 	t_vec3				point;
 	t_vec3				normal;
-	t_color				color;
+	// t_color				color;
 }						t_plane;
 
 /**
@@ -143,7 +145,7 @@ typedef struct s_cylinder
 	t_vec3				direction;
 	double				radius;
 	double				height;
-	t_color				color;
+	// t_color				color;
 	t_vec3				top_center;
 	t_vec3				bottom_center;
 }						t_cylinder;
@@ -155,14 +157,14 @@ typedef struct s_cylinder
 typedef struct s_object
 {
 	t_obj_type			type;
-	double				specular;
-	double				reflective;
 	union
 	{
 		t_sphere		sphere;
 		t_plane			plane;
 		t_cylinder		cylinder;
 	} u_data;
+	t_color				color; // for bonus
+	t_material material; // for bonus
 	struct s_object		*next;
 	struct s_object		*previous;
 }						t_object;
@@ -193,7 +195,6 @@ void					print_error(char *str, t_gc_object *gc_list);
 double					ft_atod(const char *str);
 
 // Check
-bool					valid_file(int ac, char **av);
 bool					in_range_int(int value, int min, int max);
 bool					in_range_double(double value, double min, double max);
 bool					valid_color(t_color color);
@@ -213,8 +214,7 @@ bool					create_environment(char *line, t_scene **scene,
 							t_gc_object **gc_list);
 bool					create_objects(char *line, t_scene **scene,
 							t_gc_object **gc_list);
-bool					parser(char *fname, t_scene **scene,
-							t_gc_object **gc_list);
+bool					parser(int fd, t_scene **scene, t_gc_object **gc_list);
 
 // Intersections
 void					set_viewport(t_viewport *vp, t_camera *camera);
@@ -228,15 +228,19 @@ bool					hit_cylinder(t_ray ray, t_cylinder cylinder,
 bool					if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 
 // Lighting
+t_color diffuse_color(t_color obj_color, t_color light_color, double obj_diffuse);
+t_color specular_color();
 t_color					calculate_lighting(t_scene *scene, t_hit *hit);
+
 
 // Render
 void					translate_horizontal(t_scene *scene, double step);
 void					translate_vertical(t_scene *scene, double step);
-void					translate_forward(t_scene *scene, double step);
+// void					translate_forward(t_scene *scene, double step);
 void					rotate_camera(t_scene *scene, double pitch, double yaw);
-void					key_hook(mlx_key_data_t keydata, void *param);
 void					draw_img(t_scene *scene);
+void	zooming(double xdelta, double ydelta, void *param);
+void					key_hook(mlx_key_data_t keydata, void *param);
 bool					render(t_scene *scene, t_gc_object **gc_list);
 
 // GC
@@ -251,5 +255,10 @@ void					print_object(t_object *obj);
 void					print_camera(t_camera *cam);
 void					print_ambient(t_amb_light *amb);
 void					print_light(t_light *light);
+
+
+
+// Bonus
+void	assign_material(char *tokens, t_material *material);
 
 #endif

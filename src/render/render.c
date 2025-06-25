@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 18:24:46 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 18:51:42 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	draw_img(t_scene *scene)
 			ray = ray_to_vp(scene, x, y);
 			if (if_hit(scene, ray, &hit))
 			{
-				color = hit.color;
+				color = hit.object->color; // todo: set color based on object
 				// if (condition)
 				// {
 				// 	//part on surface lighted by the light
@@ -69,11 +69,6 @@ bool	render(t_scene *scene, t_gc_object **gc_list)
 			false);
 	mlx_key_hook(scene->mlx, key_hook, scene);
 	mlx_scroll_hook(scene->mlx, zooming, scene);
-	// mlx_cursor_hook(fract.mlx, mouse_coord, &fract);
-	// mlx_key_hook(fract.mlx, key_presses, &fract);
-	// mlx_mouse_hook(fract.mlx, mouse_but, &fract);
-	// mlx_loop_hook(fract.mlx, mouse_pos, &fract);
-	// mlx_resize_hook(fract.mlx, resize_window, &fract);
 	mlx_loop(scene->mlx);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 15:15:23 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 18:45:07 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	set_viewport(t_viewport *vp, t_camera *camera)
 }
 
 /**
- * @brief Check number range and parse position, orientation and fov
+ * @brief Check parameters and parse camera
  */
 static bool	set_camera(t_scene **scene, char **tokens, t_gc_object **gc_list)
 {
@@ -49,6 +49,10 @@ static bool	set_camera(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	t_vec3	ori_vec;
 	int		fov;
 
+	if ((*scene)->camera.cam_num != 0)
+		return (print_error("Multiple cameras detected", *gc_list), false);
+	if (array_size(tokens) != 4)
+		return (print_error("Camera requires 3 parameters", *gc_list), false);
 	position = new_vector(0, 0, 0);
 	ori_vec = new_vector(0, 0, -1);
 	fov = 0;
@@ -63,6 +67,7 @@ static bool	set_camera(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	(*scene)->camera.origin = position;
 	(*scene)->camera.direction = vec_normalize(ori_vec);
 	(*scene)->camera.fov = fov;
+	(*scene)->camera.cam_num++;
 	set_viewport(&(*scene)->camera.viewport, &(*scene)->camera);
 	return (true);
 }
@@ -72,6 +77,12 @@ static bool	set_amb_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	double	ratio;
 	t_color	color;
 
+	if ((*scene)->amb_light.amb_num != 0)
+		return (print_error("Multiple ambient lights detected", *gc_list),
+			false);
+	if (array_size(tokens) != 3)
+		return (print_error("Ambient light requires 2 parameters", *gc_list),
+			false);
 	color = (t_color){0, 0, 0};
 	ratio = ft_atod(tokens[1]);
 	if (!valid_ratio(ratio))
@@ -82,6 +93,7 @@ static bool	set_amb_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 			false);
 	(*scene)->amb_light.ratio = ratio;
 	(*scene)->amb_light.color = color;
+	(*scene)->amb_light.amb_num++;
 	return (true);
 }
 
@@ -95,9 +107,8 @@ static bool	set_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	t_vec3	pos;
 	t_color	col;
 
-	if ((*scene)->light != NULL)
-		return (print_error("Multiple lights are not allowed", *gc_list),
-			false);
+	if (array_size(tokens) != 4)
+		return (print_error("Light requires 3 parameters", *gc_list), false);
 	brightness = ft_atod(tokens[2]);
 	pos = new_vector(0, 0, 0);
 	col = (t_color){0, 0, 0};

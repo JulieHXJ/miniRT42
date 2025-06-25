@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 15:17:12 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 18:54:47 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ static bool	create_sphere(t_scene **scene, char **arr, t_gc_object **gc_list)
 {
 	t_object	*new_obj;
 
+	// check number of tokens
+	if (array_size(arr) < 4)
+		return (print_error("Sphere requires 3 basic parameters", *gc_list), false);
+
 	new_obj = gc_alloc(sizeof(t_object), gc_list);
 	if (!new_obj)
 		return (print_error("Memory allocation failed for sphere", *gc_list),
@@ -44,10 +48,11 @@ static bool	create_sphere(t_scene **scene, char **arr, t_gc_object **gc_list)
 	if (!assign_positive_num(arr[2], &new_obj->u_data.sphere.diam))
 		return (print_error("Negative number as sphere diameter", *gc_list),
 			false);
-	if (!assign_color(arr[3], &new_obj->u_data.sphere.color, gc_list))
+	if (!assign_color(arr[3], &new_obj->color, gc_list))
 		return (print_error("Sphere color parse failed", *gc_list), false);
-	new_obj->u_data.sphere.specular = 0.0;
-	new_obj->u_data.sphere.reflective = 0.0;
+	if (arr[4])
+		assign_material(*arr, &new_obj->material);//pass the whole array to assign_material
+	
 	connect_nodes(scene, &new_obj);
 	return (true);
 }
@@ -56,6 +61,9 @@ static bool	create_plane(t_scene **scene, char **arr, t_gc_object **gc_list)
 {
 	t_object	*new_obj;
 
+	// check number of tokens
+	if (array_size(arr) < 4)
+		return (print_error("Plane requires 3 basic parameters", *gc_list), false);
 	new_obj = gc_alloc(sizeof(t_object), gc_list);
 	if (!new_obj)
 		return (print_error("Memory allocation failed for plane", *gc_list),
@@ -65,10 +73,10 @@ static bool	create_plane(t_scene **scene, char **arr, t_gc_object **gc_list)
 		return (print_error("Plane point parse failed", *gc_list), false);
 	if (!assign_normal(arr[2], &new_obj->u_data.plane.normal, gc_list))
 		return (print_error("Plane normal parse failed", *gc_list), false);
-	if (!assign_color(arr[3], &new_obj->u_data.plane.color, gc_list))
+	if (!assign_color(arr[3], &new_obj->color, gc_list))
 		return (print_error("Plane color parse failed", *gc_list), false);
-	new_obj->u_data.plane.specular = 0.0;
-	new_obj->u_data.plane.reflective = 0.0;
+	if (arr[4])
+		assign_material(*arr, &new_obj->material);
 	connect_nodes(scene, &new_obj);
 	return (true);
 }
@@ -78,6 +86,8 @@ static bool	create_cylinder(t_scene **scene, char **arr, t_gc_object **gc_list)
 	t_object	*new_obj;
 	double		diameter;
 
+	if (array_size(arr) < 6)
+		return (print_error("Cylinder requires 5 basic parameters", *gc_list), false);
 	new_obj = gc_alloc(sizeof(t_object), gc_list);
 	if (!new_obj)
 		return (print_error("Memory allocation failed for cylinder", *gc_list),
@@ -92,11 +102,11 @@ static bool	create_cylinder(t_scene **scene, char **arr, t_gc_object **gc_list)
 			&new_obj->u_data.cylinder.height))
 		return (print_error("Negative number detected", *gc_list), false);
 	new_obj->u_data.cylinder.radius = diameter / 2.0;
-	if (!assign_color(arr[5], &new_obj->u_data.cylinder.color, gc_list))
+	if (!assign_color(arr[5], &new_obj->color, gc_list))
 		return (print_error("Cylinder color parse failed", *gc_list), false);
 	get_cylinder_ends(&new_obj->u_data.cylinder);
-	new_obj->u_data.cylinder.specular = 0.0;
-	new_obj->u_data.cylinder.reflective = 0.0;
+	if (arr[4])
+		assign_material(*arr, &new_obj->material);
 	connect_nodes(scene, &new_obj);
 	return (true);
 }
@@ -123,6 +133,7 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
 		flag = create_cylinder(scene, tokens, gc_list);
 	else
 	{
+		// flag = create_bonus_object(scene, tokens, gc_list);
 		print_error("Unknown object identifier", *gc_list);
 		flag = false;
 	}
