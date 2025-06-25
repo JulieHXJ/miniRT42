@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/18 17:05:41 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/24 15:15:23 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ void	set_viewport(t_viewport *vp, t_camera *camera)
 	vp->normal = camera->direction;
 	vp->right = vec_normalize(vec_cross(world_up, vp->normal));
 	vp->up = vec_normalize(vec_cross(vp->normal, vp->right));
-	// Calculate the top-left corner of the viewport
-	screen_center = vec_add(camera->origin, vec_scale(camera->direction,
-				1.0));
+	screen_center = vec_add(camera->origin, vec_scale(camera->direction, 1.0));
 	half_width = vec_scale(vp->right, vp->view_width / 2.0);
 	half_height = vec_scale(vp->up, vp->view_height / 2.0);
 	vp->up_left_corner = vec_sub(vec_add(screen_center, half_height),
@@ -97,10 +95,9 @@ static bool	set_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	t_vec3	pos;
 	t_color	col;
 
-	// if light exist then error
 	if ((*scene)->light != NULL)
-	return (print_error("Multiple lights are not allowed", *gc_list), false);
-
+		return (print_error("Multiple lights are not allowed", *gc_list),
+			false);
 	brightness = ft_atod(tokens[2]);
 	pos = new_vector(0, 0, 0);
 	col = (t_color){0, 0, 0};

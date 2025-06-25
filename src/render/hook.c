@@ -6,38 +6,67 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:23:10 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 19:48:37 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 18:20:50 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-// static void	key_hook_move(t_scene *scene, mlx_key_data_t keydata)
-// {
-// 	if (keydata.key == MLX_KEY_UP)
-// 		translate_vertical(scene, 0.1);
-// 	else if (keydata.key == MLX_KEY_DOWN)
-// 		translate_vertical(scene, -0.1);
-// 	else if (keydata.key == MLX_KEY_LEFT)
-// 		translate_horizontal(scene, -0.1);
-// 	else if (keydata.key == MLX_KEY_RIGHT)
-// 		translate_horizontal(scene, 0.1);
-// 	else if (keydata.key == MLX_KEY_C)
-// 		translate_forward(scene, 10);
-// 	else if (keydata.key == MLX_KEY_F)
-// 		translate_forward(scene, -10);
-// }
+/**
+ * @brief Handle key events for camera movement
+ * @note Arrow keys for moving up, down, left, right,
+ * C for forward, F for backward
+ */
+static bool	key_hook_move(t_scene *scene, mlx_key_data_t keydata)
+{
+	if (keydata.key == MLX_KEY_UP)
+		return (translate_vertical(scene, 1.0), true);
+	else if (keydata.key == MLX_KEY_DOWN)
+		return (translate_vertical(scene, -1.0), true);
+	else if (keydata.key == MLX_KEY_LEFT)
+		return (translate_horizontal(scene, -1.0), true);
+	else if (keydata.key == MLX_KEY_RIGHT)
+		return (translate_horizontal(scene, 1.0), true);
+	return (false);
+}
 
-void	key_hook_rotate(t_scene *scene, mlx_key_data_t keydata)
+/**
+ * @brief Handle key events for camera rotation
+ * @note A for rotate left, D for rotate right,
+ * W for rotate up, X for rotate down
+ */
+static bool	key_hook_rotate(t_scene *scene, mlx_key_data_t keydata)
 {
 	if (keydata.key == MLX_KEY_A)
-		rotate_camera(scene, 0.0, -0.1); // left
+		return (rotate_camera(scene, 0.0, -0.1), true);
 	else if (keydata.key == MLX_KEY_D)
-		rotate_camera(scene, 0.0, 0.1); // right
+		return (rotate_camera(scene, 0.0, 0.1), true);
 	else if (keydata.key == MLX_KEY_W)
-		rotate_camera(scene, 0.1, 0.0); // up
+		return (rotate_camera(scene, 0.1, 0.0), true);
 	else if (keydata.key == MLX_KEY_X)
-		rotate_camera(scene, -0.1, 0.0); // down
+		return (rotate_camera(scene, -0.1, 0.0), true);
+	return (false);
+}
+
+void	zooming(double xdelta, double ydelta, void *param)
+{
+	t_scene	*scene;
+	t_vec3	translation;
+
+	(void)xdelta;
+	scene = (t_scene *)param;
+	if (ydelta > 0)
+	{
+		translation = vec_scale(scene->camera.viewport.normal, -1.0);
+		scene->camera.origin = vec_add(scene->camera.origin, translation);
+		set_viewport(&scene->camera.viewport, &scene->camera);
+	}
+	else if (ydelta < 0)
+	{
+		translation = vec_scale(scene->camera.viewport.normal, 1.0);
+		scene->camera.origin = vec_add(scene->camera.origin, translation);
+		set_viewport(&scene->camera.viewport, &scene->camera);
+	}
 }
 
 /**
@@ -46,7 +75,9 @@ void	key_hook_rotate(t_scene *scene, mlx_key_data_t keydata)
 void	key_hook(mlx_key_data_t keydata, void *param)
 {
 	t_scene	*scene;
+	bool	update;
 
+	update = false;
 	scene = (t_scene *)param;
 	if (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT)
 	{
@@ -60,24 +91,12 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 			set_viewport(&scene->camera.viewport, &scene->camera);
 			draw_img(scene);
 		}
-		if (keydata.key == MLX_KEY_UP)
-			translate_vertical(scene, 1.0);
-		else if (keydata.key == MLX_KEY_DOWN)
-			translate_vertical(scene, -1.0);
-		else if (keydata.key == MLX_KEY_LEFT)
-			translate_horizontal(scene, -1.0);
-		else if (keydata.key == MLX_KEY_RIGHT)
-			translate_horizontal(scene, 1.0);
-		else if (keydata.key == MLX_KEY_C)
-			translate_forward(scene, 5.0);
-		else if (keydata.key == MLX_KEY_F)
-			translate_forward(scene, -5.0);
 		else
 		{
-			// key_hook_move(scene, keydata);
-			key_hook_rotate(scene, keydata);
+			update = key_hook_move(scene, keydata) | key_hook_rotate(scene,
+					keydata);
+			if (update)
+				draw_img(scene);
 		}
-
-
 	}
 }

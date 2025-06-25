@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:22:35 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/17 14:19:32 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/24 15:10:18 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_color	color_blend(t_color c1, t_color c2, double ratio)
 	t_color	result;
 
 	if (ratio < 0.0 || ratio > 1.0)
-		return (c1); // Invalid ratio, return first color
+		return (c1);
 	result.r = (int)fmin(c1.r * (1 - ratio) + c2.r * ratio, 255.0);
 	result.g = (int)fmin(c1.g * (1 - ratio) + c2.g * ratio, 255.0);
 	result.b = (int)fmin(c1.b * (1 - ratio) + c2.b * ratio, 255.0);

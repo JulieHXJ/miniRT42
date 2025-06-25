@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 19:34:45 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/24 15:17:12 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ static bool	create_sphere(t_scene **scene, char **arr, t_gc_object **gc_list)
 		return (print_error("Memory allocation failed for sphere", *gc_list),
 			false);
 	new_obj->type = SPHERE;
-	if (!assign_vector(arr[1], &new_obj->data.sphere.center, gc_list))
+	if (!assign_vector(arr[1], &new_obj->u_data.sphere.center, gc_list))
 		return (print_error("Sphere center parse failed", *gc_list), false);
-	if (!assign_positive_num(arr[2], &new_obj->data.sphere.diam))
+	if (!assign_positive_num(arr[2], &new_obj->u_data.sphere.diam))
 		return (print_error("Negative number as sphere diameter", *gc_list),
 			false);
-	if (!assign_color(arr[3], &new_obj->data.sphere.color, gc_list))
+	if (!assign_color(arr[3], &new_obj->u_data.sphere.color, gc_list))
 		return (print_error("Sphere color parse failed", *gc_list), false);
-	// new_obj->data.sphere.specular = 0.0;
-	// new_obj->data.sphere.reflective = 0.0;
+	new_obj->u_data.sphere.specular = 0.0;
+	new_obj->u_data.sphere.reflective = 0.0;
 	connect_nodes(scene, &new_obj);
 	return (true);
 }
@@ -61,14 +61,14 @@ static bool	create_plane(t_scene **scene, char **arr, t_gc_object **gc_list)
 		return (print_error("Memory allocation failed for plane", *gc_list),
 			false);
 	new_obj->type = PLANE;
-	if (!assign_vector(arr[1], &new_obj->data.plane.point, gc_list))
+	if (!assign_vector(arr[1], &new_obj->u_data.plane.point, gc_list))
 		return (print_error("Plane point parse failed", *gc_list), false);
-	if (!assign_normal(arr[2], &new_obj->data.plane.normal, gc_list))
+	if (!assign_normal(arr[2], &new_obj->u_data.plane.normal, gc_list))
 		return (print_error("Plane normal parse failed", *gc_list), false);
-	if (!assign_color(arr[3], &new_obj->data.plane.color, gc_list))
+	if (!assign_color(arr[3], &new_obj->u_data.plane.color, gc_list))
 		return (print_error("Plane color parse failed", *gc_list), false);
-	// new_obj->data.plane.specular = 0.0;
-	// new_obj->data.plane.reflective = 0.0;
+	new_obj->u_data.plane.specular = 0.0;
+	new_obj->u_data.plane.reflective = 0.0;
 	connect_nodes(scene, &new_obj);
 	return (true);
 }
@@ -83,20 +83,20 @@ static bool	create_cylinder(t_scene **scene, char **arr, t_gc_object **gc_list)
 		return (print_error("Memory allocation failed for cylinder", *gc_list),
 			false);
 	new_obj->type = CYLINDER;
-	if (!assign_vector(arr[1], &new_obj->data.cylinder.center, gc_list))
+	if (!assign_vector(arr[1], &new_obj->u_data.cylinder.center, gc_list))
 		return (print_error("Cylinder center parse failed", *gc_list), false);
-	if (!assign_normal(arr[2], &new_obj->data.cylinder.direction, gc_list))
+	if (!assign_normal(arr[2], &new_obj->u_data.cylinder.direction, gc_list))
 		return (print_error("Cylinder direction parse failed", *gc_list),
 			false);
 	if (!assign_positive_num(arr[3], &diameter) || !assign_positive_num(arr[4],
-			&new_obj->data.cylinder.height))
+			&new_obj->u_data.cylinder.height))
 		return (print_error("Negative number detected", *gc_list), false);
-	new_obj->data.cylinder.radius = diameter / 2.0;
-	if (!assign_color(arr[5], &new_obj->data.cylinder.color, gc_list))
+	new_obj->u_data.cylinder.radius = diameter / 2.0;
+	if (!assign_color(arr[5], &new_obj->u_data.cylinder.color, gc_list))
 		return (print_error("Cylinder color parse failed", *gc_list), false);
-	get_cylinder_ends(&new_obj->data.cylinder);
-	new_obj->data.cylinder.specular = 0.0;
-	new_obj->data.cylinder.reflective = 0.0;
+	get_cylinder_ends(&new_obj->u_data.cylinder);
+	new_obj->u_data.cylinder.specular = 0.0;
+	new_obj->u_data.cylinder.reflective = 0.0;
 	connect_nodes(scene, &new_obj);
 	return (true);
 }

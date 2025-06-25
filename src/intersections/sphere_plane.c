@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 17:58:49 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/24 15:12:01 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ double	solve_quadratic(double a, double b, double c)
 		return (-1.0);
 	t0 = (-b - sqrt(discriminant)) / (2.0 * a);
 	t1 = (-b + sqrt(discriminant)) / (2.0 * a);
-	// Choose the closest positive intersection
 	if (t0 > 0.001)
 		t = t0;
 	else if (t1 > 0.001)
@@ -57,8 +56,8 @@ bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit)
 	double	b;
 	double	c;
 	double	t;
+	t_vec3	oc;
 
-	t_vec3 oc; // from center to origin(camera)
 	oc = vec_sub(ray.origin, sphere.center);
 	a = vec_dot(ray.direction, ray.direction);
 	b = 2.0 * vec_dot(ray.direction, oc);
@@ -66,7 +65,6 @@ bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit)
 	t = solve_quadratic(a, b, c);
 	if (t < 0)
 		return (false);
-	// Calculate intersection point and normal
 	hit->t = t;
 	hit->point = ray_point_at(ray, t);
 	hit->normal = vec_normalize(vec_sub(hit->point, sphere.center));
@@ -98,11 +96,9 @@ bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit)
 	oa = vec_sub(ray.origin, plane.point);
 	numerator = vec_dot(oa, plane.normal);
 	denom = vec_dot(ray.direction, plane.normal);
-	// Ray is parallel to the plane, no intersection
 	if (fabs(denom) < 0.0001)
 		return (false);
 	t = -numerator / denom;
-	// Check if intersection is behind the ray origin or closer than existing hit
 	if (t < 0.001 || (hit->t > 0 && hit->t < t))
 		return (false);
 	hit->t = t;
@@ -110,10 +106,9 @@ bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit)
 	if (denom < 0)
 		hit->normal = plane.normal;
 	else
-		hit->normal = vec_scale(plane.normal, -1); // Flip normal
+		hit->normal = vec_scale(plane.normal, -1);
 	hit->color = plane.color;
 	hit->specular = plane.specular;
 	hit->reflective = plane.reflective;
 	return (true);
 }
-

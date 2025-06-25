@@ -6,7 +6,7 @@
 #    By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/06/22 14:35:56 by xhuang           ###   ########.fr        #
+#    Updated: 2025/06/24 15:13:17 by xhuang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,6 @@ GNLDIR = ./lib/getnextline
 
 # remember to change
 SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c \
-		$(SRCDIR)/debugging.c \
 		$(SRCDIR)/vector/color.c \
 		$(SRCDIR)/vector/math1.c \
 		$(SRCDIR)/vector/math2.c \

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 19:34:02 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/24 15:10:41 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	get_cylinder_ends(t_cylinder *c)
 	c->bottom_center = vec_sub(c->center, half);
 	c->top_center = vec_add(c->center, half);
 }
-
 
 bool	parser(char *fname, t_scene **scene, t_gc_object **gc_list)
 {
@@ -53,4 +52,3 @@ bool	parser(char *fname, t_scene **scene, t_gc_object **gc_list)
 	}
 	return (close(fd), flag);
 }
-

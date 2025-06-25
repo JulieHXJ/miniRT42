@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:54:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/22 14:53:28 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 18:24:27 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	translate_horizontal(t_scene *scene, double step)
 	translation = vec_scale(scene->camera.viewport.right, step);
 	scene->camera.origin = vec_add(scene->camera.origin, translation);
 	set_viewport(&scene->camera.viewport, &scene->camera);
-	draw_img(scene);
 }
 
 void	translate_vertical(t_scene *scene, double step)
@@ -29,44 +28,7 @@ void	translate_vertical(t_scene *scene, double step)
 	translation = vec_scale(scene->camera.viewport.up, step);
 	scene->camera.origin = vec_add(scene->camera.origin, translation);
 	set_viewport(&scene->camera.viewport, &scene->camera);
-	draw_img(scene);
 }
-
-void	translate_forward(t_scene *scene, double step)
-{
-	t_vec3	translation;
-
-	translation = vec_scale(scene->camera.viewport.normal, step);
-	scene->camera.origin = vec_add(scene->camera.origin, translation);
-	set_viewport(&scene->camera.viewport, &scene->camera);
-	draw_img(scene);
-}
-
-// t_vec3	rotate_x(t_vec3 direction, double angle)
-// {
-// 	t_vec3	new;
-
-// 	printf("rotate_x before: %f %f %f\n", direction.x, direction.y,
-// 		direction.z);
-// 	new.x = direction.x;
-// 	new.y = direction.y * cos(angle) - direction.z * sin(angle);
-// 	new.z = direction.y * sin(angle) + direction.z * cos(angle);
-// 	printf("rotate_x after: %f %f %f\n", new.x, new.y, new.z);
-// 	return (new);
-// }
-
-// t_vec3	rotate_z(t_vec3 direction, double angle)
-// {
-// 	t_vec3	new;
-
-// 	printf("rotate_z before: %f %f %f\n", direction.x, direction.y,
-// 		direction.z);
-// 	new.x = direction.x * cos(angle) - direction.y * sin(angle);
-// 	new.y = direction.x * sin(angle) + direction.y * cos(angle);
-// 	new.z = direction.z;
-// 	printf("rotate_z after: %f %f %f\n", new.x, new.y, new.z);
-// 	return (new);
-// }
 
 // Rodrigues' rotation: Rotate a vector around an axis by angle
 t_vec3	rotate_axis(t_vec3 v, t_vec3 axis, double angle)
@@ -86,27 +48,15 @@ t_vec3	rotate_axis(t_vec3 v, t_vec3 axis, double angle)
  */
 void	rotate_camera(t_scene *scene, double pitch, double yaw)
 {
-	t_vec3 dir;
-	t_viewport *vp;
+	t_vec3		dir;
+	t_viewport	*vp;
 
 	vp = &scene->camera.viewport;
 	dir = scene->camera.direction;
-
-	// Rotate around local right vector (up/down)
 	if (pitch != 0.0)
 		dir = rotate_axis(dir, vp->right, pitch);
-
-	// Rotate around local up vector (left/right)
 	if (yaw != 0.0)
 		dir = rotate_axis(dir, vp->up, yaw);
-
 	scene->camera.direction = vec_normalize(dir);
-
-	// Apply pitch (x-axis), then yaw (z-axis)
-	// scene->camera.direction = rotate_x(scene->camera.direction, pitch);
-	// scene->camera.direction = rotate_z(scene->camera.direction, yaw);
-	// scene->camera.direction = vec_normalize(scene->camera.direction);
-
 	set_viewport(&scene->camera.viewport, &scene->camera);
-	draw_img(scene);
 }
