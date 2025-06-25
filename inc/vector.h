@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 13:37:03 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 14:59:26 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:34:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_vec3		vec_scale(t_vec3 v, double s);
 double		vec_dot(t_vec3 a, t_vec3 b);
 t_vec3		vec_cross(t_vec3 a, t_vec3 b);
 double		vec_length(t_vec3 v);
-t_vec3		vec_normalize(t_vec3 v);
+t_vec3		vec_normal(t_vec3 v);
 t_vec3		vec3_reflect(t_vec3 v, t_vec3 normal);
 
 // t_color	new_color(int r, int g, int b);

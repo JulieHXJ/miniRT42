@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 19:00:02 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:34:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_ray	ray_to_vp(t_scene *scene, double x, double y)
 	
 	// Create ray from camera origin through viewport point
 	ray.origin = scene->camera.origin;
-	ray.direction = vec_normalize(vec_sub(pixel_position, ray.origin));
+	ray.direction = vec_normal(vec_sub(pixel_position, ray.origin));
 	return (ray);
 }
 
@@ -118,7 +118,7 @@ bool	check_height(t_vec3 point, t_cylinder cylinder)
 	t_vec3	from_bottom;
 	double	proj;
 
-	axis = vec_normalize(vec_sub(cylinder.top_center, cylinder.bottom_center));
+	axis = vec_normal(vec_sub(cylinder.top_center, cylinder.bottom_center));
 	from_bottom = vec_sub(point, cylinder.bottom_center);
 	proj = vec_dot(from_bottom, axis);
 	return (proj >= 0.0 && proj <= cylinder.height);

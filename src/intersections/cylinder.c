@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 13:37:22 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/22 19:15:52 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:37:09 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	update_cy_hit(t_hit *hit, t_object obj, t_vec3 point, t_vec3 normal)
 
 	cylinder = obj.u_data.cylinder;
 	hit->point = point;
-	hit->normal = vec_normalize(normal);
+	hit->normal = vec_normal(normal);
 	hit->color = obj.color;
 	hit->specular = cylinder.specular;
 	hit->reflective = cylinder.reflective;

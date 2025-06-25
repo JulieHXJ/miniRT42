@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 12:58:54 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:36:31 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,8 @@ typedef struct s_sphere
 {
 	t_vec3	center;
 	double	diam;
-	double	specular;   // For bonus specular lighting
-	double	reflective; // For bonus reflections
+	double 			specular;   // For bonus specular lighting
+	double			reflective; // For bonus reflections
 }			t_sphere;
 
 /**
@@ -130,8 +130,8 @@ typedef struct s_plane
 {
 	t_vec3	point;
 	t_vec3	normal;
-	double	specular;   // For bonus specular lighting
-	double	reflective; // For bonus reflections
+	double 			specular;   // For bonus specular lighting
+	double			reflective; // For bonus reflections
 }			t_plane;
 
 /**
@@ -142,12 +142,12 @@ typedef struct s_cylinder
 {
 	t_vec3	center;
 	t_vec3	direction;
-	double	radius; // Diameter / 2
+	double	radius;
 	double	height;
 	t_vec3	top_center;
 	t_vec3	bottom_center;
-	double 	specular;   // For bonus specular lighting
-	double	reflective; // For bonus reflections
+	double 			specular;   // For bonus specular lighting
+	double			reflective; // For bonus reflections
 }						t_cylinder;
 
 /* ************************************************************************** */
@@ -225,6 +225,7 @@ bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 
 // Lighting
 bool	is_lighted_pixel(t_scene scene, t_hit hit);
+bool	is_shadowed_pixel(t_scene scene, t_hit hit);
 t_color	lighted_pixel(t_scene scene, t_hit hit);
 t_color	unlighted_pixel(t_scene scene, t_hit hit);
 t_color	checkered_background(uint32_t x, uint32_t y);

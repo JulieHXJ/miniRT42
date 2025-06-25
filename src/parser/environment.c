@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 15:43:07 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:34:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	set_viewport(t_viewport *vp, t_camera *camera)
 	vp->view_height = 2.0 * tan(vp->fov / 2.0);
 	vp->view_width = vp->aspect_ratio * vp->view_height;
 	vp->normal = camera->direction;
-	vp->right = vec_normalize(vec_cross(world_up, vp->normal));
-	vp->up = vec_normalize(vec_cross(vp->normal, vp->right));
+	vp->right = vec_normal(vec_cross(world_up, vp->normal));
+	vp->up = vec_normal(vec_cross(vp->normal, vp->right));
 	// Calculate the top-left corner of the viewport
 	screen_center = vec_add(camera->origin, vec_scale(camera->direction,
 				1.0));
@@ -63,7 +63,7 @@ static bool	set_camera(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	if (!in_range_int(fov, 0, 180))
 		return (print_error("FOV out of range", *gc_list), false);
 	(*scene)->camera.origin = position;
-	(*scene)->camera.direction = vec_normalize(ori_vec);
+	(*scene)->camera.direction = vec_normal(ori_vec);
 	(*scene)->camera.fov = fov;
 	set_viewport(&(*scene)->camera.viewport, &(*scene)->camera);
 	return (true);

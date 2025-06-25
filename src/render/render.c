@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 12:21:34 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:27:24 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ bool	render(t_scene *scene, t_gc_object **gc_list)
 		mlx_close_window(scene->mlx);
 		return (print_error("Failed to create image", *gc_list), false);
 	}
-	// draw the image here
 	draw_img(scene);
 	if (mlx_image_to_window(scene->mlx, scene->img, 0, 0) < 0)
 		return (print_error("Failed to attach image to window", *gc_list),

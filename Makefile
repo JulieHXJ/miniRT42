@@ -6,13 +6,13 @@
 #    By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/06/23 17:30:04 by dchrysov         ###   ########.fr        #
+#    Updated: 2025/06/25 12:38:56 by dchrysov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 MAKEFLAGS += -s
-CFLAGS = -Wall -Wextra -Werror -Wunreachable-code -g -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I./inc
+CFLAGS = -Wall -Wextra -Werror -Wunreachable-code -g -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I./inc -fsanitize=address
 MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw -pthread
 # MLX_FLAGS = -ldl -lglfw -pthread
 

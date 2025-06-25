@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/23 12:42:36 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:34:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	viewport_init(t_viewport *vp)
 static void	camera_init(t_scene *scene)
 {
 	scene->camera.origin = new_vector(0, 0, 0);
-	scene->camera.direction = vec_normalize(new_vector(0, -1, 0));
+	scene->camera.direction = vec_normal(new_vector(0, -1, 0));
 	scene->camera.fov = 60.0;
 	viewport_init(&scene->camera.viewport);
 }
