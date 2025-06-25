@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 12:40:37 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:46:22 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,7 @@ char	**gc_split(const char *s, char c,
 			t_gc_object **gc_list);
 
 // debugging
+void	print_vec3(const char *name, t_vec3 v);
 void	print_object(t_object *obj);
 void	print_camera(t_camera *cam);
 void	print_ambient(t_amb_light *amb);

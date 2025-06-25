@@ -6,13 +6,13 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:23:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/24 15:53:08 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:46:07 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-static void	print_vec3(const char *name, t_vec3 v)
+void	print_vec3(const char *name, t_vec3 v)
 {
 	printf("%s: (%.2f, %.2f, %.2f)\n", name, v.x, v.y, v.z);
 }

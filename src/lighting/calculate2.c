@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:26:36 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/06/25 12:36:18 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/25 14:35:42 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,25 @@ bool	is_shadowed_pixel(t_scene scene, t_hit hit)
 	target = target_object(scene.obj, hit.object->id);
 	light_ray.origin = scene.light->position;
 	light_ray.direction = vec_normal(vec_sub(hit.point, light_ray.origin));
+	// print_vec3("hit", light_ray.direction); pause();
 	result = false;
 	while (!result && scene.obj)
 	{
 		if (scene.obj != target)
 		{
-			if (scene.obj->type == SPHERE)
-				result = hit_sphere(light_ray, *scene.obj, NULL);
-			else if (scene.obj->type == CYLINDER)
-				result = hit_cylinder(light_ray, *scene.obj, NULL);
-			else
-				result = hit_plane(light_ray, *scene.obj, NULL);
+			// if (scene.obj->type == SPHERE)
+			// 	result = hit_sphere(light_ray, *scene.obj, NULL);
+			// else if (scene.obj->type == CYLINDER)
+			// 	result = hit_cylinder(light_ray, *scene.obj, NULL);
+			// else
+			// 	result = hit_plane(light_ray, *scene.obj, NULL);
+			result = if_hit(&scene, light_ray, NULL);
 		}
 		scene.obj = scene.obj->next;
 	}
+	// if (hit.object->id == 0 && !result) {
+	// 	printf("Y\n");
+	// 	pause();
+	// }
 	return (result);
 }

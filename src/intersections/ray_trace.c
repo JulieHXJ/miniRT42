@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 16:34:54 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/25 14:36:38 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,28 +88,27 @@ static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
  * @brief check if the ray hits any object in the scene
  * @return true if any object was hit, false otherwise
  * @note the interscetion record is stored in the hit struct
- *
  */
 bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit)
 {
 	t_object	*obj;
 	t_hit		hit_record;
-	bool		hit_obj;
+	bool		result;
 
-	hit_obj = false;
+	result = false;
 	hit->t = INFINITY;
 	obj = scene->obj;
-	while (obj)
+	while (!result && obj)
 	{
 		hit_record.t = INFINITY;
 		if (hit_object(obj, ray, &hit_record) && hit_record.t < hit->t)
 		{
 			*hit = hit_record;
-			hit_obj = true;
+			result = true;
 		}
 		obj = obj->next;
 	}
-	return (hit_obj);
+	return (result);
 }
 
 bool	check_height(t_vec3 point, t_cylinder cylinder)

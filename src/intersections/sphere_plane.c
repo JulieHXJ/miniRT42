@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 12:43:13 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:53:35 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,6 @@ bool	hit_sphere(t_ray ray, t_object obj, t_hit *hit)
 		hit->t = t;
 		hit->point = ray_point_at(ray, t);
 		hit->normal = vec_normal(vec_sub(hit->point, obj.u_data.sphere.center));
-		// hit->color = obj.color;
-		// hit->specular = obj.specular;
-		// hit->reflective = obj.reflective;
 	}
 	return (true);
 }
