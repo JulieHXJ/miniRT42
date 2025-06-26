@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 18:30:06 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/26 11:02:18 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 
 // Lighting
 bool	is_lighted_pixel(t_scene scene, t_hit hit);
-bool	is_shadowed_pixel(t_scene scene, t_hit hit);
+bool	is_in_shadow(t_scene scene, t_hit hit);
 t_color	lighted_pixel(t_scene scene, t_hit hit);
 t_color	unlighted_pixel(t_scene scene, t_hit hit);
 t_color	checkered_background(uint32_t x, uint32_t y);

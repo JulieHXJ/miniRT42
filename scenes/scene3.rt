@@ -27,7 +27,7 @@ pl 0,-5,0 0,1,0 200,200,200
 cy -15,-5,0 0,1,0 2.0 10.0 255,0,0
 # Horizontal Cylinder (sideways along X-axis)
 # Angled Cylinder (diagonal)
-cy 15,-5,0 1,1,0 2.0 10.0 0,0,255
+# cy 15,-5,0 1,1,0 2.0 10.0 0,0,255
 
 
 # A 0.2 255,255,255
