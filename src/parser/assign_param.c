@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:30:39 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/25 18:46:49 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/27 14:17:16 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	assign_normal(char *normal, t_vec3 *v, t_gc_object **gc_list)
 	if (!valid_normal(*v))
 		return (print_error("Normal vector out of range [-1.0, 1.0]", NULL),
 			false);
-	*v = vec_normalize(*v);
+	*v = vec_normal(*v);
 	return (true);
 }
 
@@ -60,16 +60,19 @@ bool	assign_positive_num(char *num, double *value)
 }
 
 // for bonus
-void	assign_material(char *tokens, t_material *material)
+void	assign_material(char **tokens, t_material *material)
 {
-	if (tokens[4])
-		material->specular = ft_atod(&tokens[4]);
-	if (tokens[5])
-		material->reflective = ft_atod(&tokens[5]);
-	if (tokens[6])
-		material->roughness = ft_atod(&tokens[7]);
-	if (tokens[7])
-		material->transparency = ft_atod(&tokens[8]);
-	if (tokens[8])
-		material->refractive_index = ft_atod(&tokens[6]);
+	int len;
+
+	len = array_size(tokens);
+	if (len > 4)
+		material->specular = ft_atod(tokens[4]);
+	if (len > 5)
+		material->reflective = ft_atod(tokens[5]);
+	if (len > 6)
+		material->roughness = ft_atod(tokens[6]);
+	if (len > 7)
+		material->transparency = ft_atod(tokens[7]);
+	if (len > 8)
+		material->refractive_index = ft_atod(tokens[8]);
 }

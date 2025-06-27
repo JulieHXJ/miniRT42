@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 13:37:22 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 18:51:16 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 19:08:06 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,10 @@ static double	get_t_side(t_vec3 x, t_vec3 ray_dir, t_cylinder cylinder)
 	return (solve_quadratic(a, b, c));
 }
 
-static void	update_cy_hit(t_hit *hit, t_vec3 point, t_vec3 normal)
+static void	update_cy_hit(t_hit *hit, t_vec3 point,	t_vec3 normal)
 {
 	hit->point = point;
-	hit->normal = vec_normalize(normal);
-	// hit->color = cylinder.color;
-	// hit->specular = cylinder.specular;
-	// hit->reflective = cylinder.reflective;
+	hit->normal = vec_normal(normal);
 }
 
 static bool	check_sides(t_ray ray, t_cylinder cylinder, t_hit *hit)
@@ -78,6 +75,7 @@ static bool	check_sides(t_ray ray, t_cylinder cylinder, t_hit *hit)
 	projection_length = vec_dot(axis_to_point, cylinder.direction);
 	normal = vec_sub(point, vec_add(cylinder.center,
 				vec_scale(cylinder.direction, projection_length)));
+	update_cy_hit(hit, point, normal);
 	update_cy_hit(hit, point, normal);
 	hit->t = t;
 	return (true);

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 15:16:57 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/27 13:54:53 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_ray	ray_to_vp(t_scene *scene, double x, double y)
 	pixel_y = vec_scale(vp->up, -(y + 0.5) * vp->view_height / WIN_HEIGHT);
 	pixel_position = vec_add(vec_add(vp->up_left_corner, pixel_x), pixel_y);
 	ray.origin = scene->camera.origin;
-	ray.direction = vec_normalize(vec_sub(pixel_position, ray.origin));
+	ray.direction = vec_normal(vec_sub(pixel_position, ray.origin));
 	return (ray);
 }
 
@@ -46,7 +46,7 @@ static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 {
 	if (obj->type == SPHERE)
 	{
-		if (hit_sphere(ray, obj->u_data.sphere, hit))
+		if (hit_sphere(ray, (*obj).u_data.sphere, hit))
 		{
 			hit->object = obj;
 			return (true);
@@ -54,7 +54,7 @@ static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 	}
 	else if (obj->type == PLANE)
 	{
-		if (hit_plane(ray, obj->u_data.plane, hit))
+		if (hit_plane(ray, (*obj).u_data.plane, hit))
 		{
 			hit->object = obj;
 			return (true);
@@ -62,7 +62,7 @@ static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 	}
 	else if (obj->type == CYLINDER)
 	{
-		if (hit_cylinder(ray, obj->u_data.cylinder, hit))
+		if (hit_cylinder(ray, (*obj).u_data.cylinder, hit))
 		{
 			hit->object = obj;
 			return (true);
@@ -75,28 +75,28 @@ static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
  * @brief check if the ray hits any object in the scene
  * @return true if any object was hit, false otherwise
  * @note the interscetion record is stored in the hit struct
- *
  */
 bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit)
 {
 	t_object	*obj;
 	t_hit		hit_record;
-	bool		hit_obj;
+	bool		result;
 
-	hit_obj = false;
+	result = false;
 	hit->t = INFINITY;
 	obj = scene->obj;
-	while (obj)
+	while (!result && obj)
 	{
+		hit_record.t = INFINITY;
 		hit_record.t = INFINITY;
 		if (hit_object(obj, ray, &hit_record) && hit_record.t < hit->t)
 		{
 			*hit = hit_record;
-			hit_obj = true;
+			result = true;
 		}
 		obj = obj->next;
 	}
-	return (hit_obj);
+	return (result);
 }
 
 bool	check_height(t_vec3 point, t_cylinder cylinder)
@@ -105,7 +105,7 @@ bool	check_height(t_vec3 point, t_cylinder cylinder)
 	t_vec3	from_bottom;
 	double	proj;
 
-	axis = vec_normalize(vec_sub(cylinder.top_center, cylinder.bottom_center));
+	axis = vec_normal(vec_sub(cylinder.top_center, cylinder.bottom_center));
 	from_bottom = vec_sub(point, cylinder.bottom_center);
 	proj = vec_dot(from_bottom, axis);
 	return (proj >= 0.0 && proj <= cylinder.height);

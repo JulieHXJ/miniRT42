@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 18:51:42 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 19:04:00 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,22 @@ void	draw_img(t_scene *scene)
 	t_hit		hit;
 	t_color		color;
 
-	// need to change to while loop
-	for (y = 0; y < scene->img->height; y++)
+	y = -1;
+	while (++y < scene->img->height)
 	{
-		for (x = 0; x < scene->img->width; x++)
+		x = -1;
+		while (++x < scene->img->width)
 		{
 			ray = ray_to_vp(scene, x, y);
 			if (if_hit(scene, ray, &hit))
 			{
-				color = hit.object->color; // todo: set color based on object
-				// if (condition)
-				// {
-				// 	//part on surface lighted by the light
-				// 	color = calculate_lighting(scene, &hit);
-				// }
-				// else
-				// {
-				// 	//shadow
-				// 	color = scene->amb_light.color; // todo: set ambient color
-				// }
+				if (is_lighted_pixel(*scene, hit))
+					color = lighted_pixel(*scene, hit);
+				else
+					color = unlighted_pixel(*scene, hit);
 			}
 			else
-				color = (t_color){0, 0, 0}; // todo: set ambient color
-			// Set pixel color
+				color = checkered_background(x, y);
 			mlx_put_pixel(scene->img, x, y, convert_color(color));
 		}
 	}

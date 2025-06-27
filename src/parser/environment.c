@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 18:45:07 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/27 13:44:59 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	set_viewport(t_viewport *vp, t_camera *camera)
 	vp->view_height = 2.0 * tan(vp->fov / 2.0);
 	vp->view_width = vp->aspect_ratio * vp->view_height;
 	vp->normal = camera->direction;
-	vp->right = vec_normalize(vec_cross(world_up, vp->normal));
-	vp->up = vec_normalize(vec_cross(vp->normal, vp->right));
+	vp->right = vec_normal(vec_cross(world_up, vp->normal));
+	vp->up = vec_normal(vec_cross(vp->normal, vp->right));
 	screen_center = vec_add(camera->origin, vec_scale(camera->direction, 1.0));
 	half_width = vec_scale(vp->right, vp->view_width / 2.0);
 	half_height = vec_scale(vp->up, vp->view_height / 2.0);
@@ -65,7 +65,7 @@ static bool	set_camera(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	if (!in_range_int(fov, 0, 180))
 		return (print_error("FOV out of range", *gc_list), false);
 	(*scene)->camera.origin = position;
-	(*scene)->camera.direction = vec_normalize(ori_vec);
+	(*scene)->camera.direction = vec_normal(ori_vec);
 	(*scene)->camera.fov = fov;
 	(*scene)->camera.cam_num++;
 	set_viewport(&(*scene)->camera.viewport, &(*scene)->camera);
@@ -103,9 +103,10 @@ static bool	set_amb_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
  */
 static bool	set_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 {
-	double	brightness;
-	t_vec3	pos;
-	t_color	col;
+	static int	i = 0;
+	double		brightness;
+	t_vec3		pos;
+	t_color		col;
 
 	if (array_size(tokens) != 4)
 		return (print_error("Light requires 3 parameters", *gc_list), false);
@@ -121,6 +122,7 @@ static bool	set_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	(*scene)->light = gc_alloc(sizeof(t_light), gc_list);
 	if (!(*scene)->light)
 		return (print_error("Light allocatione failed", *gc_list), false);
+	(*scene)->light->id = i;
 	(*scene)->light->position = pos;
 	(*scene)->light->color = col;
 	(*scene)->light->ratio = brightness;

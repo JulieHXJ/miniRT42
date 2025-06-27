@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:23:10 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 18:20:50 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/25 19:04:17 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		else if (keydata.key == MLX_KEY_R)
 		{
 			scene->camera.origin = new_vector(0, 0, 0);
-			scene->camera.direction = vec_normalize(new_vector(0, -1, 0));
+			scene->camera.direction = vec_normal(new_vector(0, -1, 0));
 			scene->camera.fov = 60.0;
 			set_viewport(&scene->camera.viewport, &scene->camera);
 			draw_img(scene);

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 18:42:28 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/27 14:07:14 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,13 @@ bool	parser(int fd, t_scene **scene, t_gc_object **gc_list)
 			return (close(fd), false);
 	}
 	close(fd);
-	if ((!(*scene)->camera.cam_num) != 1 || (!(*scene)->amb_light.amb_num) != 1)
+	// debugging
+	printf("camera number: %d\n", (*scene)->camera.cam_num);
+	printf("ambient light number: %d\n", (*scene)->amb_light.amb_num);
+	
+	print_scene_info(*scene);
+	
+	if ((*scene)->camera.cam_num != 1 || (*scene)->amb_light.amb_num != 1)
 		return (print_error("Only 1 camera or ambient light is allowed", NULL),
 			false);
 	return (flag);

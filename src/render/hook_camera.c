@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:54:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/25 18:24:27 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/27 13:45:27 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ void	rotate_camera(t_scene *scene, double pitch, double yaw)
 		dir = rotate_axis(dir, vp->right, pitch);
 	if (yaw != 0.0)
 		dir = rotate_axis(dir, vp->up, yaw);
-	scene->camera.direction = vec_normalize(dir);
+	scene->camera.direction = vec_normal(dir);
 	set_viewport(&scene->camera.viewport, &scene->camera);
 }

@@ -6,95 +6,81 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:23:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/17 17:17:31 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/27 14:03:19 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	print_vec3(const char *name, t_vec3 v)
+#include <stdio.h>
+
+static void	print_vec3(t_vec3 v, char *label)
 {
-	printf("%s: (%.2f, %.2f, %.2f)\n", name, v.x, v.y, v.z);
+	printf("%s: (%.2f, %.2f, %.2f)\n", label, v.x, v.y, v.z);
 }
 
-void	print_color(const char *name, t_color c)
+static void	print_color(t_color c, char *label)
 {
-	printf("%s: (%d, %d, %d)\n", name, c.r, c.g, c.b);
+	printf("%s: (%d, %d, %d)\n", label, c.r, c.g, c.b);
 }
 
-void	print_camera(t_camera *cam)
+void	print_scene_info(t_scene *scene)
 {
-	printf("== Camera ==\n");
-	print_vec3("Origin", cam->origin);
-	print_vec3("Direction", cam->direction);
-	printf("FOV: %.2f\n", cam->fov);
-	// printf("Viewport: %d x %d\n", cam->viewport_width, cam->viewport_height);
-	// print_vec3("Screen Up", cam->screen_up);
-	// print_vec3("Screen Right", cam->screen_right);
-}
+	printf("------ SCENE INFO ------\n");
 
-void	print_ambient(t_amb_light *amb)
-{
-	printf("== Ambient Light ==\n");
-	printf("Ratio: %.2f\n", amb->ratio);
-	print_color("Color", amb->color);
-}
+	// Camera
+	printf("\n[Camera]\n");
+	print_vec3(scene->camera.origin, "Origin");
+	print_vec3(scene->camera.direction, "Direction");
+	printf("FOV: %.2f\n", scene->camera.fov);
+	printf("Camera Count: %d\n", scene->camera.cam_num);
 
-void	print_light(t_light *light)
-{
-	if (!light)
+	// Ambient Light
+	printf("\n[Ambient Light]\n");
+	printf("Ratio: %.2f\n", scene->amb_light.ratio);
+	print_color(scene->amb_light.color, "Color");
+	printf("Ambient Count: %d\n", scene->amb_light.amb_num);
+
+	// Light
+	if (scene->light)
 	{
-		printf("== Light ==\nNone\n");
-		return ;
+		printf("\n[Light]\n");
+		print_vec3(scene->light->position, "Position");
+		printf("Ratio: %.2f\n", scene->light->ratio);
+		print_color(scene->light->color, "Color");
 	}
-	printf("== Light ==\n");
-	print_vec3("Position", light->position);
-	printf("Ratio: %.2f\n", light->ratio);
-	print_color("Color", light->color);
-}
+	else
+		printf("\n[Light] None\n");
 
-void	print_sphere(t_sphere *sp)
-{
-	printf("  - Sphere\n");
-	print_vec3("Center", sp->center);
-	printf("Diameter: %.2f\n", sp->diam);
-	print_color("Color", sp->color);
-	printf("Specular: %.2f | Reflective: %.2f\n", sp->specular, sp->reflective);
-}
-
-void	print_plane(t_plane *pl)
-{
-	printf("  - Plane\n");
-	print_vec3("Point", pl->point);
-	print_vec3("Normal", pl->normal);
-	print_color("Color", pl->color);
-	printf("Specular: %.2f | Reflective: %.2f\n", pl->specular, pl->reflective);
-}
-void	print_cylinder(t_cylinder *cy)
-{
-	printf("  - Cylinder\n");
-	print_vec3("Center", cy->center);
-	print_vec3("Direction", cy->direction);
-	printf("Radius: %.2f | Height: %.2f\n", cy->radius, cy->height);
-	print_color("Color", cy->color);
-	printf("Specular: %.2f | Reflective: %.2f\n", cy->specular, cy->reflective);
-}
-void	print_object(t_object *obj)
-{
-	int	count;
-
-	count = 1;
+	// Objects
+	t_object *obj = scene->obj;
+	int i = 0;
 	while (obj)
 	{
-		printf("== Object #%d ==\n", count++);
+		printf("\n[Object #%d]\n", ++i);
 		if (obj->type == SPHERE)
-			print_sphere(&obj->data.sphere);
+		{
+			printf("Type: Sphere\n");
+			print_vec3(obj->u_data.sphere.center, "Center");
+			printf("Diameter: %.2f\n", obj->u_data.sphere.diam);
+		}
 		else if (obj->type == PLANE)
-			print_plane(&obj->data.plane);
+		{
+			printf("Type: Plane\n");
+			print_vec3(obj->u_data.plane.point, "Point");
+			print_vec3(obj->u_data.plane.normal, "Normal");
+		}
 		else if (obj->type == CYLINDER)
-			print_cylinder(&obj->data.cylinder);
-		else
-			printf("  - Unknown object type\n");
+		{
+			printf("Type: Cylinder\n");
+			print_vec3(obj->u_data.cylinder.center, "Center");
+			print_vec3(obj->u_data.cylinder.direction, "Direction");
+			printf("Radius: %.2f\n", obj->u_data.cylinder.radius);
+			printf("Height: %.2f\n", obj->u_data.cylinder.height);
+		}
+		print_color(obj->color, "Color");
 		obj = obj->next;
 	}
+	printf("\n------ END SCENE INFO ------\n");
 }
+

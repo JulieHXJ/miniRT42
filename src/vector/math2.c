@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:22:02 by junjun            #+#    #+#             */
-/*   Updated: 2025/05/25 19:32:04 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/24 16:34:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ double	vec_length(t_vec3 v)
  * @brief Normalize vector v to unit length
  * @note v / |v|, if |v| == 0, return v
  */
-t_vec3	vec_normalize(t_vec3 v)
+t_vec3	vec_normal(t_vec3 v)
 {
 	double	len;
 
