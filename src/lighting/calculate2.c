@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:26:36 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/06/27 14:37:55 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:32:44 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ bool	is_in_shadow(t_scene scene, t_hit hit)
 
 	light = *scene.light;
 	blocker = scene.obj;
-	// shadow.origin = hit.point;
 	shadow.origin = vec_add(hit.point, vec_scale(hit.normal, 0.0001));
 	shadow.direction = vec_sub(light.position, shadow.origin);
 	while (blocker)
