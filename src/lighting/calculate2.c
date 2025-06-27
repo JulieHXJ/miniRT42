@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   calculate2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:26:36 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/06/25 14:35:42 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:37:34 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,45 +36,35 @@ t_color	unlighted_pixel(t_scene scene, t_hit hit)
 	return (clamp_color(obj.color));
 }
 
-static t_object	*target_object(t_object	*object, int id)
+/**
+ * @brief Checks if the hit point is blocked by another object's shadow.
+ * 
+ * @param shadow The shadow ray casted from the hit point to the light source.
+ * @param limit The distance between the hit point and the light source.
+ * 
+ * @note Normally the shadow is launched from the hit point towards
+ * the direction of the light source. This initial point is offsetted
+ * by a small factor (1e-4) to avoid self shadowing, due to random rounding
+ * of float numbers.
+ */
+bool	is_in_shadow(t_scene scene, t_hit hit)
 {
-	while (object)
-	{
-		if (object->id == id)
-			return (object);
-		object = object->next;
-	}
-	return (NULL);
-}
+	t_ray		shadow;
+	t_light		light;
+	t_hit		temp_hit;
+	t_object	*blocker;
 
-bool	is_shadowed_pixel(t_scene scene, t_hit hit)
-{
-	t_object	*target;
-	t_ray		light_ray;
-	bool		result;
-
-	target = target_object(scene.obj, hit.object->id);
-	light_ray.origin = scene.light->position;
-	light_ray.direction = vec_normal(vec_sub(hit.point, light_ray.origin));
-	// print_vec3("hit", light_ray.direction); pause();
-	result = false;
-	while (!result && scene.obj)
+	light = *scene.light;
+	blocker = scene.obj;
+	// shadow.origin = hit.point;
+	shadow.origin = vec_add(hit.point, vec_scale(hit.normal, 0.0001));
+	shadow.direction = vec_sub(light.position, shadow.origin);
+	while (blocker)
 	{
-		if (scene.obj != target)
-		{
-			// if (scene.obj->type == SPHERE)
-			// 	result = hit_sphere(light_ray, *scene.obj, NULL);
-			// else if (scene.obj->type == CYLINDER)
-			// 	result = hit_cylinder(light_ray, *scene.obj, NULL);
-			// else
-			// 	result = hit_plane(light_ray, *scene.obj, NULL);
-			result = if_hit(&scene, light_ray, NULL);
-		}
-		scene.obj = scene.obj->next;
+		if (blocker != hit.object && hit_object(blocker, shadow, &temp_hit)
+			&& temp_hit.t > 0 && temp_hit.t < hit.t)
+			return (true);
+		blocker = blocker->next;
 	}
-	// if (hit.object->id == 0 && !result) {
-	// 	printf("Y\n");
-	// 	pause();
-	// }
-	return (result);
+	return (false);
 }

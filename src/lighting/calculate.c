@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:10:44 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/25 14:40:29 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/27 14:38:35 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,10 @@ static t_color	direct_light(t_light light, t_vec3 light_vec, t_hit hit)
 	return (result);
 }
 
+/**
+ * @brief Color the pixels on the light side of the object.
+ * @param hit The lighted pixel.
+ */
 t_color	lighted_pixel(t_scene scene, t_hit hit)
 {
 	t_vec3		l;
@@ -60,11 +64,8 @@ t_color	lighted_pixel(t_scene scene, t_hit hit)
 	ambient = scene.amb_light;
 	light = *scene.light;
 	obj = *hit.object;
-	// if (hit.object->id == 0) {
-	// 	printf("Y\n"); pause();
-	// }
-	// if (is_shadowed_pixel(scene, hit))
-	// 	return (clamp_color(color_mult(obj.color, indirect_light(ambient))));
+	if (is_in_shadow(scene, hit))
+		return (clamp_color(color_mult(obj.color, indirect_light(ambient))));
 	l = vec_sub(light.position, hit.point);
 	result = color_add(indirect_light(ambient), direct_light(light, l, hit));
 	return (clamp_color(color_mult(obj.color, result)));

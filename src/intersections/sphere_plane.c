@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 19:06:04 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/27 15:10:38 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit)
 	t = solve_quadratic(a, b, c);
 	if (t < 0)
 		return (false);
-	// Calculate intersection point and normal
 	if (hit)
 	{
 		hit->t = t;
@@ -107,6 +106,6 @@ bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit)
 	if (denom < 0)
 		hit->normal = plane.normal;
 	else
-		hit->normal = vec_scale(plane.normal, -1); // Flip normal
+		hit->normal = vec_scale(plane.normal, -1);
 	return (true);
 }

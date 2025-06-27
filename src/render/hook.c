@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:23:10 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 19:04:17 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/27 16:23:59 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void	zooming(double xdelta, double ydelta, void *param)
 		scene->camera.origin = vec_add(scene->camera.origin, translation);
 		set_viewport(&scene->camera.viewport, &scene->camera);
 	}
+	draw_img(scene);
+	mlx_image_to_window(scene->mlx, scene->img, 0, 0);
 }
 
 /**

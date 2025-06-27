@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/27 14:16:10 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/27 15:55:22 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "../lib/getnextline/inc/get_next_line.h"
 # include "../lib/libft/inc/libft.h"
 # include "intersect.h"
-# include "material.h"
+# include "render.h"
 # include "vector.h"
 # include <fcntl.h>
 # include <math.h>
@@ -182,6 +182,13 @@ typedef struct s_scene
 	mlx_image_t	*img;
 }				t_scene;
 
+
+typedef struct s_thread_data {
+	int id;
+	int thread_count;
+	t_scene *scene;          // Pointer to the scene being rendered
+} t_thread_data;
+
 /* ************************************************************************** */
 /* FUNCTION PROTOTYPES                                                        */
 /* ************************************************************************** */
@@ -215,19 +222,19 @@ bool					create_objects(char *line, t_scene **scene,
 bool					parser(int fd, t_scene **scene, t_gc_object **gc_list);
 
 // Intersections
-void					set_viewport(t_viewport *vp, t_camera *camera);
-t_ray					ray_to_vp(t_scene *scene, double x, double y);
-double					solve_quadratic(double a, double b, double c);
-bool					hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit);
-bool					hit_plane(t_ray ray, t_plane plane, t_hit *hit);
-bool					check_height(t_vec3 point, t_cylinder cylinder);
-bool					hit_cylinder(t_ray ray, t_cylinder cylinder,
-							t_hit *hit);
-bool					if_hit(t_scene *scene, t_ray ray, t_hit *hit);
+void	set_viewport(t_viewport *vp, t_camera *camera);
+t_ray	ray_to_vp(t_scene *scene, double x, double y);
+double	solve_quadratic(double a, double b, double c);
+bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit);
+bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit);
+bool	check_height(t_vec3 point, t_cylinder cylinder);
+bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit);
+bool	hit_object(t_object *obj, t_ray ray, t_hit *hit);
+bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 
 // Lighting
 bool	is_lighted_pixel(t_scene scene, t_hit hit);
-bool	is_shadowed_pixel(t_scene scene, t_hit hit);
+bool	is_in_shadow(t_scene scene, t_hit hit);
 t_color	lighted_pixel(t_scene scene, t_hit hit);
 t_color	unlighted_pixel(t_scene scene, t_hit hit);
 t_color	checkered_background(uint32_t x, uint32_t y);

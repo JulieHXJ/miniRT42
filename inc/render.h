@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   material.h                                         :+:      :+:    :+:   */
+/*   render.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 13:38:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 18:03:54 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/27 15:55:12 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define RENDER_H
 
 # include "vector.h"
-// #include <pthread.h>
+# include <pthread.h>
+
 
 typedef struct s_material
 {
@@ -24,6 +25,7 @@ typedef struct s_material
 	double roughness;        // Surface roughness for diffuse reflection
 	double transparency;     // Transparency coefficient
 }	t_material;
+
 
 
 

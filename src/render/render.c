@@ -6,43 +6,148 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 19:04:00 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/27 16:39:00 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#define THREAD_COUNT 16
 
-/**
- * @brief Draw each pixel of the scene to the image
- */
-void	draw_img(t_scene *scene)
+// void draw_pixel(t_scene *scene, )
+// {
+// 	uint32_t x;
+// 	uint32_t y;
+// 	t_ray ray;
+// 	t_color color;
+// 	t_hit hit;
+	
+	
+
+
+// 	y = start_y - 1;
+// 	while (++y < end_y)
+// 	{
+// 		x = -1;
+// 		while (++x < scene->img->width)
+// 		{
+// 			ray = ray_to_vp(d->scene, x, y);
+// 			if (if_hit(d->scene, ray, &hit))
+// 			{
+// 				if (is_lighted_pixel(*d->scene, hit))
+// 					color = lighted_pixel(*d->scene, hit);
+// 				else
+// 					color = unlighted_pixel(*d->scene, hit);
+// 			}
+// 			else
+// 				color = checkered_background(x, y);
+// 			mlx_put_pixel(d->scene->img, x, y, convert_color(color));
+// 		}
+// 	}
+// }
+
+void	*thread_draw(void *arg)
 {
-	uint32_t	x;
-	uint32_t	y;
-	t_ray		ray;
-	t_hit		hit;
-	t_color		color;
+	t_thread_data	*d = (t_thread_data *)arg;
+	uint32_t		x, y;
+	t_ray			ray;
+	t_hit			hit;
+	t_color			color;
 
-	y = -1;
-	while (++y < scene->img->height)
+	uint32_t start_y = (d->scene->img->height / d->thread_count) * d->id;
+	uint32_t end_y = (d->id == d->thread_count - 1)
+		? d->scene->img->height
+		: (d->scene->img->height / d->thread_count) * (d->id + 1);
+
+	y = start_y - 1;
+	while (++y < end_y)
 	{
 		x = -1;
-		while (++x < scene->img->width)
+		while (++x < d->scene->img->width)
 		{
-			ray = ray_to_vp(scene, x, y);
-			if (if_hit(scene, ray, &hit))
+			ray = ray_to_vp(d->scene, x, y);
+			if (if_hit(d->scene, ray, &hit))
 			{
-				if (is_lighted_pixel(*scene, hit))
-					color = lighted_pixel(*scene, hit);
+				if (is_lighted_pixel(*d->scene, hit))
+					color = lighted_pixel(*d->scene, hit);
 				else
-					color = unlighted_pixel(*scene, hit);
+					color = unlighted_pixel(*d->scene, hit);
 			}
 			else
 				color = checkered_background(x, y);
-			mlx_put_pixel(scene->img, x, y, convert_color(color));
+			mlx_put_pixel(d->scene->img, x, y, convert_color(color));
 		}
 	}
+	return NULL;
 }
+
+
+
+
+void	draw_img(t_scene *scene)
+{
+	pthread_t		threads[THREAD_COUNT];
+	t_thread_data	*thread_data;
+	int i;
+
+	i = 0;
+	thread_data = malloc(sizeof(t_thread_data) * THREAD_COUNT);
+	if (!thread_data)
+		return ;
+
+	while (i < THREAD_COUNT)
+	{
+		thread_data[i].id = i;
+		thread_data[i].thread_count = THREAD_COUNT;
+		thread_data[i].scene = scene;
+		if (pthread_create(&threads[i], NULL, thread_draw, &thread_data[i]) != 0)
+		{
+			perror("Thread creation failed");
+            free(thread_data);
+            return;
+		}
+		i++;
+	}
+	i = 0;
+	while (i < THREAD_COUNT)
+	{
+		pthread_join(threads[i], NULL);
+		i++;
+	}
+	free(thread_data);
+}
+
+
+// /**
+//  * @brief Draw each pixel of the scene to the image
+//  */
+// void	draw_img(t_scene *scene)
+// {
+// 	uint32_t	x;
+// 	uint32_t	y;
+// 	t_ray		ray;
+// 	t_hit		hit;
+// 	t_color		color;
+
+// 	y = -1;
+// 	while (++y < scene->img->height)
+// 	{
+// 		x = -1;
+// 		while (++x < scene->img->width)
+// 		{
+// 			ray = ray_to_vp(scene, x, y);
+// 			if (if_hit(scene, ray, &hit))
+// 			{
+// 				if (is_lighted_pixel(*scene, hit))
+// 					color = lighted_pixel(*scene, hit);
+// 				else
+// 					color = unlighted_pixel(*scene, hit);
+// 			}
+// 			else
+// 				color = checkered_background(x, y);
+// 			mlx_put_pixel(scene->img, x, y, convert_color(color));
+// 		}
+// 	}
+// }
 
 // update: using threads to render the objects
 bool	render(t_scene *scene, t_gc_object **gc_list)

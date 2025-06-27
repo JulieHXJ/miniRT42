@@ -6,31 +6,11 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 13:37:22 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 19:08:06 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/27 15:06:38 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-/**
- * Ray-Cylinder Intersection Implementation
- *
- * Standard formula for infinite cylinder:
- * |(P(t) - C) - proj_V(P(t) - C)|² = r²
- * (point to the cylinder axis equals to the radius.)
- *
- * P(t) = O + t * D (ray equation)
- Where:
- * X = O - C (vector from cylinder center to ray origin)
- * D_perp = D - dot(D, V) * V (ray direction perpendicular to cylinder axis)
- * X_perp = X - dot(X, V) * V (displacement perpendicular to cylinder axis)
- * a = dot(D_perp, D_perp)
- * b = 2 * dot(D_perp, X_perp)
- * c = dot(X_perp, X_perp) - r²
- *
-2. limit the height:
-height = dot(P - C, V)
-height < 0 || height > cylinder.height*/
 
 static double	get_t_side(t_vec3 x, t_vec3 ray_dir, t_cylinder cylinder)
 {

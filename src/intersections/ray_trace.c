@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/27 13:54:53 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/06/27 15:07:21 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_ray	ray_to_vp(t_scene *scene, double x, double y)
 	t_vec3		pixel_x;
 	t_vec3		pixel_y;
 
+
 	vp = &scene->camera.viewport;
 	pixel_x = vec_scale(vp->right, (x + 0.5) * vp->view_width / WIN_WIDTH);
 	pixel_y = vec_scale(vp->up, -(y + 0.5) * vp->view_height / WIN_HEIGHT);
@@ -42,7 +43,7 @@ t_ray	ray_to_vp(t_scene *scene, double x, double y)
 	return (ray);
 }
 
-static bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
+bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 {
 	if (obj->type == SPHERE)
 	{
@@ -85,7 +86,7 @@ bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit)
 	result = false;
 	hit->t = INFINITY;
 	obj = scene->obj;
-	while (!result && obj)
+	while (obj)
 	{
 		hit_record.t = INFINITY;
 		hit_record.t = INFINITY;
