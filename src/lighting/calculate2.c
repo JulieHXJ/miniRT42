@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:26:36 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/06/27 11:55:45 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/27 14:37:55 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_color	unlighted_pixel(t_scene scene, t_hit hit)
  * @note Normally the shadow is launched from the hit point towards
  * the direction of the light source. This initial point is offsetted
  * by a small factor (1e-4) to avoid self shadowing, due to random rounding
- * of float numbers. (n/w)
+ * of float numbers.
  */
 bool	is_in_shadow(t_scene scene, t_hit hit)
 {
@@ -56,8 +56,9 @@ bool	is_in_shadow(t_scene scene, t_hit hit)
 
 	light = *scene.light;
 	blocker = scene.obj;
-	shadow.origin = hit.point;
-	shadow.direction = vec_normal(vec_sub(light.position, shadow.origin));
+	// shadow.origin = hit.point;
+	shadow.origin = vec_add(hit.point, vec_scale(hit.normal, 0.0001));
+	shadow.direction = vec_sub(light.position, shadow.origin);
 	while (blocker)
 	{
 		if (blocker != hit.object && hit_object(blocker, shadow, &temp_hit)
