@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:26:36 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/06/26 11:19:21 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/27 11:55:45 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,25 +45,25 @@ t_color	unlighted_pixel(t_scene scene, t_hit hit)
  * @note Normally the shadow is launched from the hit point towards
  * the direction of the light source. This initial point is offsetted
  * by a small factor (1e-4) to avoid self shadowing, due to random rounding
- * of float numbers.
+ * of float numbers. (n/w)
  */
 bool	is_in_shadow(t_scene scene, t_hit hit)
 {
-	t_ray	shadow;
-	t_light	light;
-	double	limit;
-	t_hit	temp_hit;
+	t_ray		shadow;
+	t_light		light;
+	t_hit		temp_hit;
+	t_object	*blocker;
 
-	limit = hit.t;
 	light = *scene.light;
-	shadow.origin = vec_add(hit.point, vec_scale(hit.normal, 1e-4));
+	blocker = scene.obj;
+	shadow.origin = hit.point;
 	shadow.direction = vec_normal(vec_sub(light.position, shadow.origin));
-	while (scene.obj)
+	while (blocker)
 	{
-		if (scene.obj != hit.object && hit_object(scene.obj, shadow, &temp_hit)
-			&& temp_hit.t < limit)
+		if (blocker != hit.object && hit_object(blocker, shadow, &temp_hit)
+			&& temp_hit.t > 0 && temp_hit.t < hit.t)
 			return (true);
-		scene.obj = scene.obj->next;
+		blocker = blocker->next;
 	}
 	return (false);
 }
