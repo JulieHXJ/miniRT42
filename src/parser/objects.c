@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/01 14:59:54 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 18:20:24 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
 	static int	i = 0;
 	char		**tokens;
 	char		*trimmed;
-	bool		flag;
 
 	trimmed = ft_strtrim(line, "\n");
 	if (!trimmed)
@@ -118,17 +117,11 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
 	free(trimmed);
 	if (!tokens || !tokens[0])
 		return (print_error("Split failed for objects", *gc_list), false);
-	flag = true;
 	if (!ft_strcmp(tokens[0], "pl"))
-		flag = create_plane(i++, scene, tokens, gc_list);
+		return (create_plane(i++, scene, tokens, gc_list));
 	else if (!ft_strcmp(tokens[0], "sp"))
-		flag = create_sphere(i++, scene, tokens, gc_list);
+		return (create_sphere(i++, scene, tokens, gc_list));
 	else if (!ft_strcmp(tokens[0], "cy"))
-		flag = create_cylinder(i++, scene, tokens, gc_list);
-	else
-	{
-		print_error("Unknown object identifier", *gc_list);
-		flag = false;
-	}
-	return (flag);
+		return (create_cylinder(i++, scene, tokens, gc_list));
+	return (print_error("Unknown object identifier", *gc_list), false);
 }

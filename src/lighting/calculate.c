@@ -6,12 +6,12 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:10:44 by xhuang            #+#    #+#             */
-/*   Updated: 2025/07/01 16:49:52 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 18:12:46 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-#define SAMPLES 2
+#define SAMPLES 3
 
 /**
  * @brief Calculates light's intensity fallout according to the distance from

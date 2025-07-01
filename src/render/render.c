@@ -6,11 +6,29 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/01 16:40:07 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 18:15:15 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+static void	gamma_correction(t_color *color)
+{
+	const float	gamma = 2.2f;
+	float		r;
+	float		g;
+	float		b;
+
+	r = color->r / 255.0f;
+	g = color->g / 255.0f;
+	b = color->b / 255.0f;
+	r = powf(r, 1.0f / gamma);
+	g = powf(g, 1.0f / gamma);
+	b = powf(b, 1.0f / gamma);
+	color->r = (int)(fminf(fmaxf(r, 0.0f), 1.0f) * 255.0f);
+	color->g = (int)(fminf(fmaxf(g, 0.0f), 1.0f) * 255.0f);
+	color->b = (int)(fminf(fmaxf(b, 0.0f), 1.0f) * 255.0f);
+}
 
 /**
  * @brief Draw each pixel of the scene to the image
@@ -32,6 +50,7 @@ void	draw_img(t_scene *scene)
 		while (++x < scene->img->width)
 		{
 			color = antialiasing(scene, x, y);
+			gamma_correction(&color);
 			mlx_put_pixel(scene->img, x, y, convert_color(color));
 		}
 	}
