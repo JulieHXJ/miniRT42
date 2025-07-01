@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:26:36 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/06/27 14:37:55 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 12:26:28 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,22 +49,19 @@ t_color	unlighted_pixel(t_scene scene, t_hit hit)
  */
 bool	is_in_shadow(t_scene scene, t_hit hit)
 {
-	t_ray		shadow;
-	t_light		light;
-	t_hit		temp_hit;
-	t_object	*blocker;
+	t_ray	ray;
+	t_hit	temp_hit;
+	t_vec3	vec;
 
-	light = *scene.light;
-	blocker = scene.obj;
-	// shadow.origin = hit.point;
-	shadow.origin = vec_add(hit.point, vec_scale(hit.normal, 0.0001));
-	shadow.direction = vec_sub(light.position, shadow.origin);
-	while (blocker)
+	ray.origin = scene.light->position;
+	vec = vec_sub(vec_add(hit.point, vec_scale(hit.normal, 0.005)), ray.origin);
+	ray.direction = vec_normal(vec);
+	while (scene.obj)
 	{
-		if (blocker != hit.object && hit_object(blocker, shadow, &temp_hit)
-			&& temp_hit.t > 0 && temp_hit.t < hit.t)
+		if (scene.obj != hit.object && hit_object(scene.obj, ray, &temp_hit)
+			&& temp_hit.t > 0 && temp_hit.t < vec_length(vec))
 			return (true);
-		blocker = blocker->next;
+		scene.obj = scene.obj->next;
 	}
 	return (false);
 }
