@@ -6,13 +6,13 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:54:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/24 16:34:54 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:59:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	translate_horizontal(t_scene *scene, double step)
+void	translate_horizontal(t_scene *scene, float step)
 {
 	t_vec3	translation;
 
@@ -22,7 +22,7 @@ void	translate_horizontal(t_scene *scene, double step)
 	draw_img(scene);
 }
 
-void	translate_vertical(t_scene *scene, double step)
+void	translate_vertical(t_scene *scene, float step)
 {
 	t_vec3	translation;
 
@@ -32,7 +32,7 @@ void	translate_vertical(t_scene *scene, double step)
 	draw_img(scene);
 }
 
-void	translate_forward(t_scene *scene, double step)
+void	translate_forward(t_scene *scene, float step)
 {
 	t_vec3	translation;
 
@@ -42,7 +42,7 @@ void	translate_forward(t_scene *scene, double step)
 	draw_img(scene);
 }
 
-// t_vec3	rotate_x(t_vec3 direction, double angle)
+// t_vec3	rotate_x(t_vec3 direction, float angle)
 // {
 // 	t_vec3	new;
 
@@ -55,7 +55,7 @@ void	translate_forward(t_scene *scene, double step)
 // 	return (new);
 // }
 
-// t_vec3	rotate_z(t_vec3 direction, double angle)
+// t_vec3	rotate_z(t_vec3 direction, float angle)
 // {
 // 	t_vec3	new;
 
@@ -69,7 +69,7 @@ void	translate_forward(t_scene *scene, double step)
 // }
 
 // Rodrigues' rotation: Rotate a vector around an axis by angle
-t_vec3	rotate_axis(t_vec3 v, t_vec3 axis, double angle)
+t_vec3	rotate_axis(t_vec3 v, t_vec3 axis, float angle)
 {
 	t_vec3	term1;
 	t_vec3	term2;
@@ -84,7 +84,7 @@ t_vec3	rotate_axis(t_vec3 v, t_vec3 axis, double angle)
 /**
  * @brief Rotate cam view around the x-axis and z-axis
  */
-void	rotate_camera(t_scene *scene, double pitch, double yaw)
+void	rotate_camera(t_scene *scene, float pitch, float yaw)
 {
 	t_vec3 dir;
 	t_viewport *vp;

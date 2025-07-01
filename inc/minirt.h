@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/27 19:51:52 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:59:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ typedef struct s_camera
 {
 	t_vec3		origin;
 	t_vec3		direction;
-	double		fov;
+	float		fov;
 	t_viewport	viewport;
 }				t_camera;
 
@@ -92,7 +92,7 @@ typedef struct s_camera
  */
 typedef struct s_amb_light
 {
-	double	ratio;
+	float	ratio;
 	t_color	color;
 }			t_amb_light;
 
@@ -103,7 +103,7 @@ typedef struct s_light
 {
 	int		id;
 	t_vec3	position;
-	double	ratio;
+	float	ratio;
 	t_color	color;
 }			t_light;
 
@@ -117,7 +117,7 @@ typedef struct s_light
 typedef struct s_sphere
 {
 	t_vec3	center;
-	double	diam;
+	float	diam;
 }			t_sphere;
 
 /**
@@ -138,8 +138,8 @@ typedef struct s_cylinder
 {
 	t_vec3	center;
 	t_vec3	direction;
-	double	radius;
-	double	height;
+	float	radius;
+	float	height;
 	t_vec3	top_center;
 	t_vec3	bottom_center;
 }						t_cylinder;
@@ -159,8 +159,8 @@ typedef struct s_object
 		t_cylinder	cylinder;
 	}	u_data;
 	t_color			color;
-	double			specular;
-	double			reflective;
+	float			specular;
+	float			reflective;
 	struct s_object	*next;
 	struct s_object	*previous;
 }					t_object;
@@ -187,21 +187,21 @@ typedef struct s_scene
 void	free_array(char ***arr);
 size_t	array_size(char **arr);
 void	print_error(char *str, t_gc_object *gc_list);
-double	ft_atod(const char *str);
+float	ft_atod(const char *str);
 
 // Check
 bool	valid_file(int ac, char **av);
 bool	in_range_int(int value, int min, int max);
-bool	in_range_double(double value, double min, double max);
+bool	in_range_float(float value, float min, float max);
 bool	valid_color(t_color color);
-bool	valid_ratio(double ratio);
+bool	valid_ratio(float ratio);
 bool	valid_normal(t_vec3 normal);
 
 // Parser
 bool	assign_color(char *color, t_color *c, t_gc_object **gc_list);
 bool	assign_vector(char *coordinates, t_vec3 *v,	t_gc_object **gc_list);
 bool	assign_normal(char *normal, t_vec3 *v, t_gc_object **gc_list);
-bool	assign_positive_num(char *num, double *value);
+bool	assign_positive_num(char *num, float *value);
 void	get_cylinder_ends(t_cylinder *c);
 bool	create_environment(char *line, t_scene **scene, t_gc_object **gc_list);
 bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list);
@@ -209,8 +209,8 @@ bool	parser(char *fname, t_scene **scene, t_gc_object **gc_list);
 
 // Intersections
 void	set_viewport(t_viewport *vp, t_camera *camera);
-t_ray	ray_to_vp(t_scene *scene, double x, double y);
-double	solve_quadratic(double a, double b, double c);
+t_ray	ray_to_vp(t_scene *scene, float x, float y);
+float	solve_quadratic(float a, float b, float c);
 bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit);
 bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit);
 bool	check_height(t_vec3 point, t_cylinder cylinder);
@@ -226,10 +226,10 @@ t_color	unlighted_pixel(t_scene scene, t_hit hit);
 t_color	checkered_background(uint32_t x, uint32_t y);
 
 // Render
-void	translate_horizontal(t_scene *scene, double step);
-void	translate_vertical(t_scene *scene, double step);
-void	translate_forward(t_scene *scene, double step);
-void	rotate_camera(t_scene *scene, double pitch, double yaw);
+void	translate_horizontal(t_scene *scene, float step);
+void	translate_vertical(t_scene *scene, float step);
+void	translate_forward(t_scene *scene, float step);
+void	rotate_camera(t_scene *scene, float pitch, float yaw);
 void	key_hook(mlx_key_data_t keydata, void *param);
 void	draw_img(t_scene *scene);
 bool	render(t_scene *scene, t_gc_object **gc_list);

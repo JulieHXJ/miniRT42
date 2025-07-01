@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/26 12:13:46 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:59:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	set_viewport(t_viewport *vp, t_camera *camera)
 	if (fabs(vec_dot(camera->direction, world_up)) > 0.999)
 		world_up = new_vector(0, 0, 1);
 	vp->fov = camera->fov * M_PI / 180.0;
-	vp->aspect_ratio = (double)WIN_WIDTH / (double)WIN_HEIGHT;
+	vp->aspect_ratio = (float)WIN_WIDTH / (float)WIN_HEIGHT;
 	vp->view_height = 2.0 * tan(vp->fov / 2.0);
 	vp->view_width = vp->aspect_ratio * vp->view_height;
 	vp->normal = camera->direction;
@@ -70,7 +70,7 @@ static bool	set_camera(t_scene **scene, char **tokens, t_gc_object **gc_list)
 
 static bool	set_amb_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 {
-	double	ratio;
+	float	ratio;
 	t_color	color;
 
 	color = (t_color){0, 0, 0};
@@ -93,7 +93,7 @@ static bool	set_amb_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 static bool	set_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 {
 	static int	i = 0;
-	double		brightness;
+	float		brightness;
 	t_vec3		pos;
 	t_color		col;
 

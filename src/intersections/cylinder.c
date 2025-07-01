@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 13:37:22 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/27 16:14:06 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:59:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@
  * 
  * @returns The distance where the ray intersects the infinite cylinder. 
  */
-static double	get_t_side(t_vec3 x, t_vec3 ray_dir, t_cylinder cylinder)
+static float	get_t_side(t_vec3 x, t_vec3 ray_dir, t_cylinder cylinder)
 {
 	t_vec3	d_perp;
 	t_vec3	x_perp;
-	double	a;
-	double	b;
-	double	c;
+	float	a;
+	float	b;
+	float	c;
 
 	d_perp = vec_sub(ray_dir, vec_scale(cylinder.direction, vec_dot(ray_dir,
 					cylinder.direction)));
@@ -49,11 +49,11 @@ static void	update_cy_hit(t_hit *hit, t_vec3 point,	t_vec3 normal)
 
 static bool	check_sides(t_ray ray, t_cylinder cylinder, t_hit *hit)
 {
-	double	t;
+	float	t;
 	t_vec3	point;
 	t_vec3	normal;
 	t_vec3	axis_to_point;
-	double	projection_length;
+	float	projection_length;
 
 	t = get_t_side(vec_sub(ray.origin, cylinder.bottom_center), ray.direction,
 			cylinder);
@@ -72,11 +72,11 @@ static bool	check_sides(t_ray ray, t_cylinder cylinder, t_hit *hit)
 }
 
 static bool	check_cap(t_ray ray, t_cylinder cylinder, t_vec3 center,
-		double *t_out)
+		float *t_out)
 {
 	t_vec3	point;
-	double	denom;
-	double	t;
+	float	denom;
+	float	t;
 
 	denom = vec_dot(ray.direction, cylinder.direction);
 	if (fabs(denom) < 1e-6)
@@ -97,9 +97,9 @@ static bool	check_cap(t_ray ray, t_cylinder cylinder, t_vec3 center,
 bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit)
 {
 	bool	result;
-	double	t_bottom;
-	double	t_top;
-	double	t_min;
+	float	t_bottom;
+	float	t_top;
+	float	t_min;
 	t_hit	hit_side;
 
 	t_min = hit->t;

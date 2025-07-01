@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:10:44 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/27 14:38:35 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:59:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_color	lighted_pixel(t_scene scene, t_hit hit)
  */
 bool	is_lighted_pixel(t_scene scene, t_hit hit)
 {
-	double	angle;
+	float	angle;
 	t_vec3	light_vec;
 
 	light_vec = vec_sub(scene.light->position, hit.point);

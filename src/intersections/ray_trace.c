@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/27 16:11:41 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:59:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * @brief Calculate a point along a ray at distance t
  * @note P(t) = Origin + t × Direction
  */
-t_vec3	ray_point_at(t_ray ray, double t)
+t_vec3	ray_point_at(t_ray ray, float t)
 {
 	return (vec_add(ray.origin, vec_scale(ray.direction, t)));
 }
@@ -25,7 +25,7 @@ t_vec3	ray_point_at(t_ray ray, double t)
  * @brief Generate a ray from the camera to each pixel (x, y) on viewport
  * @note step length u and v 
  */
-t_ray	ray_to_vp(t_scene *scene, double x, double y)
+t_ray	ray_to_vp(t_scene *scene, float x, float y)
 {
 	t_ray		ray;
 	t_viewport	*vp;
@@ -109,7 +109,7 @@ bool	check_height(t_vec3 point, t_cylinder cylinder)
 {
 	t_vec3	axis;
 	t_vec3	from_bottom;
-	double	proj;
+	float	proj;
 
 	axis = vec_normal(vec_sub(cylinder.top_center, cylinder.bottom_center));
 	from_bottom = vec_sub(point, cylinder.bottom_center);

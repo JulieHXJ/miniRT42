@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:16:31 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/06/12 11:50:32 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/01 14:59:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,15 @@ void	print_error(char *msg, t_gc_object *gc_list)
 }
 
 /**
- * @brief Convert string to double
+ * @brief Convert string to float
  * @param str String to convert (format: [-+]?[0-9]*\.?[0-9]+)
- * @return Double value
+ * @return float value
  */
-double	ft_atod(const char *s)
+float	ft_atod(const char *s)
 {
-	double	res;
-	double	frac;
-	double	div;
+	float	res;
+	float	frac;
+	float	div;
 	int		sign;
 
 	sign = 1;

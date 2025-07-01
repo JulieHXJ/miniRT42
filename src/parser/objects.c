@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 15:15:34 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:59:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static bool	create_plane(int id, t_scene **scene, char **arr, t_gc_object **gc)
 static bool	create_cylinder(int id, t_scene **scn, char **arr, t_gc_object **gc)
 {
 	t_object	*new_obj;
-	double		diameter;
+	float		diameter;
 
 	new_obj = gc_alloc(sizeof(t_object), gc);
 	if (!new_obj)

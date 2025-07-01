@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 22:42:17 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 15:06:05 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:59:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ typedef struct s_object	t_object;
 
 typedef struct s_viewport
 {
-	double				fov;
-	double				aspect_ratio;
-	double				view_width;
-	double				view_height;
+	float				fov;
+	float				aspect_ratio;
+	float				view_width;
+	float				view_height;
 	t_vec3				up;
 	t_vec3				right;
 	t_vec3				normal;
@@ -41,7 +41,7 @@ typedef struct s_ray
 // we call the visible interscet point a "hit"
 typedef struct s_hit
 {
-	double t;         // Distance from camera to hit point
+	float t;         // Distance from camera to hit point
 	t_vec3 point;     // closest hit point
 	t_vec3 normal;    // Surface normal at intersection
 	t_object *object; // Pointer to the hit object
@@ -49,5 +49,5 @@ typedef struct s_hit
 }			t_hit;
 
 
-t_vec3					ray_point_at(t_ray ray, double t);
+t_vec3					ray_point_at(t_ray ray, float t);
 #endif

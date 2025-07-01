@@ -6,14 +6,14 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:22:35 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 15:56:10 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:59:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 
 // limited to 255
-t_color	color_scale(t_color c, double factor)
+t_color	color_scale(t_color c, float factor)
 {
 	t_color	result;
 
@@ -39,7 +39,7 @@ t_color	color_add(t_color c1, t_color c2)
 // /**
 //  * @brief Blends two colors based on a ratio (surface material blending)
 //  */
-// t_color	color_blend(t_color c1, t_color c2, double ratio)
+// t_color	color_blend(t_color c1, t_color c2, float ratio)
 // {
 // 	t_color	result;
 //

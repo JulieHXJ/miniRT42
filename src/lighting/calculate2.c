@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:26:36 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/01 12:28:38 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:03:22 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ t_color	unlighted_pixel(t_scene scene, t_hit hit)
 /**
  * @brief Checks if the hit point is blocked by another object's shadow.
  * 
- * @param shadow The shadow ray casted from the hit point to the light source.
+ * @param temp_hit If there is an object in between, it saves its hit point.
+ * @param vec The vec from the light source to the hit point.
  * @param limit The distance between the hit point and the light source.
  * 
  * @note Normally the shadow is launched from the hit point towards
@@ -54,14 +55,13 @@ bool	is_in_shadow(t_scene scene, t_hit hit)
 	t_vec3	vec;
 
 	ray.origin = scene.light->position;
-	vec = vec_sub(vec_add(hit.point, vec_scale(hit.normal, 0.005)), ray.origin);
+	vec = vec_sub(vec_add(hit.point, vec_scale(hit.normal, 5e-4)), ray.origin);
 	ray.direction = vec_normal(vec);
 	while (scene.obj)
 	{
 		if (scene.obj != hit.object && hit_object(scene.obj, ray, &temp_hit)
 			&& temp_hit.t > 0 && temp_hit.t < vec_length(vec))
 			return (true);
-		scene.obj = scene.obj->next;
 		scene.obj = scene.obj->next;
 	}
 	return (false);
