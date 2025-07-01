@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:26:36 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/01 15:03:22 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:14:31 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,20 @@ bool	is_in_shadow(t_scene scene, t_hit hit)
 			return (true);
 		scene.obj = scene.obj->next;
 	}
+	return (false);
+}
+
+/**
+ * @brief Determines if the hit point should be colored or not.
+ */
+bool	is_lighted_pixel(t_scene scene, t_hit hit)
+{
+	float	angle;
+	t_vec3	light_vec;
+
+	light_vec = vec_sub(scene.light->position, hit.point);
+	angle = vec_dot(light_vec, hit.normal) / (vec_length(light_vec));
+	if (angle >= 0 && angle <= 1)
+		return (true);
 	return (false);
 }

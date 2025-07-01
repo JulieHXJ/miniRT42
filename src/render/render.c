@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/27 14:52:26 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 16:40:07 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,15 @@
 
 /**
  * @brief Draw each pixel of the scene to the image
+ * 
+ * @note Shoots a ray in a (x,y) pair of coordinates. If the ray hits an object
+ * it stores the appropriate info into the hit struct. If not the structure
+ * remains empty, except for the .t field where is init as INFINITY
  */
 void	draw_img(t_scene *scene)
 {
 	uint32_t	x;
 	uint32_t	y;
-	t_ray		ray;
-	t_hit		hit;
 	t_color		color;
 
 	y = -1;
@@ -29,16 +31,7 @@ void	draw_img(t_scene *scene)
 		x = -1;
 		while (++x < scene->img->width)
 		{
-			ray = ray_to_vp(scene, x, y);
-			if (if_hit(scene, ray, &hit))
-			{
-				if (is_lighted_pixel(*scene, hit))
-					color = lighted_pixel(*scene, hit);
-				else
-					color = unlighted_pixel(*scene, hit);
-			}
-			else
-				color = checkered_background(x, y);
+			color = antialiasing(scene, x, y);
 			mlx_put_pixel(scene->img, x, y, convert_color(color));
 		}
 	}
