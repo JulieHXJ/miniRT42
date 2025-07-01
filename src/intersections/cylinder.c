@@ -6,12 +6,23 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 13:37:22 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/26 12:12:54 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:14:06 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+/**
+ * @brief Calculates the potential intersection between the ray and an infinite
+ * cylinder.
+ * 
+ * @param x_perp The component of the ray origin, perpendicular to 
+ * the cylinder's axis.
+ * @param d_perp The component of the ray direction, perpendicular to
+ * the cylinder's axis.
+ * 
+ * @returns The distance where the ray intersects the infinite cylinder. 
+ */
 static double	get_t_side(t_vec3 x, t_vec3 ray_dir, t_cylinder cylinder)
 {
 	t_vec3	d_perp;
@@ -26,7 +37,7 @@ static double	get_t_side(t_vec3 x, t_vec3 ray_dir, t_cylinder cylinder)
 					cylinder.direction)));
 	a = vec_dot(d_perp, d_perp);
 	b = 2.0 * vec_dot(d_perp, x_perp);
-	c = vec_dot(x_perp, x_perp) - cylinder.radius * cylinder.radius;
+	c = vec_dot(x_perp, x_perp) - pow(cylinder.radius, 2);
 	return (solve_quadratic(a, b, c));
 }
 
@@ -80,22 +91,25 @@ static bool	check_cap(t_ray ray, t_cylinder cylinder, t_vec3 center,
 	return (true);
 }
 
+/**
+ * @brief Checks if the ray hits the cylinder and if so updates the hit struct.
+ */
 bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit)
 {
-	bool	hit_any;
+	bool	result;
 	double	t_bottom;
 	double	t_top;
 	double	t_min;
 	t_hit	hit_side;
 
 	t_min = hit->t;
-	hit_any = false;
+	result = false;
 	hit_side.t = hit->t;
 	if (check_sides(ray, cylinder, &hit_side) && hit_side.t < hit->t)
 	{
 		*hit = hit_side;
 		t_min = hit->t;
-		hit_any = true;
+		result = true;
 	}
 	if (check_cap(ray, cylinder, cylinder.bottom_center, &t_bottom)
 		&& t_bottom < t_min && t_bottom > 0)
@@ -104,7 +118,7 @@ bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit)
 			vec_scale(cylinder.direction, -1));
 		hit->t = t_bottom;
 		t_min = t_bottom;
-		hit_any = true;
+		result = true;
 	}
 	if (check_cap(ray, cylinder, cylinder.top_center, &t_top) && t_top < t_min
 		&& t_top > 0)
@@ -113,7 +127,7 @@ bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit)
 			cylinder.direction);
 		hit->t = t_top;
 		t_min = t_top;
-		hit_any = true;
+		result = true;
 	}
-	return (hit_any);
+	return (result);
 }

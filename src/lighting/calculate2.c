@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:26:36 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/01 12:26:28 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 12:28:38 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ bool	is_in_shadow(t_scene scene, t_hit hit)
 		if (scene.obj != hit.object && hit_object(scene.obj, ray, &temp_hit)
 			&& temp_hit.t > 0 && temp_hit.t < vec_length(vec))
 			return (true);
+		scene.obj = scene.obj->next;
 		scene.obj = scene.obj->next;
 	}
 	return (false);

@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/26 11:23:44 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:11:41 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,13 @@ bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit)
 	return (result);
 }
 
+/**
+ * @brief Checks if the point of an infinite cylinder lies within the
+ * height boundaries of the finite cylinder.
+ * 
+ * @param point The point in question that belongs to the infinite cylinder.
+ * @param cylinder The actual finite cylinder.
+ */
 bool	check_height(t_vec3 point, t_cylinder cylinder)
 {
 	t_vec3	axis;
