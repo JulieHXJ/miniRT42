@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:26:36 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/01 15:14:31 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/02 10:12:24 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ t_color	unlighted_pixel(t_scene scene, t_hit hit)
  * 
  * @param temp_hit If there is an object in between, it saves its hit point.
  * @param vec The vec from the light source to the hit point.
- * @param limit The distance between the hit point and the light source.
  * 
  * @note Normally the shadow is launched from the hit point towards
  * the direction of the light source. This initial point is offsetted
