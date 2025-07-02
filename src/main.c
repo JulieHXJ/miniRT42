@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 13:06:33 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 17:52:29 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static t_scene	*scene_init(t_gc_object **list)
 	scene->amb_light.ratio = 0.0;
 	scene->amb_light.color = (t_color){0, 0, 0};
 	scene->amb_light.amb_num = 0;
-	scene->light = NULL;//change to list for multiple lights
+	scene->light = NULL;
 	scene->obj = NULL;
 	scene->mlx = NULL;
 	scene->img = NULL;

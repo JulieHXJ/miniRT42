@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 16:49:23 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/02 17:39:59 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,11 @@ void	draw_img(t_scene *scene)
 		x = -1;
 		while (++x < scene->img->width)
 		{
-			color = antialiasing(scene, x, y);
+			int i = 50;
+			color = (t_color){0, 0, 0};
+			while (i-- > 0)
+				color = color_add(color, antialiasing(scene, x, y));
+			color = color_scale(color, 1 / 50.0f);
 			gamma_correction(&color);
 			mlx_put_pixel(scene->img, x, y, convert_color(color));
 		}

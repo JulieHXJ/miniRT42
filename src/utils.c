@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:16:31 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/02 17:01:31 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/02 17:23:34 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ float	ft_atod(const char *s)
 	return (sign * (res + frac));
 }
 
-float	rand_float(void)
+float	frand(void)
 {
 	return ((float)rand() / (float)(RAND_MAX + 1.0f));
 }
