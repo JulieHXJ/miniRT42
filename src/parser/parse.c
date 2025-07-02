@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/27 15:05:22 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 13:06:24 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	get_cylinder_ends(t_cylinder *c)
 bool	parser(int fd, t_scene **scene, t_gc_object **gc_list)
 {
 	char	*line;
-	char *start;
+	char	*start;
 	bool	flag;
 
 	flag = true;
@@ -48,12 +48,6 @@ bool	parser(int fd, t_scene **scene, t_gc_object **gc_list)
 			return (close(fd), false);
 	}
 	close(fd);
-	// debugging
-	printf("camera number: %d\n", (*scene)->camera.cam_num);
-	printf("ambient light number: %d\n", (*scene)->amb_light.amb_num);
-	
-	print_scene_info(*scene);
-	
 	if ((*scene)->camera.cam_num != 1 || (*scene)->amb_light.amb_num != 1)
 		return (print_error("Only 1 camera or ambient light is allowed", NULL),
 			false);

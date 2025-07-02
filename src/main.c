@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 12:33:44 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 13:06:33 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	main(int ac, char **av)
 	t_scene		*scene;
 	int			fd;
 
-	printf("Material components for objects (bonus): %s\n", MATERIAL_MSG);
+	// printf("Material components for objects (bonus): %s\n", MATERIAL_MSG);
 	gc_list = NULL;
 	if (!valid_file(ac, av))
 		return (1);

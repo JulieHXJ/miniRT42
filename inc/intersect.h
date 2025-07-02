@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 22:42:17 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 12:35:39 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 13:12:56 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_hit
 	float				t;
 	t_vec3				point;
 	t_vec3				normal;
-	t_object			*object; //color, specular, reflective included
+	t_object			*object;
 
 }						t_hit;
 
