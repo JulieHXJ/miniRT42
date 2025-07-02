@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:26:36 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/06/27 15:37:34 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 12:25:13 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ t_color	unlighted_pixel(t_scene scene, t_hit hit)
 /**
  * @brief Checks if the hit point is blocked by another object's shadow.
  * 
- * @param shadow The shadow ray casted from the hit point to the light source.
- * @param limit The distance between the hit point and the light source.
+ * @param temp_hit If there is an object in between, it saves its hit point.
+ * @param vec The vec from the light source to the hit point.
  * 
  * @note Normally the shadow is launched from the hit point towards
  * the direction of the light source. This initial point is offsetted
@@ -49,22 +49,34 @@ t_color	unlighted_pixel(t_scene scene, t_hit hit)
  */
 bool	is_in_shadow(t_scene scene, t_hit hit)
 {
-	t_ray		shadow;
-	t_light		light;
-	t_hit		temp_hit;
-	t_object	*blocker;
+	t_ray	ray;
+	t_hit	temp_hit;
+	t_vec3	vec;
 
-	light = *scene.light;
-	blocker = scene.obj;
-	// shadow.origin = hit.point;
-	shadow.origin = vec_add(hit.point, vec_scale(hit.normal, 0.0001));
-	shadow.direction = vec_sub(light.position, shadow.origin);
-	while (blocker)
+	ray.origin = scene.light->position;
+	vec = vec_sub(vec_add(hit.point, vec_scale(hit.normal, 5e-4)), ray.origin);
+	ray.direction = vec_normal(vec);
+	while (scene.obj)
 	{
-		if (blocker != hit.object && hit_object(blocker, shadow, &temp_hit)
-			&& temp_hit.t > 0 && temp_hit.t < hit.t)
+		if (scene.obj != hit.object && hit_object(scene.obj, ray, &temp_hit)
+			&& temp_hit.t > 0 && temp_hit.t < vec_length(vec))
 			return (true);
-		blocker = blocker->next;
+		scene.obj = scene.obj->next;
 	}
+	return (false);
+}
+
+/**
+ * @brief Determines if the hit point should be colored or not.
+ */
+bool	is_lighted_pixel(t_scene scene, t_hit hit)
+{
+	float	angle;
+	t_vec3	light_vec;
+
+	light_vec = vec_sub(scene.light->position, hit.point);
+	angle = vec_dot(light_vec, hit.normal) / (vec_length(light_vec));
+	if (angle >= 0 && angle <= 1)
+		return (true);
 	return (false);
 }

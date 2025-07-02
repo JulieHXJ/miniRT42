@@ -6,13 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:20:00 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 19:03:33 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 12:36:00 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 
-t_vec3	new_vector(double x, double y, double z)
+t_vec3	new_vector(float x, float y, float z)
 {
 	t_vec3	v;
 
@@ -35,14 +35,14 @@ t_vec3	vec_sub(t_vec3 a, t_vec3 b)
 /**
  * @brief for vector zooming in and out
  */
-t_vec3	vec_scale(t_vec3 v, double s)
+t_vec3	vec_scale(t_vec3 v, float s)
 {
 	return (new_vector(v.x * s, v.y * s, v.z * s));
 }
 
 // t_vec3	unit_vec(t_vec3 v)
 // {
-// 	double len;
+// 	float len;
 
 // 	len = vec_length(v);
 // 	if (len > 0)

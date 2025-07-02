@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:22:02 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/24 16:34:54 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:59:54 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 	used for reflection and lighting
  * @note a · b = ax * bx + ay * by + az * bz
  */
-double	vec_dot(t_vec3 a, t_vec3 b)
+float	vec_dot(t_vec3 a, t_vec3 b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
@@ -35,7 +35,7 @@ t_vec3	vec_cross(t_vec3 a, t_vec3 b)
  * @brief Calculate the length of vector v
  * @note |v| = sqrt(v · v)
  */
-double	vec_length(t_vec3 v)
+float	vec_length(t_vec3 v)
 {
 	return (sqrt(vec_dot(v, v)));
 }
@@ -46,7 +46,7 @@ double	vec_length(t_vec3 v)
  */
 t_vec3	vec_normal(t_vec3 v)
 {
-	double	len;
+	float	len;
 
 	len = vec_length(v);
 	if (len > 0)

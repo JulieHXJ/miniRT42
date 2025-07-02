@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/25 19:00:40 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 12:33:44 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static bool	valid_file(int ac, char **av)
 static void	viewport_init(t_viewport *vp)
 {
 	vp->fov = 60.0 * M_PI / 180.0;
-	vp->aspect_ratio = (double)WIN_WIDTH / (double)WIN_HEIGHT;
+	vp->aspect_ratio = (float)WIN_WIDTH / (float)WIN_HEIGHT;
 	vp->view_width = 0.0;
 	vp->view_height = 0.0;
 	vp->up = new_vector(0, 0, 0);

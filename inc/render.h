@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 13:38:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/27 15:55:12 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 12:36:00 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@
 
 typedef struct s_material
 {
-	double specular;         // Specular reflection coefficient
-	double reflective;       // Reflective coefficient
-	double refractive_index; // Refractive index for transparency
-	double roughness;        // Surface roughness for diffuse reflection
-	double transparency;     // Transparency coefficient
+	float specular;         // Specular reflection coefficient
+	float reflective;       // Reflective coefficient
+	float refractive_index; // Refractive index for transparency
+	float roughness;        // Surface roughness for diffuse reflection
+	float transparency;     // Transparency coefficient
 }	t_material;
 
 

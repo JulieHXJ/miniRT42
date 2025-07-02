@@ -6,12 +6,31 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/27 16:39:00 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 12:51:09 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-#define THREAD_COUNT 16
+#define THREAD_COUNT 8
+
+static void	gamma_correction(t_color *color)
+{
+	const float	gamma = 2.2f;
+	float		r;
+	float		g;
+	float		b;
+
+	r = color->r / 255.0f;
+	g = color->g / 255.0f;
+	b = color->b / 255.0f;
+	r = powf(r, 1.0f / gamma);
+	g = powf(g, 1.0f / gamma);
+	b = powf(b, 1.0f / gamma);
+	color->r = (int)(fminf(fmaxf(r, 0.0f), 1.0f) * 255.0f);
+	color->g = (int)(fminf(fmaxf(g, 0.0f), 1.0f) * 255.0f);
+	color->b = (int)(fminf(fmaxf(b, 0.0f), 1.0f) * 255.0f);
+}
+
 
 // void draw_pixel(t_scene *scene, )
 // {
@@ -49,8 +68,8 @@ void	*thread_draw(void *arg)
 {
 	t_thread_data	*d = (t_thread_data *)arg;
 	uint32_t		x, y;
-	t_ray			ray;
-	t_hit			hit;
+	// t_ray			ray;
+	// t_hit			hit;
 	t_color			color;
 
 	uint32_t start_y = (d->scene->img->height / d->thread_count) * d->id;
@@ -64,17 +83,20 @@ void	*thread_draw(void *arg)
 		x = -1;
 		while (++x < d->scene->img->width)
 		{
-			ray = ray_to_vp(d->scene, x, y);
-			if (if_hit(d->scene, ray, &hit))
-			{
-				if (is_lighted_pixel(*d->scene, hit))
-					color = lighted_pixel(*d->scene, hit);
-				else
-					color = unlighted_pixel(*d->scene, hit);
-			}
-			else
-				color = checkered_background(x, y);
+			color = antialiasing(d->scene, x, y);
+			gamma_correction(&color);
 			mlx_put_pixel(d->scene->img, x, y, convert_color(color));
+			// ray = ray_to_vp(d->scene, x, y);
+			// if (if_hit(d->scene, ray, &hit))
+			// {
+			// 	if (is_lighted_pixel(*d->scene, hit))
+			// 		color = lighted_pixel(*d->scene, hit);
+			// 	else
+			// 		color = unlighted_pixel(*d->scene, hit);
+			// }
+			// else
+			// 	color = checkered_background(x, y);
+			// mlx_put_pixel(d->scene->img, x, y, convert_color(color));
 		}
 	}
 	return NULL;
@@ -166,7 +188,7 @@ bool	render(t_scene *scene, t_gc_object **gc_list)
 		return (print_error("Failed to attach image to window", *gc_list),
 			false);
 	mlx_key_hook(scene->mlx, key_hook, scene);
-	mlx_scroll_hook(scene->mlx, zooming, scene);
+	mlx_scroll_hook(scene->mlx, &zooming, scene);//todo
 	mlx_loop(scene->mlx);
 	return (true);
 }

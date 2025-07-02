@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/27 15:10:38 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 12:25:05 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
  * If Δ == 0 → tangential hit (1 point)
  * If Δ > 0 → 2 intersections (we pick the closest t > 1)
  */
-double	solve_quadratic(double a, double b, double c)
+float	solve_quadratic(float a, float b, float c)
 {
-	double	discriminant;
-	double	t0;
-	double	t1;
-	double	t;
+	float	discriminant;
+	float	t0;
+	float	t1;
+	float	t;
 
 	discriminant = b * b - 4 * a * c;
 	if (discriminant < 0)
@@ -52,10 +52,10 @@ double	solve_quadratic(double a, double b, double c)
  */
 bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit)
 {
-	double	a;
-	double	b;
-	double	c;
-	double	t;
+	float	a;
+	float	b;
+	float	c;
+	float	t;
 	t_vec3	oc;
 
 	oc = vec_sub(ray.origin, sphere.center);
@@ -89,9 +89,9 @@ bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit)
 bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit)
 {
 	t_vec3	oa;
-	double	denom;
-	double	numerator;
-	double	t;
+	float	denom;
+	float	numerator;
+	float	t;
 
 	oa = vec_sub(ray.origin, plane.point);
 	numerator = vec_dot(oa, plane.normal);

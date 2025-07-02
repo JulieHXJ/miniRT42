@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/06/27 14:17:54 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 12:37:31 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static bool	create_plane(int id, t_scene **scene, char **arr, t_gc_object **gc)
 static bool	create_cylinder(int id, t_scene **scn, char **arr, t_gc_object **gc)
 {
 	t_object	*new_obj;
-	double		diameter;
+	float		diameter;
 
 	if (array_size(arr) < 6)
 		return (print_error("Cylinder requires 5 basic parameters", *gc),
@@ -109,7 +109,6 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
 	static int	i = 0;
 	char		**tokens;
 	char		*trimmed;
-	bool		flag;
 
 	trimmed = ft_strtrim(line, "\n");
 	if (!trimmed)
@@ -118,18 +117,17 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
 	free(trimmed);
 	if (!tokens || !tokens[0])
 		return (print_error("Split failed for objects", *gc_list), false);
-	flag = true;
 	if (!ft_strcmp(tokens[0], "pl"))
-		flag = create_plane(i++, scene, tokens, gc_list);
+		return (create_plane(i++, scene, tokens, gc_list));
 	else if (!ft_strcmp(tokens[0], "sp"))
-		flag = create_sphere(i++, scene, tokens, gc_list);
+		return (create_sphere(i++, scene, tokens, gc_list));
 	else if (!ft_strcmp(tokens[0], "cy"))
-		flag = create_cylinder(i++, scene, tokens, gc_list);
+		return(create_cylinder(i++, scene, tokens, gc_list));
 	else
 	{
 		// flag = create_bonus_object(scene, tokens, gc_list);
 		print_error("Unknown object identifier", *gc_list);
-		flag = false;
+		return (false);
 	}
-	return (flag);
+	return (false);
 }

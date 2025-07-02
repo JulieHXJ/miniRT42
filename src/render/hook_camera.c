@@ -6,13 +6,13 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:54:04 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/27 13:45:27 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 12:26:56 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	translate_horizontal(t_scene *scene, double step)
+void	translate_horizontal(t_scene *scene, float step)
 {
 	t_vec3	translation;
 
@@ -21,7 +21,7 @@ void	translate_horizontal(t_scene *scene, double step)
 	set_viewport(&scene->camera.viewport, &scene->camera);
 }
 
-void	translate_vertical(t_scene *scene, double step)
+void	translate_vertical(t_scene *scene, float step)
 {
 	t_vec3	translation;
 
@@ -31,7 +31,7 @@ void	translate_vertical(t_scene *scene, double step)
 }
 
 // Rodrigues' rotation: Rotate a vector around an axis by angle
-t_vec3	rotate_axis(t_vec3 v, t_vec3 axis, double angle)
+t_vec3	rotate_axis(t_vec3 v, t_vec3 axis, float angle)
 {
 	t_vec3	term1;
 	t_vec3	term2;
@@ -46,7 +46,7 @@ t_vec3	rotate_axis(t_vec3 v, t_vec3 axis, double angle)
 /**
  * @brief Rotate cam view around the x-axis and z-axis
  */
-void	rotate_camera(t_scene *scene, double pitch, double yaw)
+void	rotate_camera(t_scene *scene, float pitch, float yaw)
 {
 	t_vec3		dir;
 	t_viewport	*vp;

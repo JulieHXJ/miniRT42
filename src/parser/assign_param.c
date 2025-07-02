@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:30:39 by xhuang            #+#    #+#             */
-/*   Updated: 2025/06/27 14:17:16 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 12:25:26 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bool	assign_normal(char *normal, t_vec3 *v, t_gc_object **gc_list)
 	return (true);
 }
 
-bool	assign_positive_num(char *num, double *value)
+bool	assign_positive_num(char *num, float *value)
 {
 	*value = ft_atod(num);
 	if (*value <= 0)
