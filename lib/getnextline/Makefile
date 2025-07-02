@@ -31,17 +31,12 @@ $(LIBFT):
 	$(MAKE) -C $(LIBFTDIR)
 
 clean:
-	$(MAKE) clean -C $(LIBFTDIR)
-	@echo "\033[33mRemoving $(NAME) build...\033[0m"
+	@$(MAKE) clean -C $(LIBFTDIR)
 	rm -f $(OBJDIR)/*.o
 	rm -rf $(OBJDIR)
-	@echo "$(NAME) build removed \033[32msuccessfully\033[0m!"
 
 fclean: clean
-	$(MAKE) fclean -C $(LIBFTDIR)
-	@echo "\033[33mRemoving $(NAME)...\033[0m"
 	rm -f $(NAME)
-	@echo "$(NAME) removed \033[32msuccessfully\033[0m!"
 	
 re: fclean all
 

@@ -12,9 +12,9 @@
 
 CC = gcc
 MAKEFLAGS += -s
-CFLAGS = -Wall -Wextra -Werror -Ofast -flto -march=native -Wunreachable-code -g -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I./inc -fsanitize=address
-MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw -pthread
-# MLX_FLAGS = -ldl -lglfw -pthread
+CFLAGS = -Wall -Wextra -Werror -Ofast -flto -march=native -Wunreachable-code -g -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I./inc
+# MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw
+MLX_FLAGS = -ldl -lglfw
 
 OBJDIR = ./obj
 SRCDIR = ./src
@@ -58,7 +58,7 @@ all: gitclone libmlx libft gnl $(NAME)
 
 $(NAME): $(OBJS) $(MLX) $(LIBFT) $(GNL)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(MLX) $(MLX_FLAGS) -L$(GNLDIR) -lgnl -L$(LIBFTDIR) -lft -lm
-	@echo "$(NAME) compiled \033[32msuccessfully\033[0m!"
+	@echo "\n\033[33m$(NAME)\033[0m compiled \033[32msuccessfully\033[0m!"
 
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
@@ -69,37 +69,41 @@ $(GNL):
 	$(MAKE) -C $(GNLDIR) LIBFTDIR=../libft
 
 $(MLX): $(MLXDIR)
-	@cmake $(MLXDIR) -B $(MLXDIR)/build && make -C $(MLXDIR)/build -j4
+	@echo -n "Compiling \033[33mMLX42\033[0m..."
+	@cmake $(MLXDIR) -B $(MLXDIR)/build > /dev/null 2>&1 && \
+	$(MAKE) -s -C $(MLXDIR)/build -j4 > /dev/null 2>&1 && \
+	echo " \033[32msuccessful\033[0m!"
 
-gitclone:	
+gitclone:
 	@if [ ! -d "$(MLXDIR)" ]; then \
-		echo "Cloning MLX42..."; \
-		git clone https://github.com/codam-coding-college/MLX42.git $(MLXDIR); \
+		echo -n "Cloning \033[33mMLX42\033[0m..."; \
+		git clone https://github.com/codam-coding-college/MLX42.git $(MLXDIR) > /dev/null 2>&1; \
+		echo " \033[32msuccessful\033[0m!"; \
 	fi
 
 libmlx: $(MLXDIR)/build/libmlx42.a
 
 libft:
-	$(MAKE) -C $(LIBFTDIR)
+	echo -n "Compiling \033[33mlibft\033[0m..."
+	@$(MAKE) -s -C $(LIBFTDIR) > /dev/null && \
+	echo " \033[32msuccessful\033[0m!"
 
 gnl:
-	$(MAKE) -C $(GNLDIR)
+	echo -n "Compiling \033[33mgetnextline\033[0m..."
+	@$(MAKE) -C $(GNLDIR) > /dev/null && \
+	echo " \033[32msuccessful\033[0m!"
 
 clean:
-	make clean -C $(GNLDIR)
-	make clean -C $(LIBFTDIR)
-	@echo "\033[33mRemoving $(NAME) build...\033[0m"
-	$(RM) $(OBJS)
-	rm -rf $(OBJDIR)
-	@echo "$(NAME) build removed \033[32msuccessfully\033[0m!"
+	@$(MAKE) clean -C $(GNLDIR)
+	@$(RM) $(OBJS)
+	@rm -rf $(OBJDIR)
+	@rm -rf $(MLXDIR)
 
 fclean: clean
-	make fclean -C $(GNLDIR)
-	make fclean -C $(LIBFTDIR)
-	@echo "\033[33mRemoving $(NAME)...\033[0m"
-	$(RM) $(NAME)
-	rm -rf $(MLXDIR)
-	@echo "$(NAME) removed \033[32msuccessfully\033[0m!"
+	@echo -n "Removing \033[33m$(NAME)\033[0m build..."
+	@$(RM) $(NAME)
+	@rm -rf $(MLXDIR)
+	@echo " \033[32msuccessful\033[0m!"
 
 re: fclean all 
 
