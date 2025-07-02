@@ -169,11 +169,11 @@ typedef struct s_object
 /* RENDERING STRUCTURE                                                        */
 /* ************************************************************************** */
 
-typedef struct s_render_buffers
+typedef struct s_render
 {
-	t_color	**accum_buffer;
-	int		**sample_count;
-}			t_render_buffers;
+	t_color			**color;
+	unsigned int	i;
+}			t_render;
 
 /* ************************************************************************** */
 /* SCENE STRUCTURE                                                            */
@@ -181,14 +181,14 @@ typedef struct s_render_buffers
 
 typedef struct s_scene
 {
-	t_camera			camera;
-	t_amb_light			amb_light;
-	t_light				*light;
-	t_object			*obj;
-	mlx_t				*mlx;
-	mlx_image_t			*img;
-	t_render_buffers	render;
-	bool				if_update;
+	t_camera		camera;
+	t_amb_light		amb_light;
+	t_light			*light;
+	t_object		*obj;
+	mlx_t			*mlx;
+	mlx_image_t		*img;
+	t_render		render;
+	bool			if_update;
 }						t_scene;
 
 /* ************************************************************************** */
@@ -248,10 +248,9 @@ t_color					antialiasing(t_scene *scene, uint32_t x, uint32_t y);
 void					translate_horizontal(t_scene *scene, float step);
 void					translate_vertical(t_scene *scene, float step);
 void					rotate_camera(t_scene *scene, float pitch, float yaw);
-void					initial_render(t_scene *scene);
+// void					initial_render(void);
 void					zooming(double xdelta, double ydelta, void *param);
 void					key_hook(mlx_key_data_t keydata, void *param);
-void					gamma_correction(t_color *color);
 bool					render(t_scene *scene, t_gc_object **gc_list);
 
 // GC

@@ -37,11 +37,10 @@ SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDI
 		$(SRCDIR)/intersections/sphere_plane.c \
 		$(SRCDIR)/intersections/cylinder.c \
 		$(SRCDIR)/render/render.c \
-		$(SRCDIR)/render/render2.c \
-		$(SRCDIR)/render/hook.c \
 		$(SRCDIR)/render/hook_camera.c \
 		$(SRCDIR)/lighting/calculate.c \
 		$(SRCDIR)/lighting/calculate2.c
+		# $(SRCDIR)/render/hook.c
 		 
 
 # OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
@@ -58,7 +57,7 @@ all: gitclone libmlx libft gnl $(NAME)
 
 $(NAME): $(OBJS) $(MLX) $(LIBFT) $(GNL)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(MLX) $(MLX_FLAGS) -L$(GNLDIR) -lgnl -L$(LIBFTDIR) -lft -lm
-	@echo "\n\033[33m$(NAME)\033[0m compiled \033[32msuccessfully\033[0m!"
+	@echo "\033[33m$(NAME)\033[0m compiled \033[32msuccessfully\033[0m!"
 
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
