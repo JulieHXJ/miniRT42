@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 16:33:35 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 16:42:35 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,80 +30,6 @@ static void	gamma_correction(t_color *color)
 	color->g = (int)(fminf(fmaxf(g, 0.0f), 1.0f) * 255.0f);
 	color->b = (int)(fminf(fmaxf(b, 0.0f), 1.0f) * 255.0f);
 }
-
-// void	*thread_draw(void *arg)
-// {
-// 	t_thread_data	*d = (t_thread_data *)arg;
-// 	uint32_t		x, y;
-// 	// t_ray			ray;
-// 	// t_hit			hit;
-// 	t_color			color;
-
-// 	uint32_t start_y = (d->scene->img->height / d->thread_count) * d->id;
-// 	uint32_t end_y = (d->id == d->thread_count - 1)
-// 		? d->scene->img->height
-// 		: (d->scene->img->height / d->thread_count) * (d->id + 1);
-
-// 	y = start_y - 1;
-// 	while (++y < end_y)
-// 	{
-// 		x = -1;
-// 		while (++x < d->scene->img->width)
-// 		{
-// 			color = antialiasing(d->scene, x, y);
-// 			gamma_correction(&color);
-// 			mlx_put_pixel(d->scene->img, x, y, convert_color(color));
-// 			// ray = ray_to_vp(d->scene, x, y);
-// 			// if (if_hit(d->scene, ray, &hit))
-// 			// {
-// 			// 	if (is_lighted_pixel(*d->scene, hit))
-// 			// 		color = lighted_pixel(*d->scene, hit);
-// 			// 	else
-// 			// 		color = unlighted_pixel(*d->scene, hit);
-// 			// }
-// 			// else
-// 			// 	color = checkered_background(x, y);
-// 			// mlx_put_pixel(d->scene->img, x, y, convert_color(color));
-// 		}
-// 	}
-// 	return NULL;
-// }
-
-
-// void	draw_img(t_scene *scene)
-// {
-// 	pthread_t		threads[THREAD_COUNT];
-// 	t_thread_data	*thread_data;
-// 	int i;
-
-// 	i = 0;
-// 	thread_data = malloc(sizeof(t_thread_data) * THREAD_COUNT);
-// 	if (!thread_data)
-// 		return ;
-
-// 	while (i < THREAD_COUNT)
-// 	{
-// 		thread_data[i].id = i;
-// 		thread_data[i].thread_count = THREAD_COUNT;
-// 		thread_data[i].scene = scene;
-// 		if (pthread_create(&threads[i], NULL, thread_draw, &thread_data[i]) != 0)
-// 		{
-// 			perror("Thread creation failed");
-//             free(thread_data);
-//             return;
-// 		}
-// 		i++;
-// 	}
-// 	i = 0;
-// 	while (i < THREAD_COUNT)
-// 	{
-// 		pthread_join(threads[i], NULL);
-// 		i++;
-// 	}
-// 	free(thread_data);
-// }
-
-
 
 /**
  * @brief Draw each pixel of the scene to the image
