@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+         #
+#    By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/07/02 16:04:27 by xhuang           ###   ########.fr        #
+#    Updated: 2025/07/02 18:33:20 by dchrysov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDI
 		$(SRCDIR)/intersections/sphere_plane.c \
 		$(SRCDIR)/intersections/cylinder.c \
 		$(SRCDIR)/render/render.c \
+		$(SRCDIR)/render/render2.c \
 		$(SRCDIR)/render/hook.c \
 		$(SRCDIR)/render/hook_camera.c \
 		$(SRCDIR)/lighting/calculate.c \

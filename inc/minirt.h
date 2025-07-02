@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 17:23:52 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:58:05 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,16 @@ typedef struct s_object
 }						t_object;
 
 /* ************************************************************************** */
+/* RENDERING STRUCTURE                                                        */
+/* ************************************************************************** */
+
+typedef struct s_render_buffers
+{
+	t_color	**accum_buffer;
+	int		**sample_count;
+}			t_render_buffers;
+
+/* ************************************************************************** */
 /* SCENE STRUCTURE                                                            */
 /* ************************************************************************** */
 
@@ -177,15 +187,9 @@ typedef struct s_scene
 	t_object			*obj;
 	mlx_t				*mlx;
 	mlx_image_t			*img;
+	t_render_buffers	render;
 	bool				if_update;
 }						t_scene;
-
-typedef struct s_thread_data
-{
-	int					id;
-	int					thread_count;
-	t_scene				*scene;
-}						t_thread_data;
 
 /* ************************************************************************** */
 /* FUNCTION PROTOTYPES                                                        */
@@ -244,9 +248,10 @@ t_color					antialiasing(t_scene *scene, uint32_t x, uint32_t y);
 void					translate_horizontal(t_scene *scene, float step);
 void					translate_vertical(t_scene *scene, float step);
 void					rotate_camera(t_scene *scene, float pitch, float yaw);
-void					draw_img(t_scene *scene);
+void					initial_render(t_scene *scene);
 void					zooming(double xdelta, double ydelta, void *param);
 void					key_hook(mlx_key_data_t keydata, void *param);
+void					gamma_correction(t_color *color);
 bool					render(t_scene *scene, t_gc_object **gc_list);
 
 // GC
