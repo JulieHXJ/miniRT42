@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 13:13:45 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 17:01:43 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ void					free_array(char ***arr);
 size_t					array_size(char **arr);
 void					print_error(char *str, t_gc_object *gc_list);
 float					ft_atod(const char *str);
+float					rand_float(void);
 
 // Check
 bool					in_range_int(int value, int min, int max);

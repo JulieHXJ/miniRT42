@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   calculate.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:10:44 by xhuang            #+#    #+#             */
-/*   Updated: 2025/07/02 12:49:08 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 17:07:20 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,29 +55,18 @@ t_color	antialiasing(t_scene *scene, uint32_t x, uint32_t y)
 	t_ray	ray;
 	t_hit	hit;
 	t_color	color;
-	int		i;
-	int		j;
 
-	color = (t_color){0, 0, 0};
-	i = -1;
-	while (++i < SAMPLES)
+	ray = ray_to_vp(scene, x, y);
+	if (if_hit(scene, ray, &hit))
 	{
-		j = -1;
-		while (++j < SAMPLES)
-		{
-			ray = ray_to_vp(scene, x + (i + 0.5f) / SAMPLES, y + (i + 0.5f) / SAMPLES);
-			if (if_hit(scene, ray, &hit))
-			{
-				if (is_lighted_pixel(*scene, hit))
-					color = color_add(color, lighted_pixel(*scene, hit));
-				else
-					color = color_add(color, unlighted_pixel(*scene, hit));
-			}
-			else
-				color = color_add(color, checkered_background(x + (i + 0.5f) / SAMPLES, y + (i + 0.5f) / SAMPLES));
-		}
+		if (is_lighted_pixel(*scene, hit))
+			color = lighted_pixel(*scene, hit);
+		else
+			color = unlighted_pixel(*scene, hit);
 	}
-	return (clamp_color(color_scale(color, 1.0f / (SAMPLES * SAMPLES))));
+	else
+		color = checkered_background(x, y);
+	return (clamp_color(color));
 }
 
 

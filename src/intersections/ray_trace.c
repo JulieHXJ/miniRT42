@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_trace.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 12:24:59 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 17:01:55 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,9 @@ t_ray	ray_to_vp(t_scene *scene, float x, float y)
 	t_vec3		pixel_x;
 	t_vec3		pixel_y;
 
-
 	vp = &scene->camera.viewport;
-	pixel_x = vec_scale(vp->right, (x + 0.5) * vp->view_width / WIN_WIDTH);
-	pixel_y = vec_scale(vp->up, -(y + 0.5) * vp->view_height / WIN_HEIGHT);
+	pixel_x = vec_scale(vp->right, (x + rand_float()) * vp->view_width / WIN_WIDTH);
+	pixel_y = vec_scale(vp->up, -(y + rand_float()) * vp->view_height / WIN_HEIGHT);
 	pixel_position = vec_add(vec_add(vp->up_left_corner, pixel_x), pixel_y);
 	ray.origin = scene->camera.origin;
 	ray.direction = vec_normal(vec_sub(pixel_position, ray.origin));

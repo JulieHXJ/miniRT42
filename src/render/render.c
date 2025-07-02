@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 16:42:35 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/02 16:49:23 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,7 @@ bool	render(t_scene *scene, t_gc_object **gc_list)
 		return (print_error("Failed to attach image to window", *gc_list),
 			false);
 	mlx_key_hook(scene->mlx, key_hook, scene);
-	mlx_scroll_hook(scene->mlx, &zooming, scene);//todo
-	// mlx_loop_hook(scene->mlx, loop_hook, scene);
+	mlx_scroll_hook(scene->mlx, &zooming, scene);
 	mlx_loop(scene->mlx);
 	return (true);
 }
