@@ -6,12 +6,18 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/03 11:34:34 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/03 12:22:47 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
+
+# include <fcntl.h>
+# include <math.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <unistd.h>
 
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 # include "../lib/getnextline/inc/get_next_line.h"
@@ -19,11 +25,6 @@
 # include "intersect.h"
 # include "material.h"
 # include "vector.h"
-# include <fcntl.h>
-# include <math.h>
-# include <stdbool.h>
-# include <stdio.h>
-# include <unistd.h>
 
 /* ************************************************************************** */
 /* ENUMS & DEFINES                                                            */
@@ -160,8 +161,8 @@ typedef struct s_object
 	} u_data;
 	t_color			color;
 	t_material		material;
+	void			*bonus;
 	struct s_object	*next;
-	struct s_object	*previous;
 }					t_object;
 
 /* ************************************************************************** */

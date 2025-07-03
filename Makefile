@@ -1,18 +1,8 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/07/03 11:01:17 by dchrysov         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
+#
+#
 CC = gcc
 MAKEFLAGS += -s
-CFLAGS = -Wall -Wextra -Werror -Ofast -flto -march=native -Wunreachable-code -g -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I./inc
+CFLAGS = -Wall -Wextra -Werror -Ofast -flto -march=native -Wunreachable-code -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I./inc
 MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw
 # MLX_FLAGS = -ldl -lglfw
 
@@ -41,7 +31,16 @@ SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDI
 		$(SRCDIR)/render/hook.c \
 		$(SRCDIR)/lighting/calculate.c \
 		$(SRCDIR)/lighting/calculate2.c
-		 
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#						BONUS						  #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+BONUSDIR = ./bonus
+BONUS_SRCS := $(BONUSDIR)/$(SRCDIR)/cone.c		 
+BONUSINC = $(BONUSDIR)/inc
+BONUSCFLAGS = -Wall -Wextra -Werror -Ofast -flto -march=native -Wunreachable-code -g -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I$(BONUSINC)
+
 
 # OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
@@ -91,6 +90,8 @@ gnl:
 	@printf "[.]   📦 Compiling \033[33mgetnextline\033[0m...\r"
 	@$(MAKE) -C $(GNLDIR) > /dev/null && \
 	printf "[✅]  📦 Compiled \033[33mgetnextline\033[0m...  \n"
+
+bonus:
 
 clean:
 	@$(MAKE) clean -C $(GNLDIR)
