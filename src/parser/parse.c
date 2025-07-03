@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 13:06:24 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/03 17:51:36 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,23 @@ void	get_cylinder_ends(t_cylinder *c)
 	c->top_center = vec_add(c->center, half);
 }
 
+// change all tabs in string into spaces for gc_split
+char	*tab_to_space(char *str)
+{
+	int	i;
+
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\t')
+			str[i] = ' ';
+		i++;
+	}
+	return (str);
+}
+
 bool	parser(int fd, t_scene **scene, t_gc_object **gc_list)
 {
 	char	*line;
@@ -33,6 +50,7 @@ bool	parser(int fd, t_scene **scene, t_gc_object **gc_list)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
+		line = tab_to_space(line);
 		start = line;
 		while (*start == ' ' || *start == '\t')
 			start++;

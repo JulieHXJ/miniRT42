@@ -6,12 +6,33 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 16:51:36 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/03 18:04:31 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
-#define THREAD_COUNT 8
+#include "../../inc/minirt.h"
+
+static t_color	**init_color_buffer(mlx_image_t img)
+{
+	t_color		**result;
+	uint32_t	x;
+	uint32_t	y;
+
+	result = malloc(sizeof(t_color *) * img.height);
+	if (!result)
+		return (NULL); 			// ---------> gclist
+	y = -1;
+	while (++y < img.height)
+	{
+		result[y] = malloc(sizeof(t_color) * img.width);
+		if (!result[y])
+			return (NULL); 			// Handle or free earlier allocations
+		x = -1;
+		while (++x < img.width)
+			result[y][x] = (t_color){0, 0, 0};
+	}
+	return (result);
+}
 
 static void	gamma_correction(t_color *color)
 {
@@ -31,102 +52,40 @@ static void	gamma_correction(t_color *color)
 	color->b = (int)(fminf(fmaxf(b, 0.0f), 1.0f) * 255.0f);
 }
 
-// void	*thread_draw(void *arg)
-// {
-// 	t_thread_data	*d = (t_thread_data *)arg;
-// 	uint32_t		x, y;
-// 	// t_ray			ray;
-// 	// t_hit			hit;
-// 	t_color			color;
-
-// 	uint32_t start_y = (d->scene->img->height / d->thread_count) * d->id;
-// 	uint32_t end_y = (d->id == d->thread_count - 1)
-// 		? d->scene->img->height
-// 		: (d->scene->img->height / d->thread_count) * (d->id + 1);
-
-// 	y = start_y - 1;
-// 	while (++y < end_y)
-// 	{
-// 		x = -1;
-// 		while (++x < d->scene->img->width)
-// 		{
-// 			color = antialiasing(d->scene, x, y);
-// 			gamma_correction(&color);
-// 			mlx_put_pixel(d->scene->img, x, y, convert_color(color));
-// 			// ray = ray_to_vp(d->scene, x, y);
-// 			// if (if_hit(d->scene, ray, &hit))
-// 			// {
-// 			// 	if (is_lighted_pixel(*d->scene, hit))
-// 			// 		color = lighted_pixel(*d->scene, hit);
-// 			// 	else
-// 			// 		color = unlighted_pixel(*d->scene, hit);
-// 			// }
-// 			// else
-// 			// 	color = checkered_background(x, y);
-// 			// mlx_put_pixel(d->scene->img, x, y, convert_color(color));
-// 		}
-// 	}
-// 	return NULL;
-// }
-
-// void	draw_img(t_scene *scene)
-// {
-// 	pthread_t		threads[THREAD_COUNT];
-// 	t_thread_data	*thread_data;
-// 	int i;
-
-// 	i = 0;
-// 	thread_data = malloc(sizeof(t_thread_data) * THREAD_COUNT);
-// 	if (!thread_data)
-// 		return ;
-
-// 	while (i < THREAD_COUNT)
-// 	{
-// 		thread_data[i].id = i;
-// 		thread_data[i].thread_count = THREAD_COUNT;
-// 		thread_data[i].scene = scene;
-// 		if (pthread_create(&threads[i], NULL, thread_draw, &thread_data[i]) != 0)
-// 		{
-// 			perror("Thread creation failed");
-//             free(thread_data);
-//             return;
-// 		}
-// 		i++;
-// 	}
-// 	i = 0;
-// 	while (i < THREAD_COUNT)
-// 	{
-// 		pthread_join(threads[i], NULL);
-// 		i++;
-// 	}
-// 	free(thread_data);
-// }
-
 /**
  * @brief Draw each pixel of the scene to the image
+ * 
+ * @param buff It stores the sum of the colors over all iterations so far.
+ * 
+ * @note buff is divided by the number of iterations before it gets printed
+ * to output the average color.
  */
-void	draw_img(t_scene *scene)
+void	render(void *arg)
 {
+	t_scene		*scene;
+	t_color		**buff;
 	uint32_t	x;
 	uint32_t	y;
-	t_color		color;
+	t_color		res;
 
-	//adding check: if camera is inside the object, all pixels will be black
+	scene = (t_scene *)arg;
+	buff = scene->render.color;
+	scene->render.i++;
 	y = -1;
 	while (++y < scene->img->height)
 	{
 		x = -1;
 		while (++x < scene->img->width)
 		{
-			color = antialiasing(scene, x, y);
-			gamma_correction(&color);
-			mlx_put_pixel(scene->img, x, y, convert_color(color));
+			buff[y][x] = color_add(buff[y][x], antialiasing(scene, x, y));
+			res = color_scale(buff[y][x], 1.0f / scene->render.i);
+			gamma_correction(&res);
+			mlx_put_pixel(scene->img, x, y, convert_color(res));
 		}
 	}
 }
 
-// update: using threads to render the objects
-bool	render(t_scene *scene, t_gc_object **gc_list)
+bool	prepare_for_render(t_scene *scene, t_gc_object **gc_list)
 {
 	scene->mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "miniRT", true);
 	if (!scene->mlx)
@@ -137,13 +96,18 @@ bool	render(t_scene *scene, t_gc_object **gc_list)
 		mlx_close_window(scene->mlx);
 		return (print_error("Failed to create image", *gc_list), false);
 	}
-	draw_img(scene);
+	scene->render.color = init_color_buffer(*scene->img);
+	scene->render.i = 0;
+	render(scene);
 	if (mlx_image_to_window(scene->mlx, scene->img, 0, 0) < 0)
 		return (print_error("Failed to attach image to window", *gc_list),
 			false);
+	//create temp for reset
+	scene->cam_restore = scene->camera;
+	mlx_loop_hook(scene->mlx, &render, scene);
 	mlx_key_hook(scene->mlx, key_hook, scene);
-	mlx_scroll_hook(scene->mlx, &zooming, scene);
-	mlx_loop_hook(scene->mlx, loop_hook, scene);
+	mlx_scroll_hook(scene->mlx, &zooming, scene);//todo
+	// mlx_loop_hook(scene->mlx, loop_hook, scene);
 	mlx_loop(scene->mlx);
 	return (true);
 }

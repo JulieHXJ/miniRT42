@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   calculate2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:26:36 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/02 13:44:28 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 16:45:08 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,43 +49,19 @@ t_color	unlighted_pixel(t_scene scene, t_hit hit)
  */
 bool	is_in_shadow(t_scene scene, t_hit hit)
 {
-	// t_ray	shadow_ray;
-	// t_hit	temp_hit;
-	// t_vec3	vec;
+	t_vec3	to_light;
+	float	dist_to_light;
+	t_ray	shadow_ray;
+	t_hit	shadow_hit;
 
-	// shadow_ray.origin = scene.light->position;
-	// shadow_ray.direction = vec_normal(vec);
-	// vec = vec_sub(vec_add(hit.point, vec_scale(hit.normal, 5e-4)), shadow_ray.origin);
-	// while (scene.obj)
-	// {
-	// 	if (scene.obj != hit.object && hit_object(scene.obj, shadow_ray, &temp_hit)
-	// 		&& temp_hit.t > 0 && temp_hit.t < vec_length(vec))
-	// 		return (true);
-	// 	scene.obj = scene.obj->next;
-	// }
-	// return (false);
-
-	t_vec3 to_light = vec_sub(scene.light->position, hit.point);
-    float dist_to_light = vec_length(to_light);
-    t_ray shadow_ray;
-
-    shadow_ray.origin = vec_add(hit.point, vec_scale(hit.normal, 1e-4)); // small bias to avoid self-shadow
-    shadow_ray.direction = vec_normal(to_light);
-
-    t_hit shadow_hit;
-    shadow_hit.t = dist_to_light;
-
-    if (if_hit(&scene, shadow_ray, &shadow_hit))
-    {
-        if (shadow_hit.t < dist_to_light)
-            return true; // something blocks the light before it reaches hit.point
-    }
-    return false;
-
-
-
-
-	
+	to_light = vec_sub(scene.light->position, hit.point);
+	dist_to_light = vec_length(to_light);
+	shadow_ray.origin = vec_add(hit.point, vec_scale(hit.normal, 1e-4));
+	shadow_ray.direction = vec_normal(to_light);
+	shadow_hit.t = dist_to_light;
+	if (if_hit(&scene, shadow_ray, &shadow_hit) && shadow_hit.t < dist_to_light)
+		return (true);
+	return (false);
 }
 
 /**

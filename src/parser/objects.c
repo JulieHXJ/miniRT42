@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 12:37:31 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/03 17:48:39 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@ static void	connect_nodes(t_scene **scene, t_object **new_obj)
 	if (!scene || !new_obj || !(*new_obj))
 		return ;
 	(*new_obj)->next = (*scene)->obj;
-	(*new_obj)->previous = NULL;
-	if ((*scene)->obj)
-		(*scene)->obj->previous = *new_obj;
 	(*scene)->obj = *new_obj;
 }
 
@@ -122,12 +119,9 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
 	else if (!ft_strcmp(tokens[0], "sp"))
 		return (create_sphere(i++, scene, tokens, gc_list));
 	else if (!ft_strcmp(tokens[0], "cy"))
-		return(create_cylinder(i++, scene, tokens, gc_list));
-	else
-	{
-		// flag = create_bonus_object(scene, tokens, gc_list);
-		print_error("Unknown object identifier", *gc_list);
-		return (false);
-	}
+		return (create_cylinder(i++, scene, tokens, gc_list));
+	// else if (!ft_strcmp(tokens[0], "co"))
+	// 	return (create_cone(i++, scene, tokens, gc_list));
+	print_error("Unknown object identifier", *gc_list);
 	return (false);
 }

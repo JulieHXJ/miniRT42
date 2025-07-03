@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 16:36:37 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/03 18:09:20 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,11 @@ static t_scene	*scene_init(t_gc_object **list)
 	scene->amb_light.ratio = 0.0;
 	scene->amb_light.color = (t_color){0, 0, 0};
 	scene->amb_light.amb_num = 0;
-	scene->light = NULL;//change to list for multiple lights
+	scene->light = NULL;
 	scene->obj = NULL;
 	scene->mlx = NULL;
 	scene->img = NULL;
 	camera_init(scene);
-	scene->if_update = false;
 	return (scene);
 }
 
@@ -80,7 +79,7 @@ int	main(int ac, char **av)
 	t_scene		*scene;
 	int			fd;
 
-	// printf("Material components for objects (bonus): %s\n", MATERIAL_MSG);
+	printf("Hook usage: %s\n", HOOK);
 	gc_list = NULL;
 	if (!valid_file(ac, av))
 		return (1);
@@ -92,7 +91,7 @@ int	main(int ac, char **av)
 		return (gc_free(gc_list), 1);
 	if (!parser(fd, &scene, &gc_list))
 		return (gc_free(gc_list), 1);
-	if (!render(scene, &gc_list))
+	if (!prepare_for_render(scene, &gc_list))
 	{
 		if (scene->mlx)
 			mlx_terminate(scene->mlx);
