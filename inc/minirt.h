@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 18:58:05 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/03 10:59:13 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ void					rotate_camera(t_scene *scene, float pitch, float yaw);
 // void					initial_render(void);
 void					zooming(double xdelta, double ydelta, void *param);
 void					key_hook(mlx_key_data_t keydata, void *param);
-bool					render(t_scene *scene, t_gc_object **gc_list);
+bool					prepare_for_render(t_scene *scene, t_gc_object **gc_list);
 
 // GC
 void					*gc_alloc(size_t size, t_gc_object **gc_list);

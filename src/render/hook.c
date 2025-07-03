@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:23:10 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 18:02:12 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/03 11:01:52 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	zooming(double xdelta, double ydelta, void *param)
 		scene->camera.origin = vec_add(scene->camera.origin, translation);
 		set_viewport(&scene->camera.viewport, &scene->camera);
 	}
-	initial_render(scene);
+	render(scene);
 	mlx_image_to_window(scene->mlx, scene->img, 0, 0);
 }
 
@@ -91,14 +91,14 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 			scene->camera.direction = vec_normal(new_vector(0, -1, 0));
 			scene->camera.fov = 60.0;
 			set_viewport(&scene->camera.viewport, &scene->camera);
-			initial_render(scene);
+			render(scene);
 		}
 		else
 		{
 			update = key_hook_move(scene, keydata) | key_hook_rotate(scene,
 					keydata);
 			if (update)
-				initial_render(scene);
+				render(scene);
 		}
 	}
 }

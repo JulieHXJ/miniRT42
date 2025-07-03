@@ -6,15 +6,15 @@
 #    By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/08 18:48:42 by junjun            #+#    #+#              #
-#    Updated: 2025/07/02 18:33:20 by dchrysov         ###   ########.fr        #
+#    Updated: 2025/07/03 11:01:17 by dchrysov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 MAKEFLAGS += -s
 CFLAGS = -Wall -Wextra -Werror -Ofast -flto -march=native -Wunreachable-code -g -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I./inc
-# MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw
-MLX_FLAGS = -ldl -lglfw
+MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw
+# MLX_FLAGS = -ldl -lglfw
 
 OBJDIR = ./obj
 SRCDIR = ./src
@@ -38,9 +38,9 @@ SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDI
 		$(SRCDIR)/intersections/cylinder.c \
 		$(SRCDIR)/render/render.c \
 		$(SRCDIR)/render/hook_camera.c \
+		$(SRCDIR)/render/hook.c \
 		$(SRCDIR)/lighting/calculate.c \
 		$(SRCDIR)/lighting/calculate2.c
-		# $(SRCDIR)/render/hook.c
 		 
 
 # OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
@@ -57,7 +57,7 @@ all: gitclone libmlx libft gnl $(NAME)
 
 $(NAME): $(OBJS) $(MLX) $(LIBFT) $(GNL)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(MLX) $(MLX_FLAGS) -L$(GNLDIR) -lgnl -L$(LIBFTDIR) -lft -lm
-	@echo "\033[33m$(NAME)\033[0m compiled \033[32msuccessfully\033[0m!"
+	@echo "🚀 \033[33m$(NAME)\033[0m compiled \033[32msuccessfully\033[0m!"
 
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
@@ -68,29 +68,29 @@ $(GNL):
 	$(MAKE) -C $(GNLDIR) LIBFTDIR=../libft
 
 $(MLX): $(MLXDIR)
-	@echo -n "Compiling \033[33mMLX42\033[0m..."
+	@printf "[.]   📦 Compiling \033[33mMLX42\033[0m...\r"
 	@cmake $(MLXDIR) -B $(MLXDIR)/build > /dev/null 2>&1 && \
 	$(MAKE) -s -C $(MLXDIR)/build -j4 > /dev/null 2>&1 && \
-	echo " \033[32msuccessful\033[0m!"
+	printf "[✅]  📦 Compiled \033[33mMLX42\033[0m...  \n"
 
 gitclone:
 	@if [ ! -d "$(MLXDIR)" ]; then \
-		echo -n "Cloning \033[33mMLX42\033[0m..."; \
+		printf "[.]   ⚙️ Cloning \033[33mMLX42\033[0m...\r"; \
 		git clone https://github.com/codam-coding-college/MLX42.git $(MLXDIR) > /dev/null 2>&1; \
-		echo " \033[32msuccessful\033[0m!"; \
+		printf "[✅]  ⚙️ Cloned \033[33mMLX42\033[0m...\n"; \
 	fi
 
 libmlx: $(MLXDIR)/build/libmlx42.a
 
 libft:
-	echo -n "Compiling \033[33mlibft\033[0m..."
+	@printf "[.]   📦 Compiling \033[33mlibft\033[0m...\r"
 	@$(MAKE) -s -C $(LIBFTDIR) > /dev/null && \
-	echo " \033[32msuccessful\033[0m!"
+	printf "[✅]  📦 Compiled \033[33mlibft\033[0m...  \n"
 
 gnl:
-	echo -n "Compiling \033[33mgetnextline\033[0m..."
+	@printf "[.]   📦 Compiling \033[33mgetnextline\033[0m...\r"
 	@$(MAKE) -C $(GNLDIR) > /dev/null && \
-	echo " \033[32msuccessful\033[0m!"
+	printf "[✅]  📦 Compiled \033[33mgetnextline\033[0m...  \n"
 
 clean:
 	@$(MAKE) clean -C $(GNLDIR)
@@ -99,10 +99,10 @@ clean:
 	@rm -rf $(MLXDIR)
 
 fclean: clean
-	@echo -n "Removing \033[33m$(NAME)\033[0m build..."
+	@printf "[.]   💀 Removing \033[33m$(NAME)\033[0m build...\r"
 	@$(RM) $(NAME)
 	@rm -rf $(MLXDIR)
-	@echo " \033[32msuccessful\033[0m!"
+	printf "[✅]  💀 Removed \033[33m$(NAME)\033[0m build...  \n"
 
 re: fclean all 
 

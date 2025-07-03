@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 17:52:29 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/03 10:58:58 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	main(int ac, char **av)
 		return (gc_free(gc_list), 1);
 	if (!parser(fd, &scene, &gc_list))
 		return (gc_free(gc_list), 1);
-	if (!render(scene, &gc_list))
+	if (!prepare_for_render(scene, &gc_list))
 	{
 		if (scene->mlx)
 			mlx_terminate(scene->mlx);
