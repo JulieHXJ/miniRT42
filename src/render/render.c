@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 18:17:55 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/03 11:04:56 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/03 11:20:25 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	gamma_correction(t_color *color)
  * @note buff is divided by the number of iterations before it gets printed
  * to output the average color.
  */
-static void	render(void *arg)
+void	render(void *arg)
 {
 	t_scene		*scene;
 	t_color		**buff;
