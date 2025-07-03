@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:23:10 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 12:42:05 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/03 15:02:46 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ static bool	key_hook_rotate(t_scene *scene, mlx_key_data_t keydata)
 	else if (keydata.key == MLX_KEY_D)
 		return (rotate_camera(scene, 0.0, 0.1), true);
 	else if (keydata.key == MLX_KEY_W)
-		return (rotate_camera(scene, 0.1, 0.0), true);
-	else if (keydata.key == MLX_KEY_X)
 		return (rotate_camera(scene, -0.1, 0.0), true);
+	else if (keydata.key == MLX_KEY_X)
+		return (rotate_camera(scene, 0.1, 0.0), true);
 	return (false);
 }
 
@@ -57,18 +57,19 @@ void	zooming(double xdelta, double ydelta, void *param)
 	scene = (t_scene *)param;
 	if (ydelta > 0)
 	{
-		translation = vec_scale(scene->camera.viewport.normal, -1.0);
+		translation = vec_scale(scene->camera.viewport.normal, 2.0);
 		scene->camera.origin = vec_add(scene->camera.origin, translation);
 		set_viewport(&scene->camera.viewport, &scene->camera);
 	}
 	else if (ydelta < 0)
 	{
-		translation = vec_scale(scene->camera.viewport.normal, 1.0);
+		translation = vec_scale(scene->camera.viewport.normal, -2.0);
 		scene->camera.origin = vec_add(scene->camera.origin, translation);
 		set_viewport(&scene->camera.viewport, &scene->camera);
 	}
-	draw_img(scene);
-	mlx_image_to_window(scene->mlx, scene->img, 0, 0);
+	// draw_img(scene);
+	// mlx_image_to_window(scene->mlx, scene->img, 0, 0);
+	scene->if_update = true;
 }
 
 /**
@@ -91,14 +92,25 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 			scene->camera.direction = vec_normal(new_vector(0, -1, 0));
 			scene->camera.fov = 60.0;
 			set_viewport(&scene->camera.viewport, &scene->camera);
-			draw_img(scene);
+			// draw_img(scene);
+			scene->if_update = true;
 		}
 		else
 		{
-			update = key_hook_move(scene, keydata) | key_hook_rotate(scene,
-					keydata);
-			if (update)
-				draw_img(scene);
+			if (key_hook_move(scene, keydata) || key_hook_rotate(scene, keydata))
+				scene->if_update = true;
 		}
+	}
+}
+
+void loop_hook(void *param)
+{
+	t_scene	*scene;
+
+	scene = (t_scene *)param;
+	if (scene->if_update)
+	{
+		draw_img(scene);
+		scene->if_update = false;
 	}
 }

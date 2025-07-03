@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 16:33:35 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 16:51:36 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static void	gamma_correction(t_color *color)
 // 	return NULL;
 // }
 
-
 // void	draw_img(t_scene *scene)
 // {
 // 	pthread_t		threads[THREAD_COUNT];
@@ -103,8 +102,6 @@ static void	gamma_correction(t_color *color)
 // 	free(thread_data);
 // }
 
-
-
 /**
  * @brief Draw each pixel of the scene to the image
  */
@@ -114,6 +111,7 @@ void	draw_img(t_scene *scene)
 	uint32_t	y;
 	t_color		color;
 
+	//adding check: if camera is inside the object, all pixels will be black
 	y = -1;
 	while (++y < scene->img->height)
 	{
@@ -144,8 +142,8 @@ bool	render(t_scene *scene, t_gc_object **gc_list)
 		return (print_error("Failed to attach image to window", *gc_list),
 			false);
 	mlx_key_hook(scene->mlx, key_hook, scene);
-	mlx_scroll_hook(scene->mlx, &zooming, scene);//todo
-	// mlx_loop_hook(scene->mlx, loop_hook, scene);
+	mlx_scroll_hook(scene->mlx, &zooming, scene);
+	mlx_loop_hook(scene->mlx, loop_hook, scene);
 	mlx_loop(scene->mlx);
 	return (true);
 }

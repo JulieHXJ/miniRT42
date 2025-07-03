@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 13:06:33 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 16:36:37 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ static t_scene	*scene_init(t_gc_object **list)
 	scene->mlx = NULL;
 	scene->img = NULL;
 	camera_init(scene);
+	scene->if_update = false;
 	return (scene);
 }
 

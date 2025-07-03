@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 13:13:45 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/02 16:39:27 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,6 +246,7 @@ void					rotate_camera(t_scene *scene, float pitch, float yaw);
 void					draw_img(t_scene *scene);
 void					zooming(double xdelta, double ydelta, void *param);
 void					key_hook(mlx_key_data_t keydata, void *param);
+void loop_hook(void *param);
 bool					render(t_scene *scene, t_gc_object **gc_list);
 
 // GC
