@@ -6,9 +6,13 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 12:25:57 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/03 12:26:06 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:16:53 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minirt_bonus.h"
 
+bool	create_cone(int id, t_scene **scn, char **arr, t_gc_object *gc)
+{
+    
+}

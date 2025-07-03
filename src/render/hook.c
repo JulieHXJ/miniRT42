@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:23:10 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/03 11:24:30 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:09:29 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	zooming(double xdelta, double ydelta, void *param)
 	scene = (t_scene *)param;
 	if (ydelta > 0)
 	{
-		translation = vec_scale(scene->camera.viewport.normal, -1.0);
+		translation = vec_scale(scene->camera.viewport.normal, -2.0);
 		scene->camera.origin = vec_add(scene->camera.origin, translation);
 		set_viewport(&scene->camera.viewport, &scene->camera);
 	}

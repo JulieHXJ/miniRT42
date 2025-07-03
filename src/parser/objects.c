@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/03 12:38:12 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:07:43 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
 		return (create_sphere(i++, scene, tokens, gc_list));
 	else if (!ft_strcmp(tokens[0], "cy"))
 		return (create_cylinder(i++, scene, tokens, gc_list));
-	else if (!ft_strcmp(tokens[0], "co"))
-		return (create_cone());
+	// else if (!ft_strcmp(tokens[0], "co"))
+	// 	return (create_cone(i++, scene, tokens, gc_list));
 	print_error("Unknown object identifier", *gc_list);
 	return (false);
 }

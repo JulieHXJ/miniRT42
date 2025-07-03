@@ -32,15 +32,6 @@ SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDI
 		$(SRCDIR)/lighting/calculate.c \
 		$(SRCDIR)/lighting/calculate2.c
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#						BONUS						  #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-BONUSDIR = ./bonus
-BONUS_SRCS := $(BONUSDIR)/$(SRCDIR)/cone.c		 
-BONUSINC = $(BONUSDIR)/inc
-BONUSCFLAGS = -Wall -Wextra -Werror -Ofast -flto -march=native -Wunreachable-code -g -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I$(BONUSINC)
-
 
 # OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
@@ -70,13 +61,13 @@ $(MLX): $(MLXDIR)
 	@printf "[.]   📦 Compiling \033[33mMLX42\033[0m...\r"
 	@cmake $(MLXDIR) -B $(MLXDIR)/build > /dev/null 2>&1 && \
 	$(MAKE) -s -C $(MLXDIR)/build -j4 > /dev/null 2>&1 && \
-	printf "[✅]  📦 Compiled \033[33mMLX42\033[0m...  \n"
+	printf "[✅]  📦 Compiled \033[33mMLX42\033[0m!    \n"
 
 gitclone:
 	@if [ ! -d "$(MLXDIR)" ]; then \
 		printf "[.]   ⚙️ Cloning \033[33mMLX42\033[0m...\r"; \
 		git clone https://github.com/codam-coding-college/MLX42.git $(MLXDIR) > /dev/null 2>&1; \
-		printf "[✅]  ⚙️ Cloned \033[33mMLX42\033[0m...\n"; \
+		printf "[✅]  ⚙️ Cloned \033[33mMLX42\033[0m!   \n"; \
 	fi
 
 libmlx: $(MLXDIR)/build/libmlx42.a
@@ -84,27 +75,42 @@ libmlx: $(MLXDIR)/build/libmlx42.a
 libft:
 	@printf "[.]   📦 Compiling \033[33mlibft\033[0m...\r"
 	@$(MAKE) -s -C $(LIBFTDIR) > /dev/null && \
-	printf "[✅]  📦 Compiled \033[33mlibft\033[0m...  \n"
+	printf "[✅]  📦 Compiled \033[33mlibft\033[0m!    \n"
 
 gnl:
 	@printf "[.]   📦 Compiling \033[33mgetnextline\033[0m...\r"
 	@$(MAKE) -C $(GNLDIR) > /dev/null && \
-	printf "[✅]  📦 Compiled \033[33mgetnextline\033[0m...  \n"
-
-bonus:
+	printf "[✅]  📦 Compiled \033[33mgetnextline\033[0m!    \n"
 
 clean:
 	@$(MAKE) clean -C $(GNLDIR)
-	@$(RM) $(OBJS)
-	@rm -rf $(OBJDIR)
-	@rm -rf $(MLXDIR)
+	@$(RM) $(OBJS) $(BONUS_OBJS)
+	@rm -rf $(OBJDIR) $(MLXDIR)
 
 fclean: clean
 	@printf "[.]   💀 Removing \033[33m$(NAME)\033[0m build...\r"
 	@$(RM) $(NAME)
-	@rm -rf $(MLXDIR)
-	printf "[✅]  💀 Removed \033[33m$(NAME)\033[0m build...  \n"
+	printf "[✅]  💀 Removed \033[33m$(NAME)\033[0m build!    \n"
 
 re: fclean all 
 
-.PHONY: all clean fclean re libft libmlx gitclone 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#						BONUS						  #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+BONUSDIR = ./bonus
+BONUS_SRCDIR = $(BONUSDIR)/src
+BONUS_SRCS := $(BONUSDIR)/$(SRCDIR)/cone.c		 
+BONUSINC = -I$(BONUSDIR)/inc
+BONUS_OBJS = $(BONUS_SRCS:$(BONUS_SRCDIR)/%.c=$(OBJDIR)/%.bonus.o)
+
+$(OBJDIR)/%.bonus.o: $(BONUS_SRCDIR)/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(BONUSINC) -c $< -o $@
+
+bonus: gitclone libmlx libft gnl $(OBJS) $(BONUS_OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(BONUS_OBJS) -o $(NAME) $(MLX) $(MLX_FLAGS) -L$(GNLDIR) -lgnl -L$(LIBFTDIR) -lft -lm
+	@echo "🚀 \033[33m$(NAME) (bonus)\033[0m compiled \033[32msuccessfully\033[0m!"
+
+
+.PHONY: all clean fclean re libft libmlx gitclone bonus
