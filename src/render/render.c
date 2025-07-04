@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/04 12:32:20 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/04 13:37:47 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	render(void *arg)
 		x = -1;
 		while (++x < scene->img->width)
 		{
-			buff[y][x] = color_add(buff[y][x], antialiasing(scene, x, y));
+			buff[y][x] = color_add(buff[y][x], color_pixel(scene, x, y));
 			res = color_scale(buff[y][x], 1.0f / scene->render.i);
 			gamma_correction(&res);
 			mlx_put_pixel(scene->img, x, y, convert_color(res));

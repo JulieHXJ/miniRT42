@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/04 12:28:23 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/04 14:11:14 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,12 @@
 # include <stdio.h>
 # include <unistd.h>
 
-# include "../lib/MLX42/include/MLX42/MLX42.h"
 # include "../lib/getnextline/inc/get_next_line.h"
 # include "../lib/libft/inc/libft.h"
 # include "intersect.h"
 # include "material.h"
 # include "vector.h"
-// # include "../bonus/inc/minirt_bonus.h"
+# include "../bonus/inc/minirt_bonus.h"
 
 /* ************************************************************************** */
 /* ENUMS & DEFINES                                                            */
@@ -42,156 +41,6 @@
 # define ORIENT_MIN -1.0
 # define ORIENT_MAX 1.0
 
-typedef enum e_obj_type
-{
-	SPHERE,
-	PLANE,
-	CYLINDER,
-	LIGHT,
-	CONE,
-}	t_obj_type;
-
-/* ************************************************************************** */
-/* CORE MATH STRUCTURES                                                       */
-/* ************************************************************************** */
-
-typedef struct s_vec3	t_vec3;
-typedef struct s_color	t_color;
-
-/* ************************************************************************** */
-/* MEMORY GARBAGE COLLECTOR OBJECT                                            */
-/* ************************************************************************** */
-
-typedef struct s_gc_object
-{
-	void				*ptr;
-	bool				marked;
-	struct s_gc_object	*next;
-}						t_gc_object;
-
-/* ************************************************************************** */
-/* BASICS                                                                     */
-/* ************************************************************************** */
-
-/**
- * @note orient range: [-1.0, 1.0]
- * @note fov range: [0, 180], vp_width is calculated based on fov
- * @note screen_up and screen_right are used for camera rotation
- */
-typedef struct s_camera
-{
-	t_vec3		origin;
-	t_vec3		direction;
-	float		fov;
-	int			cam_num;
-	t_viewport	viewport;
-}				t_camera;
-
-/**
- * @note ratio range: [0.0, 1.0]
- * @note RGB range: [0, 255]
- */
-typedef struct s_amb_light
-{
-	float	ratio;
-	t_color	color;
-	int		amb_num;
-}			t_amb_light;
-
-/**
- * @note brightness range: [0.0, 1.0]
- */
-typedef struct s_light
-{
-	int		id;
-	t_vec3	position;
-	float	ratio;
-	t_color	color;
-}			t_light;
-
-/* ************************************************************************** */
-/* OBJECTS                                                                    */
-/* ************************************************************************** */
-
-/**
- * @note rgb range: [0, 255]
- */
-typedef struct s_sphere
-{
-	t_vec3	center;
-	float	diam;
-}			t_sphere;
-
-/**
- * @note normal range: [-1.0, 1.0]
- * @note rgb range: [0, 255]
- */
-typedef struct s_plane
-{
-	t_vec3	point;
-	t_vec3	normal;
-}			t_plane;
-
-/**
- * @note normal range: [-1.0, 1.0]
- * @note rgb range: [0, 255]
- */
-typedef struct s_cylinder
-{
-	t_vec3	center;
-	t_vec3	direction;
-	float	radius;
-	float	height;
-	t_vec3	top_center;
-	t_vec3	bottom_center;
-}			t_cylinder;
-
-/* ************************************************************************** */
-/* Generic object structure                                                   */
-/* ************************************************************************** */
-
-typedef struct s_object
-{
-	int				id;
-	t_obj_type		type;
-	union
-	{
-		t_sphere	sphere;
-		t_plane		plane;
-		t_cylinder	cylinder;
-	} u_data;
-	t_color			color;
-	t_material		material;
-	void			*bonus;
-	struct s_object	*next;
-}					t_object;
-
-/* ************************************************************************** */
-/* RENDERING STRUCTURE                                                        */
-/* ************************************************************************** */
-
-typedef struct s_render
-{
-	t_color			**color;
-	unsigned int	i;
-}					t_render;
-
-/* ************************************************************************** */
-/* SCENE STRUCTURE                                                            */
-/* ************************************************************************** */
-
-typedef struct s_scene
-{
-	t_camera	camera;
-	t_camera	cam_restore;
-	t_amb_light	amb_light;
-	t_light		*light;
-	t_object	*obj;
-	mlx_t		*mlx;
-	mlx_image_t	*img;
-	t_render	render;
-}				t_scene;
-
 /* ************************************************************************** */
 /* FUNCTION PROTOTYPES                                                        */
 /* ************************************************************************** */
@@ -202,6 +51,7 @@ size_t	array_size(char **arr);
 void	print_error(char *str, t_gc_object *gc_list);
 float	ft_atod(const char *str);
 float	frand(void);
+void	connect_nodes(t_scene **scene, t_object **new_obj);
 
 // Check
 bool	in_range_int(int value, int min, int max);
@@ -237,7 +87,7 @@ bool	is_in_shadow(t_scene scene, t_hit hit);
 t_color	lighted_pixel(t_scene scene, t_hit hit);
 t_color	unlighted_pixel(t_scene scene, t_hit hit);
 t_color	checkered_background(uint32_t x, uint32_t y);
-t_color	antialiasing(t_scene *scene, uint32_t x, uint32_t y);
+t_color	color_pixel(t_scene *scene, uint32_t x, uint32_t y);
 
 // Render
 void translate_horizontal(t_scene *scene, float step);
