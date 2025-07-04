@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/03 18:04:31 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/04 12:32:20 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ static t_color	**init_color_buffer(mlx_image_t img)
 
 	result = malloc(sizeof(t_color *) * img.height);
 	if (!result)
-		return (NULL); 			// ---------> gclist
+		return (NULL);
 	y = -1;
 	while (++y < img.height)
 	{
 		result[y] = malloc(sizeof(t_color) * img.width);
 		if (!result[y])
-			return (NULL); 			// Handle or free earlier allocations
+			return (NULL);
 		x = -1;
 		while (++x < img.width)
 			result[y][x] = (t_color){0, 0, 0};
@@ -102,12 +102,10 @@ bool	prepare_for_render(t_scene *scene, t_gc_object **gc_list)
 	if (mlx_image_to_window(scene->mlx, scene->img, 0, 0) < 0)
 		return (print_error("Failed to attach image to window", *gc_list),
 			false);
-	//create temp for reset
 	scene->cam_restore = scene->camera;
 	mlx_loop_hook(scene->mlx, &render, scene);
 	mlx_key_hook(scene->mlx, key_hook, scene);
-	mlx_scroll_hook(scene->mlx, &zooming, scene);//todo
-	// mlx_loop_hook(scene->mlx, loop_hook, scene);
+	mlx_scroll_hook(scene->mlx, &zooming, scene);
 	mlx_loop(scene->mlx);
 	return (true);
 }

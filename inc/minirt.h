@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/03 18:09:14 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/04 12:28:23 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,12 +240,11 @@ t_color	checkered_background(uint32_t x, uint32_t y);
 t_color	antialiasing(t_scene *scene, uint32_t x, uint32_t y);
 
 // Render
-void					translate_horizontal(t_scene *scene, float step);
-void					translate_vertical(t_scene *scene, float step);
-void					rotate_camera(t_scene *scene, float pitch, float yaw);
-// void					draw_img(t_scene *scene);
-void					zooming(double xdelta, double ydelta, void *param);
-void					key_hook(mlx_key_data_t keydata, void *param);
+void translate_horizontal(t_scene *scene, float step);
+void translate_vertical(t_scene *scene, float step);
+void rotate_camera(t_scene *scene, float pitch, float yaw);
+void zooming(double xdelta, double ydelta, void *param);
+void key_hook(mlx_key_data_t keydata, void *param);
 // void loop_hook(void *param);
 // bool					render(t_scene *scene, t_gc_object **gc_list);
 
