@@ -102,9 +102,9 @@ all: gitclone libmlx libft gnl $(NAME)
 
 gitclone:
 	@if [ ! -d "$(MLXDIR)" ]; then \
-		printf "[.]   ⚙️ Cloning \033[33mMLX42\033[0m...\r"; \
+		printf "[.]   🔗 Cloning \033[33mMLX42\033[0m...\r"; \
 		git clone https://github.com/codam-coding-college/MLX42.git $(MLXDIR) > /dev/null 2>&1; \
-		printf "[✅]  ⚙️ Cloned \033[33mMLX42\033[0m...\n"; \
+		printf "[✅]  🔗 Cloned \033[33mMLX42\033[0m...\n"; \
 	fi
 
 libmlx: $(MLXDIR)/build/libmlx42.a
@@ -122,10 +122,10 @@ clean:
 	@rm -rf $(MLXDIR)
 
 fclean: clean
-	@printf "[.]   💀 Removing \033[33m$(NAME)\033[0m build...\r"
+	@printf "[.]   🧹 Removing \033[33m$(NAME)\033[0m build...\r"
 	@$(RM) $(NAME)
 	@rm -rf $(MLXDIR)
-	printf "[✅]  💀 Removed \033[33m$(NAME)\033[0m build...  \n"
+	printf "[✅]  🧹 Removed \033[33m$(NAME)\033[0m build...  \n"
 
 re: fclean all 
 
