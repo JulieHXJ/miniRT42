@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/04 12:32:20 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/04 13:47:51 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	gamma_correction(t_color *color)
  * @note buff is divided by the number of iterations before it gets printed
  * to output the average color.
  */
-void	render(void *arg)
+void	pre_render(void *arg)
 {
 	t_scene		*scene;
 	t_color		**buff;
@@ -85,7 +85,7 @@ void	render(void *arg)
 	}
 }
 
-bool	prepare_for_render(t_scene *scene, t_gc_object **gc_list)
+bool	render(t_scene *scene, t_gc_object **gc_list)
 {
 	scene->mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "miniRT", true);
 	if (!scene->mlx)
@@ -98,12 +98,12 @@ bool	prepare_for_render(t_scene *scene, t_gc_object **gc_list)
 	}
 	scene->render.color = init_color_buffer(*scene->img);
 	scene->render.i = 0;
-	render(scene);
+	pre_render(scene);
 	if (mlx_image_to_window(scene->mlx, scene->img, 0, 0) < 0)
 		return (print_error("Failed to attach image to window", *gc_list),
 			false);
 	scene->cam_restore = scene->camera;
-	mlx_loop_hook(scene->mlx, &render, scene);
+	mlx_loop_hook(scene->mlx, &pre_render, scene);
 	mlx_key_hook(scene->mlx, key_hook, scene);
 	mlx_scroll_hook(scene->mlx, &zooming, scene);
 	mlx_loop(scene->mlx);

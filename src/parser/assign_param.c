@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:30:39 by xhuang            #+#    #+#             */
-/*   Updated: 2025/07/03 17:48:27 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/04 14:37:46 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,22 +57,4 @@ bool	assign_positive_num(char *num, float *value)
 	if (*value <= 0)
 		return (print_error("Value out of range (0, +inf)", NULL), false);
 	return (true);
-}
-
-// for bonus
-void	assign_material(char **tokens, t_material *material)
-{
-	int len;
-
-	len = array_size(tokens);
-	if (len > 4)
-		material->specular = ft_atod(tokens[4]);
-	if (len > 5)
-		material->reflective = ft_atod(tokens[5]);
-	if (len > 6)
-		material->roughness = ft_atod(tokens[6]);
-	if (len > 7)
-		material->transparency = ft_atod(tokens[7]);
-	if (len > 8)
-		material->refractive_index = ft_atod(tokens[8]);
 }

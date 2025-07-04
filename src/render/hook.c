@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:23:10 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/03 18:05:02 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/04 13:48:34 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	zooming(double xdelta, double ydelta, void *param)
 		set_viewport(&scene->camera.viewport, &scene->camera);
 	}
 	reset_color_buffer(scene);
-	render(param);
+	pre_render(param);
 	mlx_image_to_window(scene->mlx, scene->img, 0, 0);
 }
 
@@ -107,12 +107,12 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 			scene->camera = scene->cam_restore;
 			set_viewport(&scene->camera.viewport, &scene->camera);
 			reset_color_buffer(scene);
-			render(param);
+			pre_render(param);
 		}
 		else if (camera_move(scene, keydata) || camera_rotate(scene, keydata))
 		{
 			reset_color_buffer(scene);
-			render(param);
+			pre_render(param);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/03 17:48:39 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/04 14:37:04 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * @brief Connects the new object to the linked list of objects in the scene.
  * @note This function adds the new object to the head of the list.
  */
-static void	connect_nodes(t_scene **scene, t_object **new_obj)
+static void	add_object(t_scene **scene, t_object **new_obj)
 {
 	if (!scene || !new_obj || !(*new_obj))
 		return ;
@@ -32,8 +32,7 @@ static bool	create_sphere(int id, t_scene **scene, char **arr, t_gc_object **gc)
 	t_object	*new_obj;
 
 	if (array_size(arr) < 4)
-		return (print_error("Sphere requires 3 basic parameters", *gc),
-			false);
+		return (print_error("Sphere requires 3 basic parameters", *gc), false);
 	new_obj = gc_alloc(sizeof(t_object), gc);
 	if (!new_obj)
 		return (print_error("Memory allocation failed for sphere", *gc), false);
@@ -42,12 +41,10 @@ static bool	create_sphere(int id, t_scene **scene, char **arr, t_gc_object **gc)
 	if (!assign_vector(arr[1], &new_obj->u_data.sphere.center, gc))
 		return (print_error("Sphere center parse failed", *gc), false);
 	if (!assign_positive_num(arr[2], &new_obj->u_data.sphere.diam))
-		return (print_error("Negative number as sphere diameter", *gc),
-			false);
+		return (print_error("Negative number as sphere diameter", *gc), false);
 	if (!assign_color(arr[3], &new_obj->color, gc))
 		return (print_error("Sphere color parse failed", *gc), false);
-	assign_material(arr, &new_obj->material);
-	connect_nodes(scene, &new_obj);
+	add_object(scene, &new_obj);
 	return (true);
 }
 
@@ -68,8 +65,7 @@ static bool	create_plane(int id, t_scene **scene, char **arr, t_gc_object **gc)
 		return (print_error("Plane normal parse failed", *gc), false);
 	if (!assign_color(arr[3], &new_obj->color, gc))
 		return (print_error("Plane color parse failed", *gc), false);
-	assign_material(arr, &new_obj->material);
-	connect_nodes(scene, &new_obj);
+	add_object(scene, &new_obj);
 	return (true);
 }
 
@@ -97,8 +93,7 @@ static bool	create_cylinder(int id, t_scene **scn, char **arr, t_gc_object **gc)
 	if (!assign_color(arr[5], &new_obj->color, gc))
 		return (print_error("Cylinder color parse failed", *gc), false);
 	get_cylinder_ends(&new_obj->u_data.cylinder);
-	assign_material(arr, &new_obj->material);
-	return (connect_nodes(scn, &new_obj), true);
+	return (add_object(scn, &new_obj), true);
 }
 
 bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
@@ -120,8 +115,6 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
 		return (create_sphere(i++, scene, tokens, gc_list));
 	else if (!ft_strcmp(tokens[0], "cy"))
 		return (create_cylinder(i++, scene, tokens, gc_list));
-	// else if (!ft_strcmp(tokens[0], "co"))
-	// 	return (create_cone(i++, scene, tokens, gc_list));
 	print_error("Unknown object identifier", *gc_list);
 	return (false);
 }

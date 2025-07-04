@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:23:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/07/02 13:12:34 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/04 14:45:05 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,27 +63,39 @@ void	print_scene_info(t_scene *scene)
 {
 	t_object	*obj;
 	int			i;
+	t_light		*light;
 
 	print_camera(&scene->camera);
 	printf("\n[Ambient Light]\n");
-	printf("Ratio: %.2f\n", scene->amb_light.ratio);
+	printf("\n[Ambient Light]\n Ratio: %.2f\n", scene->amb_light.ratio);
 	print_color(scene->amb_light.color, "Color");
 	printf("Ambient Count: %d\n", scene->amb_light.amb_num);
-	if (scene->light)
+	light = scene->lights;
+	if (light)
 	{
-		printf("\n[Light]\n");
-		print_vec3(scene->light->position, "Position");
-		printf("Ratio: %.2f\n", scene->light->ratio);
-		print_color(scene->light->color, "Color");
+		i = 0;
+		while (light)
+		{
+			printf("\n[Light #%d]\n", i++);
+			print_vec3(light->position, "Position");
+			printf("Ratio: %.2f\n", light->ratio);
+			print_color(light->color, "Color");
+			light = light->next;
+		}
 	}
 	else
 		printf("\n[Light] None\n");
 	obj = scene->obj;
-	i = 0;
-	while (obj)
+	if (obj)
 	{
-		printf("\n[Object #%d]\n", ++i);
-		print_object(obj);
-		obj = obj->next;
+		i = 0;
+		while (obj)
+		{
+			printf("\n[Object #%d]\n", ++i);
+			print_object(obj);
+			obj = obj->next;
+		}
 	}
+	else
+		printf("\n[Object] None\n");
 }

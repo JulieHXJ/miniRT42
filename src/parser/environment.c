@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/03 17:48:34 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/04 13:28:15 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,25 +107,26 @@ static bool	set_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	float		brightness;
 	t_vec3		pos;
 	t_color		col;
+	t_light		*new_light;
 
 	if (array_size(tokens) != 4)
 		return (print_error("Light requires 3 parameters", *gc_list), false);
 	brightness = ft_atod(tokens[2]);
-	pos = new_vector(0, 0, 0);
-	col = (t_color){0, 0, 0};
 	if (!valid_ratio(brightness))
 		return (print_error("Light brightness out of range", *gc_list), false);
 	if (!assign_vector(tokens[1], &pos, gc_list))
 		return (print_error("Light position parse failed", *gc_list), false);
 	if (!assign_color(tokens[3], &col, gc_list))
 		return (print_error("Light color parse failed", *gc_list), false);
-	(*scene)->light = gc_alloc(sizeof(t_light), gc_list);
-	if (!(*scene)->light)
+	new_light = gc_alloc(sizeof(t_light), gc_list);
+	if (!new_light)
 		return (print_error("Light allocatione failed", *gc_list), false);
-	(*scene)->light->id = i;
-	(*scene)->light->position = pos;
-	(*scene)->light->color = col;
-	(*scene)->light->ratio = brightness;
+	new_light->id = i++;
+	new_light->position = pos;
+	new_light->color = col;
+	new_light->ratio = brightness;
+	new_light->next = NULL;
+	add_light(*scene, new_light);
 	return (true);
 }
 

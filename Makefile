@@ -13,13 +13,14 @@ LIBFTDIR = ./lib/libft
 GNLDIR = ./lib/getnextline
 
 # remember to change
-SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDIR)/debugging.c\
+SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDIR)/debugging.c \
 		$(SRCDIR)/vector/color.c \
 		$(SRCDIR)/vector/math1.c \
 		$(SRCDIR)/vector/math2.c \
 		$(SRCDIR)/parser/check_name.c \
 		$(SRCDIR)/parser/check_range.c \
 		$(SRCDIR)/parser/assign_param.c \
+		$(SRCDIR)/parser/multi_light.c \
 		$(SRCDIR)/parser/environment.c \
 		$(SRCDIR)/parser/parse.c \
 		$(SRCDIR)/parser/objects.c \

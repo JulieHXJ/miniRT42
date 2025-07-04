@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:10:44 by xhuang            #+#    #+#             */
-/*   Updated: 2025/07/04 12:27:51 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/04 14:41:04 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,25 @@ t_color	antialiasing(t_scene *scene, uint32_t x, uint32_t y)
 	t_ray	ray;
 	t_hit	hit;
 	t_color	color;
+	t_light	*light;
+	t_color	final;
 
 	ray = ray_to_vp(scene, x, y);
-	if (if_hit(scene, ray, &hit))
+	if (!if_hit(scene, ray, &hit))
+		return (clamp_color(checkered_background(x, y)));
+	final = color_scale(scene->amb_light.color, scene->amb_light.ratio);
+	final = color_mult(hit.object->color, final);
+	light = scene->lights;
+	while (light)
 	{
-		if (is_lighted_pixel(*scene, hit))
-			color = lighted_pixel(*scene, hit);
+		if (is_lighted_pixel(hit, light))
+			color = lighted_pixel(*scene, hit, light);
 		else
-			color = unlighted_pixel(*scene, hit);
+			color = (t_color){0, 0, 0};
+		final = color_add(final, color);
+		light = light->next;
 	}
-	else
-		color = checkered_background(x, y);
-	return (clamp_color(color));
+	return (clamp_color(final));
 }
 
 static t_color	specular_color(t_vec3 light_dir, t_camera cam, t_hit hit,
@@ -88,21 +95,20 @@ static t_color	specular_color(t_vec3 light_dir, t_camera cam, t_hit hit,
  * @brief Color the pixels on the light side of the object.
  * @param hit The lighted pixel.
  */
-t_color	lighted_pixel(t_scene scene, t_hit hit)
+t_color	lighted_pixel(t_scene scene, t_hit hit, t_light *light)
 {
-	t_vec3	light_dir;
-	t_color	ambient_color;
-	t_color	spec_color;
 	t_color	result;
+	t_vec3	light_dir;
+	t_color	spec_color;
 
-	ambient_color = color_scale(scene.amb_light.color, scene.amb_light.ratio);
-	if (is_in_shadow(scene, hit))
-		return (clamp_color(color_mult(hit.object->color, ambient_color)));
-	light_dir = vec_sub(scene.light->position, hit.point);
-	result = color_add(ambient_color, direct_light(*scene.light, light_dir,
-				hit));
-	spec_color = specular_color(vec_normal(light_dir), scene.camera, hit,
-			*scene.light);
-	result = color_add(result, spec_color);
+	result = (t_color){0, 0, 0};
+	light_dir = vec_sub(scene.lights->position, hit.point);
+	if (!is_in_shadow(scene, hit, light))
+	{
+		result = direct_light(*light, light_dir, hit);
+		spec_color = specular_color(vec_normal(light_dir), scene.camera, hit,
+				*light);
+		result = color_add(result, spec_color);
+	}
 	return (clamp_color(color_mult(hit.object->color, result)));
 }
