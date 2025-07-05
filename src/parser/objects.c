@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   objects.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:14:15 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/04 14:11:02 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:37:04 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * @brief Connects the new object to the linked list of objects in the scene.
  * @note This function adds the new object to the head of the list.
  */
-void	add_object(t_scene **scene, t_object **new_obj)
+static void	add_object(t_scene **scene, t_object **new_obj)
 {
 	if (!scene || !new_obj || !(*new_obj))
 		return ;
@@ -115,8 +115,6 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
 		return (create_sphere(i++, scene, tokens, gc_list));
 	else if (!ft_strcmp(tokens[0], "cy"))
 		return (create_cylinder(i++, scene, tokens, gc_list));
-	else if (!ft_strcmp(tokens[0], "co"))
-		return (create_cone(i++, scene, tokens, gc_list));
 	print_error("Unknown object identifier", *gc_list);
 	return (false);
 }

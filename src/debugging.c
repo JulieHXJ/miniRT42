@@ -70,7 +70,7 @@ void	print_scene_info(t_scene *scene)
 	printf("\n[Ambient Light]\n Ratio: %.2f\n", scene->amb_light.ratio);
 	print_color(scene->amb_light.color, "Color");
 	printf("Ambient Count: %d\n", scene->amb_light.amb_num);
-	light = scene->light;
+	light = scene->lights;
 	if (light)
 	{
 		i = 0;

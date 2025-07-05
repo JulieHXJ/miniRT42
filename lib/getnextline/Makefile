@@ -1,7 +1,6 @@
 #
 #
 CC = cc
-MAKEFLAGS += -s
 CFLAGS = -g -Wall -Werror -Wextra -I$(INCDIR) -I$(LIBFTDIR)/inc
 
 SRCDIR = ./src
@@ -18,9 +17,9 @@ NAME = libgnl.a
 all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJDIR) $(OBJS)
-	@printf "[.]   📦 Compiling \033[33mgetnextline\033[0m...\r"
-	ar rcs $(NAME) $(OBJS) > /dev/null && \
-	printf "[✅]  📦 Compiled \033[33mgetnextline\033[0m...  \n"
+	@echo "\033[33mCompilating $(NAME) static library...\033[0m"
+	ar rcs $(NAME) $(OBJS)
+	@echo "$(NAME) created \033[32msuccessful\033[0m!"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@

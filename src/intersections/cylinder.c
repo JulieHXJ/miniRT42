@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 13:37:22 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/04 15:09:46 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/02 13:35:04 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,27 +94,35 @@ static bool	check_cap(t_ray ray, t_cylinder cylinder, t_vec3 center,
  */
 bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit)
 {
+	bool	result;
 	float	t_bottom;
 	float	t_top;
 	float	t_min;
 	t_hit	hit_side;
 
 	t_min = hit->t;
+	result = false;
 	hit_side.t = hit->t;
 	if (check_sides(ray, cylinder, &hit_side) && hit_side.t < t_min)
-		return (*hit = hit_side, t_min = hit_side.t, true);
+	{
+		*hit = hit_side;
+		t_min = hit_side.t;
+		result = true;
+	}
 	if (check_cap(ray, cylinder, cylinder.bottom_center, &t_bottom)
 		&& t_bottom < t_min && t_bottom > 0)
 	{
 		update_hit(hit, t_bottom, ray_point_at(ray, t_bottom),
 			vec_scale(cylinder.direction, -1));
-		return (t_min = t_bottom, true);
+		t_min = t_bottom;
+		result = true;
 	}
 	if (check_cap(ray, cylinder, cylinder.top_center, &t_top) && t_top < t_min
 		&& t_top > 0)
 	{
 		update_hit(hit, t_top, ray_point_at(ray, t_top), cylinder.direction);
-		return (t_min = t_top, true);
+		t_min = t_top;
+		result = true;
 	}
-	return (false);
+	return (result);
 }

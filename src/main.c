@@ -65,7 +65,7 @@ static t_scene	*scene_init(t_gc_object **list)
 	scene->amb_light.ratio = 0.0;
 	scene->amb_light.color = (t_color){0, 0, 0};
 	scene->amb_light.amb_num = 0;
-	scene->light = NULL;
+	scene->lights = NULL;
 	scene->obj = NULL;
 	scene->mlx = NULL;
 	scene->img = NULL;
@@ -91,7 +91,7 @@ int	main(int ac, char **av)
 		return (gc_free(gc_list), 1);
 	if (!parser(fd, &scene, &gc_list))
 		return (gc_free(gc_list), 1);
-	if (!prepare_render(scene, &gc_list))
+	if (!render(scene, &gc_list))
 	{
 		if (scene->mlx)
 			mlx_terminate(scene->mlx);

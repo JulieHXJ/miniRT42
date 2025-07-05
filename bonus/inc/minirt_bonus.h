@@ -6,28 +6,31 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 11:46:12 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/04 15:11:50 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:05:21 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_BONUS_H
 # define MINIRT_BONUS_H
 
-# include <stdbool.h>
+// # include "../../inc/vector.h"
+# include "../../inc/minirt.h"
 
-# include "../../inc/env.h"
-# include "../../inc/gc.h"
-# include "../../inc/objects.h"
-# include "../../inc/intersect.h"
-
-typedef struct s_uv
+typedef struct s_cone
 {
-	float	u;
-	float	v;
-}			t_uv;
+	t_vec3	vertex_pos;
+	t_vec3	orient;
+	float	height;
+	float	diameter;
+}			t_cone;
 
-bool	create_cone(int id, t_scene **scn, char **arr, t_gc_object **gc);
-bool	hit_cone(t_ray ray, t_cone cone, t_hit *hit);
-t_color	color_disruption(t_hit hit);
+typedef struct s_b_object
+{
+	t_object	base;
+	t_cone		*cone;
+}				t_b_object;
+
+
+bool	create_cone(int id, t_scene **scn, char **arr, t_gc_object *gc);
 
 #endif

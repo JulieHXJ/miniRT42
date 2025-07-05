@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/04 13:37:47 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/04 13:47:51 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	gamma_correction(t_color *color)
  * @note buff is divided by the number of iterations before it gets printed
  * to output the average color.
  */
-void	render(void *arg)
+void	pre_render(void *arg)
 {
 	t_scene		*scene;
 	t_color		**buff;
@@ -77,7 +77,7 @@ void	render(void *arg)
 		x = -1;
 		while (++x < scene->img->width)
 		{
-			buff[y][x] = color_add(buff[y][x], color_pixel(scene, x, y));
+			buff[y][x] = color_add(buff[y][x], antialiasing(scene, x, y));
 			res = color_scale(buff[y][x], 1.0f / scene->render.i);
 			gamma_correction(&res);
 			mlx_put_pixel(scene->img, x, y, convert_color(res));
@@ -85,7 +85,7 @@ void	render(void *arg)
 	}
 }
 
-bool	prepare_render(t_scene *scene, t_gc_object **gc_list)
+bool	render(t_scene *scene, t_gc_object **gc_list)
 {
 	scene->mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "miniRT", true);
 	if (!scene->mlx)
@@ -98,12 +98,12 @@ bool	prepare_render(t_scene *scene, t_gc_object **gc_list)
 	}
 	scene->render.color = init_color_buffer(*scene->img);
 	scene->render.i = 0;
-	render(scene);
+	pre_render(scene);
 	if (mlx_image_to_window(scene->mlx, scene->img, 0, 0) < 0)
 		return (print_error("Failed to attach image to window", *gc_list),
 			false);
 	scene->cam_restore = scene->camera;
-	mlx_loop_hook(scene->mlx, &render, scene);
+	mlx_loop_hook(scene->mlx, &pre_render, scene);
 	mlx_key_hook(scene->mlx, key_hook, scene);
 	mlx_scroll_hook(scene->mlx, &zooming, scene);
 	mlx_loop(scene->mlx);

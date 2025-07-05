@@ -1,7 +1,6 @@
 #
 #
 CC = cc
-MAKEFLAGS += -s
 CFLAGS = -Wall -Werror -Wextra -I$(INCDIR)
 
 INCDIR = ./inc
@@ -24,9 +23,7 @@ NAME = libft.a
 all: $(NAME)
 
 $(NAME): $(OBJDIR) $(OBJS)
-	@printf "[.]   📦 Compiling \033[33mlibft\033[0m...\r"
-	ar rcs $(NAME) $(OBJS) > /dev/null && \
-	printf "[✅]  📦 Compiled \033[33mlibft\033[0m...  \n"
+	ar rcs $(NAME) $(OBJS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@

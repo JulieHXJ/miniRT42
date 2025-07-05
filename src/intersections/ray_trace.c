@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:16:44 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/04 15:11:16 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/02 17:24:03 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,30 @@ t_ray	ray_to_vp(t_scene *scene, float x, float y)
 
 bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 {
-	if (obj->type == SPHERE
-		&& hit_sphere(ray, (*obj).u_data.sphere, hit))
-		return (hit->object = obj, true);
-	else if (obj->type == PLANE
-		&& hit_plane(ray, (*obj).u_data.plane, hit))
-		return (hit->object = obj, true);
-	else if (obj->type == CYLINDER
-		&& hit_cylinder(ray, (*obj).u_data.cylinder, hit))
-		return (hit->object = obj, true);
-	else if (obj->type == CONE
-		&& (hit_cone(ray, (*obj).u_data.cone, hit)))
-		return (hit->object = obj, true);
+	if (obj->type == SPHERE)
+	{
+		if (hit_sphere(ray, (*obj).u_data.sphere, hit))
+		{
+			hit->object = obj;
+			return (true);
+		}
+	}
+	else if (obj->type == PLANE)
+	{
+		if (hit_plane(ray, (*obj).u_data.plane, hit))
+		{
+			hit->object = obj;
+			return (true);
+		}
+	}
+	else if (obj->type == CYLINDER)
+	{
+		if (hit_cylinder(ray, (*obj).u_data.cylinder, hit))
+		{
+			hit->object = obj;
+			return (true);
+		}
+	}
 	return (false);
 }
 

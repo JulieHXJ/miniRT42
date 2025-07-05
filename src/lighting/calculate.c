@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   calculate.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:10:44 by xhuang            #+#    #+#             */
-/*   Updated: 2025/07/04 13:37:46 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:41:04 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include "../../bonus/inc/minirt_bonus.h"
+#define SAMPLES 2
 #define SPECULAR 1.0f   // Specular strength [0.0 - 1.0]
 #define SHININESS 32.0f // Shininess factor [8.0 - 256]
 
@@ -47,7 +47,7 @@ static t_color	direct_light(t_light light, t_vec3 light_vec, t_hit hit)
 	return (result);
 }
 
-t_color	color_pixel(t_scene *scene, uint32_t x, uint32_t y)
+t_color	antialiasing(t_scene *scene, uint32_t x, uint32_t y)
 {
 	t_ray	ray;
 	t_hit	hit;
@@ -60,10 +60,10 @@ t_color	color_pixel(t_scene *scene, uint32_t x, uint32_t y)
 		return (clamp_color(checkered_background(x, y)));
 	final = color_scale(scene->amb_light.color, scene->amb_light.ratio);
 	final = color_mult(hit.object->color, final);
-	light = scene->light;
+	light = scene->lights;
 	while (light)
 	{
-		if (is_lighted_pixel(*scene, hit))
+		if (is_lighted_pixel(hit, light))
 			color = lighted_pixel(*scene, hit, light);
 		else
 			color = (t_color){0, 0, 0};
@@ -102,8 +102,8 @@ t_color	lighted_pixel(t_scene scene, t_hit hit, t_light *light)
 	t_color	spec_color;
 
 	result = (t_color){0, 0, 0};
-	light_dir = vec_sub(scene.light->position, hit.point);
-	if (!is_in_shadow(scene, hit))
+	light_dir = vec_sub(scene.lights->position, hit.point);
+	if (!is_in_shadow(scene, hit, light))
 	{
 		result = direct_light(*light, light_dir, hit);
 		spec_color = specular_color(vec_normal(light_dir), scene.camera, hit,
