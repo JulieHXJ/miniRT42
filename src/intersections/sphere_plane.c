@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_plane.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:33:01 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 12:25:05 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/04 14:06:58 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,3 +109,4 @@ bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit)
 		hit->normal = vec_scale(plane.normal, -1);
 	return (true);
 }
+

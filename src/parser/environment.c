@@ -78,7 +78,7 @@ static bool	set_amb_light(t_scene **scene, char **tokens, t_gc_object **gc_list)
 	t_color	color;
 
 	if ((*scene)->amb_light.amb_num != 0)
-		return (print_error("Multiple ambient lights detected", *gc_list),
+		return (print_error("Multiple ambient light detected", *gc_list),
 			false);
 	if (array_size(tokens) != 3)
 		return (print_error("Ambient light requires 2 parameters", *gc_list),
