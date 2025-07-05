@@ -20,6 +20,7 @@ GNL = $(GNLDIR)/libgnl.a
 NAME = minirt
 
 RM = rm -f
+.DEFAULT_GOAL := all
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -59,7 +60,7 @@ OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 SRCBONUSDIR = ./bonus/src
 
-BONUS_SRCS := $(SRCBONUSDIR)/cone.c
+BONUS_SRCS := $(SRCBONUSDIR)/cone.c $(SRCBONUSDIR)/color_disruption.c
 
 BONUS_OBJS = $(BONUS_SRCS:$(SRCBONUSDIR)/%.c=$(OBJDIR)/%.o)
 
@@ -124,7 +125,6 @@ clean:
 fclean: clean
 	@printf "[.]   🧹 Removing \033[33m$(NAME)\033[0m build...\r"
 	@$(RM) $(NAME)
-	@rm -rf $(MLXDIR)
 	printf "[✅]  🧹 Removed \033[33m$(NAME)\033[0m build...  \n"
 
 re: fclean all 

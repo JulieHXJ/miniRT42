@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
-#define SAMPLES 2
+#include "../../bonus/inc/minirt_bonus.h"
 #define SPECULAR 1.0f   // Specular strength [0.0 - 1.0]
 #define SHININESS 32.0f // Shininess factor [8.0 - 256]
 
@@ -47,25 +47,6 @@ static t_color	direct_light(t_light light, t_vec3 light_vec, t_hit hit)
 	return (result);
 }
 
-t_color	color_pixel(t_scene *scene, uint32_t x, uint32_t y)
-{
-	t_ray	ray;
-	t_hit	hit;
-	t_color	color;
-
-	ray = ray_to_vp(scene, x, y);
-	if (if_hit(scene, ray, &hit))
-	{
-		if (is_lighted_pixel(*scene, hit))
-			color = lighted_pixel(*scene, hit);
-		else
-			color = unlighted_pixel(*scene, hit);
-	}
-	else
-		color = checkered_background(x, y);
-	return (clamp_color(color));
-}
-
 static t_color	specular_color(t_vec3 light_dir, t_camera cam, t_hit hit,
 		t_light light)
 {
@@ -88,21 +69,41 @@ static t_color	specular_color(t_vec3 light_dir, t_camera cam, t_hit hit,
  * @brief Color the pixels on the light side of the object.
  * @param hit The lighted pixel.
  */
-t_color	lighted_pixel(t_scene scene, t_hit hit)
+static t_color	lighted_pixel(t_scene scene, t_hit hit, t_color obj_color)
 {
 	t_vec3	light_dir;
 	t_color	ambient_color;
 	t_color	spec_color;
-	t_color	result;
+	t_color	res;
 
 	ambient_color = color_scale(scene.amb_light.color, scene.amb_light.ratio);
 	if (is_in_shadow(scene, hit))
-		return (clamp_color(color_mult(hit.object->color, ambient_color)));
+		return (clamp_color(color_mult(obj_color, ambient_color)));
 	light_dir = vec_sub(scene.light->position, hit.point);
-	result = color_add(ambient_color, direct_light(*scene.light, light_dir,
-				hit));
+	res = color_add(ambient_color, direct_light(*scene.light, light_dir, hit));
 	spec_color = specular_color(vec_normal(light_dir), scene.camera, hit,
 			*scene.light);
-	result = color_add(result, spec_color);
-	return (clamp_color(color_mult(hit.object->color, result)));
+	res = color_add(res, spec_color);
+	return (clamp_color(color_mult(obj_color, res))); // shouldn't it be /2 (average)?
+}
+
+t_color	color_pixel(t_scene *scene, uint32_t x, uint32_t y)
+{
+	t_ray	ray;
+	t_hit	hit;
+	t_color	disruption;
+	t_color	color;
+
+	ray = ray_to_vp(scene, x, y);
+	if (if_hit(scene, ray, &hit))
+	{
+		disruption = color_disruption(hit);
+		if (is_lighted_pixel(*scene, hit))
+			color = lighted_pixel(*scene, hit, disruption);
+		else
+			color = unlighted_pixel(*scene, hit, disruption);
+	}
+	else
+		color = checkered_background(x, y);
+	return (clamp_color(color));
 }

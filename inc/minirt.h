@@ -72,8 +72,8 @@ bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 // Lighting
 bool	is_lighted_pixel(t_scene scene, t_hit hit);
 bool	is_in_shadow(t_scene scene, t_hit hit);
-t_color	lighted_pixel(t_scene scene, t_hit hit);
-t_color	unlighted_pixel(t_scene scene, t_hit hit);
+// t_color	lighted_pixel(t_scene scene, t_hit hit);
+t_color	unlighted_pixel(t_scene scene, t_hit hit, t_color obj_color);
 t_color	checkered_background(uint32_t x, uint32_t y);
 t_color	color_pixel(t_scene *scene, uint32_t x, uint32_t y);
 

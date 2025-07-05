@@ -26,13 +26,14 @@ t_color	checkered_background(uint32_t x, uint32_t y)
 		return ((t_color){75, 75, 75});
 }
 
-t_color	unlighted_pixel(t_scene scene, t_hit hit)
+t_color	unlighted_pixel(t_scene scene, t_hit hit, t_color obj_color)
 {
 	t_object	obj;
 	t_amb_light	ambient;
 
+	(void) hit;
 	ambient.color = color_scale(scene.amb_light.color, scene.amb_light.ratio);
-	obj.color = color_mult(hit.object->color, ambient.color);
+	obj.color = color_mult(obj_color, ambient.color);
 	return (clamp_color(obj.color));
 }
 
