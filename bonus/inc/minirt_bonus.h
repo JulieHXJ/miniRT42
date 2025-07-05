@@ -18,6 +18,7 @@
 # include "../../inc/env.h"
 # include "../../inc/gc.h"
 # include "../../inc/objects.h"
+# include "../../inc/intersect.h"
 
 bool	create_cone(int id, t_scene **scn, char **arr, t_gc_object **gc);
 bool	hit_cone(t_ray ray, t_cone cone, t_hit *hit);

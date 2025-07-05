@@ -26,8 +26,6 @@ typedef struct s_material
 	float transparency;     // Transparency coefficient
 }	t_material;
 
-
-
-
+void	assign_material(char **tokens, t_material *material);
 
 #endif

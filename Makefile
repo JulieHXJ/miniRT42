@@ -6,8 +6,8 @@
 CC = gcc
 MAKEFLAGS += -s
 CFLAGS = -Wall -Wextra -Werror -Ofast -flto -march=native -Wunreachable-code -g -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I./inc
-MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw
-# MLX_FLAGS = -ldl -lglfw
+# MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw
+MLX_FLAGS = -ldl -lglfw
 
 OBJDIR = ./obj
 MLXDIR = ./lib/MLX42

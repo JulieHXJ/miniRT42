@@ -1,6 +1,10 @@
 {
     "files.associations": {
+        "*.cpp": "cpp",
         "minirt.h": "c",
-        "__locale": "c"
+        "__locale": "c",
+        "intersect.h": "c",
+        "minirt_bonus.h": "c",
+        "gc.h": "c"
     }
 }

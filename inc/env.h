@@ -13,9 +13,24 @@
 #ifndef ENV_H
 # define ENV_H
 
+# include <stdbool.h>
+
 # include "vector.h"
-# include "intersect.h"
+# include "objects.h"
+# include "gc.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
+
+typedef struct s_viewport
+{
+	float	fov;
+	float	aspect_ratio;
+	float	view_width;
+	float	view_height;
+	t_vec3	up;
+	t_vec3	right;
+	t_vec3	normal;
+	t_vec3	up_left_corner;
+}			t_viewport;
 
 /**
  * @note orient range: [-1.0, 1.0]
@@ -70,5 +85,19 @@ typedef struct s_scene
 	mlx_image_t	*img;
 	t_render	render;
 }				t_scene;
+
+bool	create_environment(char *line, t_scene **scene, t_gc_object **gc_list);
+bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list);
+bool	parser(int fd, t_scene **scene, t_gc_object **gc_list);
+bool	prepare_for_render(t_scene *scene, t_gc_object **gc_list);
+void	get_cylinder_ends(t_cylinder *c);
+void	translate_horizontal(t_scene *scene, float step);
+void	translate_vertical(t_scene *scene, float step);
+void	rotate_camera(t_scene *scene, float pitch, float yaw);
+void	zooming(double xdelta, double ydelta, void *param);
+void	key_hook(mlx_key_data_t keydata, void *param);
+void	render(void *arg);
+void	set_viewport(t_viewport *vp, t_camera *camera);
+void	print_scene_info(t_scene *scene);
 
 #endif
