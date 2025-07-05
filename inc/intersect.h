@@ -13,23 +13,10 @@
 #ifndef INTERSECT_H
 # define INTERSECT_H
 
-# include "vector.h"
 # include <stdbool.h>
 
-// Forward declaration of t_object
-typedef struct s_object	t_object;
-
-typedef struct s_viewport
-{
-	float	fov;
-	float	aspect_ratio;
-	float	view_width;
-	float	view_height;
-	t_vec3	up;
-	t_vec3	right;
-	t_vec3	normal;
-	t_vec3	up_left_corner;
-}			t_viewport;
+# include "objects.h"
+# include "vector.h"
 
 typedef struct s_ray
 {
@@ -37,7 +24,6 @@ typedef struct s_ray
 	t_vec3	direction;
 }			t_ray;
 
-// we call the visible interscet point a "hit"
 typedef struct s_hit
 {
 	float		t;
@@ -46,5 +32,11 @@ typedef struct s_hit
 	t_object	*object;
 }				t_hit;
 
-t_vec3					ray_point_at(t_ray ray, float t);
+t_vec3	ray_point_at(t_ray ray, float t);
+bool	hit_sphere(t_ray ray, t_sphere sphere, t_hit *hit);
+bool	hit_plane(t_ray ray, t_plane plane, t_hit *hit);
+bool	check_height(t_vec3 point, t_cylinder cylinder);
+bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit);
+bool	hit_object(t_object *obj, t_ray ray, t_hit *hit);
+
 #endif

@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt_bonus.h                                     :+:      :+:    :+:   */
+/*   gc.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 11:46:12 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/04 15:11:50 by dchrysov         ###   ########.fr       */
+/*   Created: 2025/07/04 13:46:07 by dchrysov          #+#    #+#             */
+/*   Updated: 2025/07/04 13:46:52 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_BONUS_H
-# define MINIRT_BONUS_H
+#ifndef GC_H
+# define GC_H
 
 # include <stdbool.h>
 
-# include "../../inc/env.h"
-# include "../../inc/gc.h"
-# include "../../inc/objects.h"
-# include "../../inc/intersect.h"
-
-typedef struct s_uv
+typedef struct s_gc_object
 {
-	float	u;
-	float	v;
-}			t_uv;
+	void				*ptr;
+	bool				marked;
+	struct s_gc_object	*next;
+}						t_gc_object;
 
-bool	create_cone(int id, t_scene **scn, char **arr, t_gc_object **gc);
-bool	hit_cone(t_ray ray, t_cone cone, t_hit *hit);
-t_color	color_disruption(t_hit hit);
+void	*gc_alloc(size_t size, t_gc_object **gc_list);
+void	gc_free(t_gc_object *gc_list);
+char	**gc_split(const char *s, char c, t_gc_object **gc_list);
+void	print_error(char *str, t_gc_object *gc_list);
 
 #endif

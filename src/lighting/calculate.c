@@ -11,7 +11,8 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
-#define SAMPLES 2
+#include "../../bonus/inc/minirt_bonus.h"
+
 #define SPECULAR 1.0f   // Specular strength [0.0 - 1.0]
 #define SHININESS 32.0f // Shininess factor [8.0 - 256]
 
@@ -52,18 +53,19 @@ t_color	color_pixel(t_scene *scene, uint32_t x, uint32_t y)
 	t_hit	hit;
 	t_color	color;
 	t_light	*light;
+	t_color	disruption;
 	t_color	final;
 
 	if (!if_hit(scene, ray_to_vp(scene, x, y), &hit))
 		return (clamp_color(checkered_background(x, y)));
-	// disruption = color_disruption();
+	disruption = color_disruption(hit);
 	final = color_scale(scene->amb_light.color, scene->amb_light.ratio);
-	final = color_mult(hit.object->color, final);	// disruption
+	final = color_mult(disruption, final);	// disruption
 	light = scene->lights;
 	while (light)
 	{
 		if (is_lighted_pixel(hit, *light))
-			color = lighted_pixel(*scene, hit, light);		// disruption
+			color = lighted_pixel(*scene, hit, light, disruption);		// disruption
 		else
 			color = (t_color){0, 0, 0};
 		final = color_add(final, color);
@@ -94,7 +96,7 @@ static t_color	specular_color(t_vec3 light_dir, t_camera cam, t_hit hit,
  * @brief Color the pixels on the light side of the object.
  * @param hit The lighted pixel.
  */
-t_color	lighted_pixel(t_scene scene, t_hit hit, t_light *light)
+t_color	lighted_pixel(t_scene scene, t_hit hit, t_light *light, t_color obj_c)
 {
 	t_color	result;
 	t_vec3	light_dir;
@@ -109,5 +111,5 @@ t_color	lighted_pixel(t_scene scene, t_hit hit, t_light *light)
 				*light);
 		result = color_add(result, spec_color);
 	}
-	return (clamp_color(color_mult(hit.object->color, result)));
+	return (clamp_color(color_mult(obj_c, result)));
 }

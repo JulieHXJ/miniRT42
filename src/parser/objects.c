@@ -16,7 +16,7 @@
  * @brief Connects the new object to the linked list of objects in the scene.
  * @note This function adds the new object to the head of the list.
  */
-static void	add_object(t_scene **scene, t_object **new_obj)
+void	add_object(t_scene **scene, t_object **new_obj)
 {
 	if (!scene || !new_obj || !(*new_obj))
 		return ;
@@ -115,6 +115,8 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
 		return (create_sphere(i++, scene, tokens, gc_list));
 	else if (!ft_strcmp(tokens[0], "cy"))
 		return (create_cylinder(i++, scene, tokens, gc_list));
+	else if (!ft_strcmp(tokens[0], "co"))
+		return (create_cone(i++, scene, tokens, gc_list));
 	print_error("Unknown object identifier", *gc_list);
 	return (false);
 }
