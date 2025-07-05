@@ -57,12 +57,12 @@ bool	is_in_shadow(t_scene scene, t_hit hit, t_light *light)
 /**
  * @brief Determines if the hit point should be colored or not.
  */
-bool	is_lighted_pixel(t_hit hit, t_light *light)
+bool	is_lighted_pixel(t_hit hit, t_light light)
 {
 	float	angle;
 	t_vec3	light_vec;
 
-	light_vec = vec_sub(light->position, hit.point);
+	light_vec = vec_sub(light.position, hit.point);
 	angle = vec_dot(light_vec, hit.normal) / (vec_length(light_vec));
 	if (angle >= 0 && angle <= 1)
 		return (true);

@@ -236,11 +236,11 @@ bool					hit_object(t_object *obj, t_ray ray, t_hit *hit);
 bool					if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 
 // Lighting
-bool					is_lighted_pixel(t_hit hit, t_light *light);
+bool					is_lighted_pixel(t_hit hit, t_light light);
 bool					is_in_shadow(t_scene scene, t_hit hit, t_light *light);
 t_color					lighted_pixel(t_scene scene, t_hit hit, t_light *light);
 t_color					checkered_background(uint32_t x, uint32_t y);
-t_color					antialiasing(t_scene *scene, uint32_t x, uint32_t y);
+t_color					color_pixel(t_scene *scene, uint32_t x, uint32_t y);
 
 // Render
 void					translate_horizontal(t_scene *scene, float step);
@@ -248,8 +248,8 @@ void					translate_vertical(t_scene *scene, float step);
 void					rotate_camera(t_scene *scene, float pitch, float yaw);
 void					zooming(double xdelta, double ydelta, void *param);
 void					key_hook(mlx_key_data_t keydata, void *param);
-void					pre_render(void *arg);
-bool					render(t_scene *scene, t_gc_object **gc_list);
+void					render(void *arg);
+bool					prepare_render(t_scene *scene, t_gc_object **gc_list);
 
 // GC
 void					*gc_alloc(size_t size, t_gc_object **gc_list);

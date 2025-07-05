@@ -47,24 +47,23 @@ static t_color	direct_light(t_light light, t_vec3 light_vec, t_hit hit)
 	return (result);
 }
 
-t_color	antialiasing(t_scene *scene, uint32_t x, uint32_t y)
+t_color	color_pixel(t_scene *scene, uint32_t x, uint32_t y)
 {
-	t_ray	ray;
 	t_hit	hit;
 	t_color	color;
 	t_light	*light;
 	t_color	final;
 
-	ray = ray_to_vp(scene, x, y);
-	if (!if_hit(scene, ray, &hit))
+	if (!if_hit(scene, ray_to_vp(scene, x, y), &hit))
 		return (clamp_color(checkered_background(x, y)));
+	// disruption = color_disruption();
 	final = color_scale(scene->amb_light.color, scene->amb_light.ratio);
-	final = color_mult(hit.object->color, final);
+	final = color_mult(hit.object->color, final);	// disruption
 	light = scene->lights;
 	while (light)
 	{
-		if (is_lighted_pixel(hit, light))
-			color = lighted_pixel(*scene, hit, light);
+		if (is_lighted_pixel(hit, *light))
+			color = lighted_pixel(*scene, hit, light);		// disruption
 		else
 			color = (t_color){0, 0, 0};
 		final = color_add(final, color);

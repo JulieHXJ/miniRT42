@@ -91,7 +91,7 @@ int	main(int ac, char **av)
 		return (gc_free(gc_list), 1);
 	if (!parser(fd, &scene, &gc_list))
 		return (gc_free(gc_list), 1);
-	if (!render(scene, &gc_list))
+	if (!prepare_render(scene, &gc_list))
 	{
 		if (scene->mlx)
 			mlx_terminate(scene->mlx);

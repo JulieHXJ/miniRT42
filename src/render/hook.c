@@ -86,7 +86,7 @@ void	zooming(double xdelta, double ydelta, void *param)
 		set_viewport(&scene->camera.viewport, &scene->camera);
 	}
 	reset_color_buffer(scene);
-	pre_render(param);
+	render(param);
 	mlx_image_to_window(scene->mlx, scene->img, 0, 0);
 }
 
@@ -107,12 +107,12 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 			scene->camera = scene->cam_restore;
 			set_viewport(&scene->camera.viewport, &scene->camera);
 			reset_color_buffer(scene);
-			pre_render(param);
+			render(param);
 		}
 		else if (camera_move(scene, keydata) || camera_rotate(scene, keydata))
 		{
 			reset_color_buffer(scene);
-			pre_render(param);
+			render(param);
 		}
 	}
 }
