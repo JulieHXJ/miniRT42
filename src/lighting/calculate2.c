@@ -68,3 +68,9 @@ bool	is_lighted_pixel(t_hit hit, t_light *light)
 		return (true);
 	return (false);
 }
+
+void	add_light(t_scene *scene, t_light *light)
+{
+	light->next = scene->lights;
+	scene->lights = light;
+}

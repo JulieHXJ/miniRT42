@@ -159,7 +159,7 @@ typedef struct s_object
 		t_cylinder		cylinder;
 	} u_data;
 	t_color				color;
-	t_material			material;
+	// t_material			material;
 	void				*bonus;
 	struct s_object		*next;
 }						t_object;
@@ -261,6 +261,6 @@ char					**gc_split(const char *s, char c,
 void					print_scene_info(t_scene *scene);
 
 // Bonus
-void	add_light(t_scene *scene, t_light *light)
+void	add_light(t_scene *scene, t_light *light);
 
 #endif

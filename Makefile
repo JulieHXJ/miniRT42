@@ -3,8 +3,8 @@
 CC = gcc
 MAKEFLAGS += -s
 CFLAGS = -Wall -Wextra -Werror -Ofast -flto -march=native -Wunreachable-code -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I./inc
-MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw
-# MLX_FLAGS = -ldl -lglfw
+# MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw
+MLX_FLAGS = -ldl -lglfw
 
 OBJDIR = ./obj
 SRCDIR = ./src
@@ -20,7 +20,6 @@ SRCS := $(SRCDIR)/main.c $(SRCDIR)/utils.c $(SRCDIR)/garbage_collector.c $(SRCDI
 		$(SRCDIR)/parser/check_name.c \
 		$(SRCDIR)/parser/check_range.c \
 		$(SRCDIR)/parser/assign_param.c \
-		$(SRCDIR)/parser/multi_light.c \
 		$(SRCDIR)/parser/environment.c \
 		$(SRCDIR)/parser/parse.c \
 		$(SRCDIR)/parser/objects.c \
