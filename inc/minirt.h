@@ -30,8 +30,10 @@
 # include "../bonus/inc/minirt_bonus.h"
 
 /* ************************************************************************** */
-/* ENUMS & DEFINES                                                            */
+/* DEFINES                                                            */
 /* ************************************************************************** */
+
+# define MODE "TEXTURE"
 
 # define USAGE_MSG "Usage: ./minirt scenes/<file_name>.rt"
 # define HOOK "arrow keys to move, A/D/W/X to rotate, R to reset camera"
@@ -69,11 +71,13 @@ t_ray	ray_to_vp(t_scene *scene, float x, float y);
 float	solve_quadratic(float a, float b, float c);
 bool	if_hit(t_scene *scene, t_ray ray, t_hit *hit);
 
-// Lighting
+// Render
 bool	is_lighted_pixel(t_hit hit, t_light light);
 bool	is_in_shadow(t_scene scene, t_hit hit, t_light *light);
 t_color	lighted_pixel(t_scene scene, t_hit hit, t_light *light, t_color obj_c);
 t_color	checkered_background(uint32_t x, uint32_t y);
 t_color	color_pixel(t_scene *scene, uint32_t x, uint32_t y);
+t_color	base_color_mode(t_hit *hit);
+
 
 #endif

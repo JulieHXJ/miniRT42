@@ -46,16 +46,16 @@ bool	hit_object(t_object *obj, t_ray ray, t_hit *hit)
 {
 	if (obj->type == SPHERE
 		&& hit_sphere(ray, (*obj).u_data.sphere, hit))
-			return (hit->object = obj, true);
+		return (hit->object = obj, true);
 	else if (obj->type == PLANE
 		&& hit_plane(ray, (*obj).u_data.plane, hit))
-			return (hit->object = obj, true);
+		return (hit->object = obj, true);
 	else if (obj->type == CYLINDER
 		&& hit_cylinder(ray, (*obj).u_data.cylinder, hit))
-			return (hit->object = obj, true);
+		return (hit->object = obj, true);
 	else if (obj->type == CONE
 		&& hit_cone(ray, (*obj).u_data.cone, hit))
-			return (hit->object = obj, true);
+		return (hit->object = obj, true);
 	return (false);
 }
 

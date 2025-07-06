@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minirt_bonus.h"
 #include "minirt.h"
 
 static bool	hit_cone_base(t_ray ray, t_cone cone, t_hit *hit)

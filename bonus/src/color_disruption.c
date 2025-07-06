@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minirt_bonus.h"
+#include "minirt.h"
 #define SIZE_SPHERE 10
 #define SIZE_PLANE 0.2
 #define SIZE_CYLINDER 10
 #define SIZE_CONE 15
 
-static void get_sphere_uv(t_hit hit, t_sphere sphere, int *i, int *j)
+static void	get_sphere_uv(t_hit hit, t_sphere sphere, int *i, int *j)
 {
 	t_vec3	p;
 	t_uv	uv;
@@ -28,16 +28,16 @@ static void get_sphere_uv(t_hit hit, t_sphere sphere, int *i, int *j)
 	*j = floor(uv.v * SIZE_SPHERE);
 }
 
-static void get_plane_uv(t_hit hit, t_plane plane, int *i, int *j)
+static void	get_plane_uv(t_hit hit, t_plane plane, int *i, int *j)
 {
 	t_vec3	u_axis;
 	t_vec3	v_axis;
 	t_vec3	local;
 	t_uv	uv;
 
-	u_axis = vec_normal(vec_cross((t_vec3){0,1,0}, plane.normal));
+	u_axis = vec_normal(vec_cross((t_vec3){0, 1, 0}, plane.normal));
 	if (vec_length(u_axis) < 1e-6)
-		u_axis = vec_normal((t_vec3){1,0,0});
+		u_axis = vec_normal((t_vec3){1, 0, 0});
 	v_axis = vec_normal(vec_cross(plane.normal, u_axis));
 	local = vec_sub(hit.point, plane.point);
 	uv.u = vec_dot(local, u_axis);
@@ -46,14 +46,14 @@ static void get_plane_uv(t_hit hit, t_plane plane, int *i, int *j)
 	*j = floor(uv.v * SIZE_PLANE);
 }
 
-static void get_cylinder_uv(t_hit hit, t_cylinder cyl, int *i, int *j)
+static void	get_cylinder_uv(t_hit hit, t_cylinder cyl, int *i, int *j)
 {
 	t_vec3	cp;
 	float	height_proj;
 	t_vec3	radial;
 	float	theta;
 	t_uv	uv;
-	
+
 	cp = vec_sub(hit.point, cyl.bottom_center);
 	height_proj = vec_dot(cp, vec_normal(cyl.direction));
 	radial = vec_sub(cp, vec_scale(vec_normal(cyl.direction), height_proj));
@@ -66,28 +66,28 @@ static void get_cylinder_uv(t_hit hit, t_cylinder cyl, int *i, int *j)
 
 static void	get_cone_uv(t_hit hit, t_cone cone, int *i, int *j)
 {
-    t_vec3	v;
-    float	height_on_axis;
+	t_vec3	v;
+	float	height_on_axis;
 	t_vec3	radial;
 	t_uv	uv;
-	
-    v = vec_sub(hit.point, cone.apex);
-    height_on_axis = vec_dot(v, cone.orient);
+
+	v = vec_sub(hit.point, cone.apex);
+	height_on_axis = vec_dot(v, cone.orient);
 	radial = vec_sub(v, vec_scale(cone.orient, height_on_axis));
-    if (height_on_axis < 0)
-        height_on_axis = 0;
-    if (height_on_axis > cone.height)
-        height_on_axis = cone.height;
-    radial = vec_sub(v, vec_scale(cone.orient, height_on_axis));
-    uv.u = atan2(radial.z, radial.x) / (2.0f * M_PI);
-    if (uv.u < 0)
-        uv.u += 1.0f;  // normalize u to [0,1]
-    uv.v = height_on_axis / cone.height;
+	if (height_on_axis < 0)
+		height_on_axis = 0;
+	if (height_on_axis > cone.height)
+		height_on_axis = cone.height;
+	radial = vec_sub(v, vec_scale(cone.orient, height_on_axis));
+	uv.u = atan2(radial.z, radial.x) / (2.0f * M_PI);
+	if (uv.u < 0)
+		uv.u += 1.0f;
+	uv.v = height_on_axis / cone.height;
 	*i = floor(uv.u * SIZE_CONE);
 	*j = floor(uv.v * SIZE_CONE);
 }
 
-t_color		color_disruption(t_hit hit)
+t_color	color_disruption(t_hit hit)
 {
 	int		i;
 	int		j;
@@ -103,6 +103,6 @@ t_color		color_disruption(t_hit hit)
 	else if (hit.object->type == CONE)
 		get_cone_uv(hit, hit.object->u_data.cone, &i, &j);
 	if ((i + j) % 2 == 0)
-		return hit.object->color;
-	return (t_color){0, 0, 0};
+		return (hit.object->color);
+	return ((t_color){0, 0, 0});
 }

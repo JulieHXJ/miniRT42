@@ -15,6 +15,7 @@
 
 # include "vector.h"
 # include "material.h"
+# include "../bonus/inc/texture.h"
 
 typedef enum e_obj_type
 {
@@ -79,7 +80,7 @@ typedef struct s_object
 	} u_data;
 	t_color			color;
 	t_material		material;
-	void			*bonus;
+	t_texture		tex;
 	struct s_object	*next;
 }					t_object;
 

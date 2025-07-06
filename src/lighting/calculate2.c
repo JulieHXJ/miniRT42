@@ -74,3 +74,14 @@ void	add_light(t_scene *scene, t_light *light)
 	light->next = scene->lights;
 	scene->lights = light;
 }
+
+t_color	base_color_mode(t_hit *hit)
+{
+	if (!ft_strcmp(MODE, "SIMPLE"))
+		return (hit->object->color);
+	else if (!ft_strcmp(MODE, "DISRUPTION"))
+		return (color_disruption(*hit));
+	else if (!ft_strcmp(MODE, "TEXTURE"))
+		return (texture_object(hit));
+	return (print_error("Incorrect mode", NULL), (t_color){255, 255, 255});
+}

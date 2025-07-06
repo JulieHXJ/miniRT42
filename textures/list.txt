@@ -1,0 +1,2 @@
+textures/nebula.png
+textures/sun.png

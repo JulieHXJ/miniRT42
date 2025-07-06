@@ -98,6 +98,7 @@ bool	prepare_render(t_scene *scene, t_gc_object **gc_list)
 	}
 	scene->render.color = init_color_buffer(*scene->img);
 	scene->render.i = 0;
+	assign_textures(*scene);
 	render(scene);
 	if (mlx_image_to_window(scene->mlx, scene->img, 0, 0) < 0)
 		return (print_error("Failed to attach image to window", *gc_list),

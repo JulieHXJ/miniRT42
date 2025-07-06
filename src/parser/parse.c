@@ -42,7 +42,7 @@ char	*tab_to_space(char *str)
 	return (new_str);
 }
 
-static bool	parse_line(char *line, t_scene **scene, t_gc_object **gc_list)
+static bool	parse_line(char *line, t_scene **scene, t_gc_object **gc)
 {
 	char	*start;
 
@@ -52,9 +52,9 @@ static bool	parse_line(char *line, t_scene **scene, t_gc_object **gc_list)
 	if (!*start || *start == '#' || *start == '\n')
 		return (true);
 	if (*start == 'A' || *start == 'C' || *start == 'L')
-		return (create_environment(line, scene, gc_list));
+		return (create_environment(line, scene, gc));
 	else
-		return (create_objects(line, scene, gc_list));
+		return (create_objects(line, scene, gc));
 }
 
 bool	parser(int fd, t_scene **scene, t_gc_object **gc_list)
@@ -77,9 +77,8 @@ bool	parser(int fd, t_scene **scene, t_gc_object **gc_list)
 		if (!flag)
 			return (close(fd), false);
 	}
-	close(fd);
 	if ((*scene)->camera.cam_num != 1 || (*scene)->amb_light.amb_num != 1)
 		return (print_error("Only 1 camera or ambient light is allowed", NULL),
-			false);
-	return (flag);
+			close(fd), false);
+	return (close(fd), flag);
 }

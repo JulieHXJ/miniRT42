@@ -15,7 +15,7 @@
 /**
  * @brief validate number of arguments and file format.
  */
-static bool	valid_file(int ac, char **av)
+static bool	valid_file(int ac, char **av, int *fd)
 {
 	size_t	len;
 
@@ -24,6 +24,9 @@ static bool	valid_file(int ac, char **av)
 	len = ft_strlen(av[1]);
 	if (len < 4 || ft_strncmp(av[1] + len - 3, ".rt", 3) != 0)
 		return (print_error("Incorrect file format", NULL), false);
+	*fd = open(av[1], O_RDONLY);
+	if (*fd == -1)
+		return (print_error("Failed to open file",NULL), false);
 	return (true);
 }
 
@@ -81,21 +84,17 @@ int	main(int ac, char **av)
 
 	printf("Hook usage: %s\n", HOOK);
 	gc_list = NULL;
-	if (!valid_file(ac, av))
+	if (!valid_file(ac, av, &fd))
 		return (1);
-	fd = open(av[1], O_RDONLY);
-	if (fd == -1)
-		return (print_error("Failed to open file", gc_list), 1);
 	scene = scene_init(&gc_list);
-	if (!scene)
-		return (gc_free(gc_list), 1);
 	if (!parser(fd, &scene, &gc_list))
 		return (gc_free(gc_list), 1);
-	if (!prepare_render(scene, &gc_list))
+	if (!prepare_render(scene, &gc_list) && scene->mlx)
+		return (mlx_terminate(scene->mlx), gc_free(gc_list), 1);
+	while (scene->obj)
 	{
-		if (scene->mlx)
-			mlx_terminate(scene->mlx);
-		return (gc_free(gc_list), 1);
+		mlx_delete_texture(scene->obj->tex.png);
+		scene->obj = scene->obj->next;
 	}
 	mlx_terminate(scene->mlx);
 	return (gc_free(gc_list), 0);

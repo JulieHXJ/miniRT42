@@ -48,32 +48,6 @@ static t_color	direct_light(t_light light, t_vec3 light_vec, t_hit hit)
 	return (result);
 }
 
-t_color	color_pixel(t_scene *scene, uint32_t x, uint32_t y)
-{
-	t_hit	hit;
-	t_color	color;
-	t_light	*light;
-	t_color	disruption;
-	t_color	final;
-
-	if (!if_hit(scene, ray_to_vp(scene, x, y), &hit))
-		return (clamp_color(checkered_background(x, y)));
-	disruption = color_disruption(hit);
-	final = color_scale(scene->amb_light.color, scene->amb_light.ratio);
-	final = color_mult(disruption, final);	// disruption
-	light = scene->lights;
-	while (light)
-	{
-		if (is_lighted_pixel(hit, *light))
-			color = lighted_pixel(*scene, hit, light, disruption);		// disruption
-		else
-			color = (t_color){0, 0, 0};
-		final = color_add(final, color);
-		light = light->next;
-	}
-	return (clamp_color(final));
-}
-
 static t_color	specular_color(t_vec3 light_dir, t_camera cam, t_hit hit,
 		t_light light)
 {
@@ -90,6 +64,32 @@ static t_color	specular_color(t_vec3 light_dir, t_camera cam, t_hit hit,
 	spec_angle = fmaxf(vec_dot(view_dir, reflect_dir), 0.0f);
 	spec_factor = powf(spec_angle, SHININESS);
 	return (color_scale(light.color, SPECULAR * spec_factor));
+}
+
+t_color	color_pixel(t_scene *scene, uint32_t x, uint32_t y)	// **gc_list
+{
+	t_hit	hit;
+	t_color	color;
+	t_light	*light;
+	t_color	base_color;
+	t_color	final;
+
+	if (!if_hit(scene, ray_to_vp(scene, x, y), &hit))
+		return (clamp_color(checkered_background(x, y)));
+	base_color = base_color_mode(&hit);
+	final = color_scale(scene->amb_light.color, scene->amb_light.ratio);
+	final = color_mult(base_color, final);
+	light = scene->lights;
+	while (light)
+	{
+		if (is_lighted_pixel(hit, *light))
+			color = lighted_pixel(*scene, hit, light, base_color);
+		else
+			color = (t_color){0, 0, 0};
+		final = color_add(final, color);
+		light = light->next;
+	}
+	return (clamp_color(final));
 }
 
 /**

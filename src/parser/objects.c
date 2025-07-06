@@ -96,7 +96,10 @@ static bool	create_cylinder(int id, t_scene **scn, char **arr, t_gc_object **gc)
 	return (add_object(scn, &new_obj), true);
 }
 
-bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
+/**
+ * @param fd The list with the textures
+ */
+bool	create_objects(char *line, t_scene **scene, t_gc_object **gc)
 {
 	static int	i = 0;
 	char		**tokens;
@@ -104,19 +107,19 @@ bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list)
 
 	trimmed = ft_strtrim(line, "\n");
 	if (!trimmed)
-		return (print_error("Strtrim failed for objects", *gc_list), false);
-	tokens = gc_split(trimmed, ' ', gc_list);
+		return (print_error("Strtrim failed for objects", *gc), false);
+	tokens = gc_split(trimmed, ' ', gc);
 	free(trimmed);
 	if (!tokens || !tokens[0])
-		return (print_error("Split failed for objects", *gc_list), false);
+		return (print_error("Split failed for objects", *gc), false);
 	if (!ft_strcmp(tokens[0], "pl"))
-		return (create_plane(i++, scene, tokens, gc_list));
+		return (create_plane(i++, scene, tokens, gc));
 	else if (!ft_strcmp(tokens[0], "sp"))
-		return (create_sphere(i++, scene, tokens, gc_list));
+		return (create_sphere(i++, scene, tokens, gc));
 	else if (!ft_strcmp(tokens[0], "cy"))
-		return (create_cylinder(i++, scene, tokens, gc_list));
+		return (create_cylinder(i++, scene, tokens, gc));
 	else if (!ft_strcmp(tokens[0], "co"))
-		return (create_cone(i++, scene, tokens, gc_list));
-	print_error("Unknown object identifier", *gc_list);
+		return (create_cone(i++, scene, tokens, gc));
+	print_error("Unknown object identifier", *gc);
 	return (false);
 }

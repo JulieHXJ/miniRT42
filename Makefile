@@ -60,7 +60,8 @@ OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 SRCBONUSDIR = ./bonus/src
 
-BONUS_SRCS := $(SRCBONUSDIR)/cone.c $(SRCBONUSDIR)/color_disruption.c
+BONUS_SRCS := $(SRCBONUSDIR)/cone.c $(SRCBONUSDIR)/color_disruption.c \
+		$(SRCBONUSDIR)/texture.c $(SRCBONUSDIR)/read_texture.c 
 
 BONUS_OBJS = $(BONUS_SRCS:$(SRCBONUSDIR)/%.c=$(OBJDIR)/%.o)
 

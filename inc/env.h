@@ -62,10 +62,10 @@ typedef struct s_amb_light
  */
 typedef struct s_light
 {
-	int		id;
-	t_vec3	position;
-	float	ratio;
-	t_color	color;
+	int				id;
+	t_vec3			position;
+	float			ratio;
+	t_color			color;
 	struct s_light	*next;
 }			t_light;
 
@@ -88,7 +88,7 @@ typedef struct s_scene
 }				t_scene;
 
 bool	create_environment(char *line, t_scene **scene, t_gc_object **gc_list);
-bool	create_objects(char *line, t_scene **scene, t_gc_object **gc_list);
+bool	create_objects(char *line, t_scene **scene, t_gc_object **gc);
 bool	parser(int fd, t_scene **scene, t_gc_object **gc_list);
 bool	prepare_render(t_scene *scene, t_gc_object **gc_list);
 void	get_cylinder_ends(t_cylinder *c);
