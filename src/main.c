@@ -91,10 +91,14 @@ int	main(int ac, char **av)
 		return (gc_free(gc_list), 1);
 	if (!prepare_render(scene, &gc_list) && scene->mlx)
 		return (mlx_terminate(scene->mlx), gc_free(gc_list), 1);
-	while (scene->obj)
+	free_color_buffer(scene->render.color, scene->img->height);
+	if (!ft_strcmp(MODE, "TEXTURE"))
 	{
-		mlx_delete_texture(scene->obj->tex.png);
-		scene->obj = scene->obj->next;
+		while (scene->obj)
+		{
+			mlx_delete_texture(scene->obj->tex.png);
+			scene->obj = scene->obj->next;
+		}
 	}
 	mlx_terminate(scene->mlx);
 	return (gc_free(gc_list), 0);

@@ -25,21 +25,6 @@ size_t	array_size(char **arr)
 	return (size);
 }
 
-void	free_array(char ***arr)
-{
-	size_t	i;
-	size_t	size;
-
-	if (!arr || !*arr)
-		return ;
-	size = array_size(*arr);
-	i = -1;
-	while (++i < size)
-		free((*arr)[i]);
-	free(*arr);
-	*arr = NULL;
-}
-
 void	print_error(char *msg, t_gc_object *gc_list)
 {
 	printf("%sError%s: %s\n", RED, RST, msg);
@@ -84,4 +69,13 @@ float	ft_atod(const char *s)
 float	frand(void)
 {
 	return ((float)rand() / (float)(RAND_MAX + 1.0f));
+}
+
+void	free_color_buffer(t_color **buffer, int height)
+{
+	if (!buffer)
+		return;
+	for (int y = 0; y < height; y++)
+		free(buffer[y]);
+	free(buffer);
 }

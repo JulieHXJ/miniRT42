@@ -5,7 +5,7 @@
 
 CC = gcc
 MAKEFLAGS += -s
-CFLAGS = -Wall -Wextra -Werror -Ofast -flto -march=native -Wunreachable-code -g -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I./inc
+CFLAGS = -Wall -Wextra -Werror -Ofast -flto -march=native -Wunreachable-code -g -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I./inc -fsanitize=address
 # MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw
 MLX_FLAGS = -ldl -lglfw
 

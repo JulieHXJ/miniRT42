@@ -33,7 +33,7 @@
 /* DEFINES                                                            */
 /* ************************************************************************** */
 
-# define MODE "TEXTURE"
+# define MODE "DISRUPTION"
 
 # define USAGE_MSG "Usage: ./minirt scenes/<file_name>.rt"
 # define HOOK "arrow keys to move, A/D/W/X to rotate, R to reset camera"
@@ -52,7 +52,7 @@
 
 // Utils
 size_t	array_size(char **arr);
-void	free_array(char ***arr);
+void	free_color_buffer(t_color **buffer, int height);
 void	add_object(t_scene **scene, t_object **new_obj);
 float	ft_atod(const char *str);
 float	frand(void);
