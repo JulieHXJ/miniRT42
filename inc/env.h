@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 13:47:13 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/07 15:56:05 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/07 17:27:51 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_scene
 	t_render	render;
 }				t_scene;
 
+void	add_object(t_scene **scene, t_object **new_obj);
 void	set_viewport(t_viewport *vp, t_camera *camera);
 void	translate_horizontal(t_scene *scene, float step);
 void	translate_vertical(t_scene *scene, float step);

@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 13:43:51 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/07 15:56:32 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/07 17:39:05 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,5 @@ typedef struct s_object
 }					t_object;
 
 void	get_cylinder_ends(t_cylinder *c);
-void	add_object(t_scene **scene, t_object **new_obj);
 
 #endif
