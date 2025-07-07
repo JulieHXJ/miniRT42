@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 13:41:34 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/04 15:11:41 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/07 13:00:07 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ static bool	hit_cone_base(t_ray ray, t_cone cone, t_hit *hit)
 	float	t;
 	t_vec3	p;
 
-	base_center = vec_add(cone.apex, vec_scale(cone.orient, cone.height));
-	denom = vec_dot(ray.direction, cone.orient);
+	base_center = vec_add(cone.apex, vec_scale(cone.dir, cone.height));
+	denom = vec_dot(ray.direction, cone.dir);
 	if (fabsf(denom) < 1e-6f)
 		return (false);
-	t = vec_dot(vec_sub(base_center, ray.origin), cone.orient) / denom;
+	t = vec_dot(vec_sub(base_center, ray.origin), cone.dir) / denom;
 	if (t <= 0.0f)
 		return (false);
 	p = vec_add(ray.origin, vec_scale(ray.direction, t));
@@ -32,13 +32,13 @@ static bool	hit_cone_base(t_ray ray, t_cone cone, t_hit *hit)
 	hit->t = t;
 	hit->point = p;
 	if (denom > 0)
-		hit->normal = vec_scale(cone.orient, -1);
+		hit->normal = vec_scale(cone.dir, -1);
 	else
-		hit->normal = vec_scale(cone.orient, 1);
+		hit->normal = vec_scale(cone.dir, 1);
 	return (true);
 }
 
-static void	cone_side_calc(t_ray ray, t_cone cone, float *a, float *b, float *c)
+static void	cone_side_calc(t_ray ray, t_cone cone, float *b, float *c)
 {
 	float	k;
 	float	dv;
@@ -47,18 +47,17 @@ static void	cone_side_calc(t_ray ray, t_cone cone, float *a, float *b, float *c)
 	t_vec3	b_proj;
 
 	k = cone.diam / (2.0f * cone.height);
-	dv = vec_dot(ray.direction, cone.orient);
+	dv = vec_dot(ray.direction, cone.dir);
 	co = vec_sub(ray.origin, cone.apex);
-	a_proj = vec_sub(ray.direction, vec_scale(cone.orient, dv));
-	b_proj = vec_sub(co, vec_scale(cone.orient, vec_dot(co, cone.orient)));
-	*a = vec_dot(a_proj, a_proj) - powf(k, 2.0f) * powf(dv, 2.0f);
+	a_proj = vec_sub(ray.direction, vec_scale(cone.dir, dv));
+	b_proj = vec_sub(co, vec_scale(cone.dir, vec_dot(co, cone.dir)));
 	*b = 2.0f * (vec_dot(a_proj, b_proj) - powf(k, 2.0f)
-			* dv * vec_dot(co, cone.orient));
+			* dv * vec_dot(co, cone.dir));
 	*c = vec_dot(b_proj, b_proj) - powf(k, 2.0f)
-		* pow(vec_dot(co, cone.orient), 2.0f);
+		* pow(vec_dot(co, cone.dir), 2.0f);
 }
 
-bool	hit_cone(t_ray ray, t_cone cone, t_hit *hit)
+bool	hit_cone(t_ray r, t_cone co, t_hit *hit)
 {
 	float	a;
 	float	b;
@@ -66,19 +65,24 @@ bool	hit_cone(t_ray ray, t_cone cone, t_hit *hit)
 	float	t;
 	t_vec3	ap;
 
-	cone_side_calc(ray, cone, &a, &b, &c);
+	a = vec_dot(vec_sub(r.direction, vec_scale(co.dir,
+					vec_dot(r.direction, co.dir))),
+			vec_sub(r.direction, vec_scale(co.dir, vec_dot(
+						r.direction, co.dir)))) - powf(co.diam / (2.0f
+				* co.height), 2.0f) * powf(vec_dot(r.direction, co.dir), 2.0f);
+	cone_side_calc(r, co, &b, &c);
 	t = solve_quadratic(a, b, c);
 	if (t <= 0.0f)
-		return (hit_cone_base(ray, cone, hit));
-	ap = vec_sub(vec_add(ray.origin, vec_scale(ray.direction, t)), cone.apex);
-	if (vec_dot(ap, cone.orient) < 0.0f
-		|| vec_dot(ap, cone.orient) > cone.height)
-		return (hit_cone_base(ray, cone, hit));
+		return (hit_cone_base(r, co, hit));
+	ap = vec_sub(vec_add(r.origin, vec_scale(r.direction, t)), co.apex);
+	if (vec_dot(ap, co.dir) < 0.0f
+		|| vec_dot(ap, co.dir) > co.height)
+		return (hit_cone_base(r, co, hit));
 	hit->t = t;
-	hit->point = vec_add(ray.origin, vec_scale(ray.direction, t));
-	hit->normal = vec_normal(vec_sub(ap, vec_scale(cone.orient, vec_dot(ap,
-						cone.orient) * (1 + powf(cone.diam
-							/ (2.0f * cone.height), 2.0f)))));
+	hit->point = vec_add(r.origin, vec_scale(r.direction, t));
+	hit->normal = vec_normal(vec_sub(ap, vec_scale(co.dir, vec_dot(ap,
+						co.dir) * (1 + powf(co.diam
+							/ (2.0f * co.height), 2.0f)))));
 	return (true);
 }
 
@@ -96,7 +100,7 @@ bool	create_cone(int id, t_scene **scn, char **arr, t_gc_object **gc)
 	new_obj->id = id;
 	if (!assign_vector(arr[1], &new_obj->u_data.cone.apex, gc))
 		return (print_error("Cylinder apex parse failed", *gc), false);
-	if (!assign_normal(arr[2], &new_obj->u_data.cone.orient, gc))
+	if (!assign_normal(arr[2], &new_obj->u_data.cone.dir, gc))
 		return (print_error("Cone orientation parse failed", *gc), false);
 	if (!assign_positive_num(arr[3], &new_obj->u_data.cone.diam)
 		|| !assign_positive_num(arr[4], &new_obj->u_data.cone.height))

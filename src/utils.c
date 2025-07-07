@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:16:31 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/02 17:23:34 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/07 12:36:33 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,12 @@ float	frand(void)
 
 void	free_color_buffer(t_color **buffer, int height)
 {
+	int	y;
+
 	if (!buffer)
-		return;
-	for (int y = 0; y < height; y++)
+		return ;
+	y = -1;
+	while (++y < height)
 		free(buffer[y]);
 	free(buffer);
 }

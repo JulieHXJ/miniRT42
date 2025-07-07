@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hook.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:23:10 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/04 13:48:34 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:24:40 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,13 @@ void	zooming(double xdelta, double ydelta, void *param)
 	scene = (t_scene *)param;
 	if (ydelta > 0)
 	{
-		translation = vec_scale(scene->camera.viewport.normal, 2.0);
+		translation = vec_scale(scene->camera.viewport.normal, 7.0);
 		scene->camera.origin = vec_add(scene->camera.origin, translation);
 		set_viewport(&scene->camera.viewport, &scene->camera);
 	}
 	else if (ydelta < 0)
 	{
-		translation = vec_scale(scene->camera.viewport.normal, -2.0);
+		translation = vec_scale(scene->camera.viewport.normal, -7.0);
 		scene->camera.origin = vec_add(scene->camera.origin, translation);
 		set_viewport(&scene->camera.viewport, &scene->camera);
 	}

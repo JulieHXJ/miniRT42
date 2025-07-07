@@ -3,7 +3,7 @@ textures/saturn.png
 textures/jupiter.png
 textures/mars.png
 textures/earth.png
-textures/mercury.png
 textures/venus.png
+textures/mercury.png
 textures/sun.png
 textures/nebula.png

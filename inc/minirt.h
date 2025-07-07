@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/04 14:11:14 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/07 13:02:12 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,7 @@
 # include "gc.h"
 # include "../bonus/inc/minirt_bonus.h"
 
-/* ************************************************************************** */
-/* DEFINES                                                            */
-/* ************************************************************************** */
-
-# define MODE "DISRUPTION"
+# define MODE "SIMPLE"
 
 # define USAGE_MSG "Usage: ./minirt scenes/<file_name>.rt"
 # define HOOK "arrow keys to move, A/D/W/X to rotate, R to reset camera"
@@ -46,9 +42,6 @@
 # define ORIENT_MIN -1.0
 # define ORIENT_MAX 1.0
 
-/* ************************************************************************** */
-/* FUNCTION PROTOTYPES                                                        */
-/* ************************************************************************** */
 
 // Utils
 size_t	array_size(char **arr);
@@ -78,6 +71,7 @@ t_color	lighted_pixel(t_scene scene, t_hit hit, t_light *light, t_color obj_c);
 t_color	checkered_background(uint32_t x, uint32_t y);
 t_color	color_pixel(t_scene *scene, uint32_t x, uint32_t y);
 t_color	base_color_mode(t_hit *hit);
+
 
 
 #endif

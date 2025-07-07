@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/04 14:35:22 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:35:29 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static bool	valid_file(int ac, char **av, int *fd)
 		return (print_error("Incorrect file format", NULL), false);
 	*fd = open(av[1], O_RDONLY);
 	if (*fd == -1)
-		return (print_error("Failed to open file",NULL), false);
+		return (print_error("Failed to open file", NULL), false);
 	return (true);
 }
 

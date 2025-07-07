@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 13:47:13 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/04 13:49:15 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/07 12:53:44 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,10 @@ void	zooming(double xdelta, double ydelta, void *param);
 void	key_hook(mlx_key_data_t keydata, void *param);
 void	render(void *arg);
 void	set_viewport(t_viewport *vp, t_camera *camera);
-void	print_scene_info(t_scene *scene);
+void	print_vec3(t_vec3 v, char *label);
+void	print_camera(t_camera *camera);
+void	print_object(t_object *obj);
+// void	print_scene_info(t_scene *scene);
 void	add_light(t_scene *scene, t_light *light);
 
 #endif

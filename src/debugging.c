@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   debugging.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:23:00 by xhuang            #+#    #+#             */
-/*   Updated: 2025/07/04 14:45:05 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:52:24 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include <stdio.h>
 
-static void	print_vec3(t_vec3 v, char *label)
+void	print_vec3(t_vec3 v, char *label)
 {
 	printf("%s: (%.2f, %.2f, %.2f)\n", label, v.x, v.y, v.z);
 }
 
-static void	print_color(t_color c, char *label)
+void	print_color(t_color c, char *label)
 {
 	printf("%s: (%d, %d, %d)\n", label, c.r, c.g, c.b);
 }
 
-static void	print_camera(t_camera *camera)
+void	print_camera(t_camera *camera)
 {
 	printf("\n[Camera]\n");
 	printf("Camera Origin: ");
@@ -34,7 +34,7 @@ static void	print_camera(t_camera *camera)
 	printf("Camera Count: %d\n", camera->cam_num);
 }
 
-static void	print_object(t_object *obj)
+void	print_object(t_object *obj)
 {
 	if (obj->type == SPHERE)
 	{
@@ -59,43 +59,43 @@ static void	print_object(t_object *obj)
 	print_color(obj->color, "Color");
 }
 
-void	print_scene_info(t_scene *scene)
-{
-	t_object	*obj;
-	int			i;
-	t_light		*light;
-
-	print_camera(&scene->camera);
-	printf("\n[Ambient Light]\n");
-	printf("\n[Ambient Light]\n Ratio: %.2f\n", scene->amb_light.ratio);
-	print_color(scene->amb_light.color, "Color");
-	printf("Ambient Count: %d\n", scene->amb_light.amb_num);
-	light = scene->lights;
-	if (light)
-	{
-		i = 0;
-		while (light)
-		{
-			printf("\n[Light #%d]\n", i++);
-			print_vec3(light->position, "Position");
-			printf("Ratio: %.2f\n", light->ratio);
-			print_color(light->color, "Color");
-			light = light->next;
-		}
-	}
-	else
-		printf("\n[Light] None\n");
-	obj = scene->obj;
-	if (obj)
-	{
-		i = 0;
-		while (obj)
-		{
-			printf("\n[Object #%d]\n", ++i);
-			print_object(obj);
-			obj = obj->next;
-		}
-	}
-	else
-		printf("\n[Object] None\n");
-}
+// void	print_scene_info(t_scene *scene)
+// {
+// 	t_object	*obj;
+// 	int			i;
+// 	t_light		*light;
+//
+// 	print_camera(&scene->camera);
+// 	printf("\n[Ambient Light]\n");
+// 	printf("\n[Ambient Light]\n Ratio: %.2f\n", scene->amb_light.ratio);
+// 	print_color(scene->amb_light.color, "Color");
+// 	printf("Ambient Count: %d\n", scene->amb_light.amb_num);
+// 	light = scene->lights;
+// 	if (light)
+// 	{
+// 		i = 0;
+// 		while (light)
+// 		{
+// 			printf("\n[Light #%d]\n", i++);
+// 			print_vec3(light->position, "Position");
+// 			printf("Ratio: %.2f\n", light->ratio);
+// 			print_color(light->color, "Color");
+// 			light = light->next;
+// 		}
+// 	}
+// 	else
+// 		printf("\n[Light] None\n");
+// 	obj = scene->obj;
+// 	if (obj)
+// 	{
+// 		i = 0;
+// 		while (obj)
+// 		{
+// 			printf("\n[Object #%d]\n", ++i);
+// 			print_object(obj);
+// 			obj = obj->next;
+// 		}
+// 	}
+// 	else
+// 		printf("\n[Object] None\n");
+// }

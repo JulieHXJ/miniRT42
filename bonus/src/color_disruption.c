@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   calculate.c                                        :+:      :+:    :+:   */
+/*   color_disruption.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:10:44 by xhuang            #+#    #+#             */
-/*   Updated: 2025/07/04 13:37:46 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/07 12:56:30 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@ static void	get_cone_uv(t_hit hit, t_cone cone, int *i, int *j)
 	t_uv	uv;
 
 	v = vec_sub(hit.point, cone.apex);
-	height_on_axis = vec_dot(v, cone.orient);
-	radial = vec_sub(v, vec_scale(cone.orient, height_on_axis));
+	height_on_axis = vec_dot(v, cone.dir);
+	radial = vec_sub(v, vec_scale(cone.dir, height_on_axis));
 	if (height_on_axis < 0)
 		height_on_axis = 0;
 	if (height_on_axis > cone.height)
 		height_on_axis = cone.height;
-	radial = vec_sub(v, vec_scale(cone.orient, height_on_axis));
+	radial = vec_sub(v, vec_scale(cone.dir, height_on_axis));
 	uv.u = atan2(radial.z, radial.x) / (2.0f * M_PI);
 	if (uv.u < 0)
 		uv.u += 1.0f;
