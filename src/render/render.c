@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:25:33 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/04 13:47:51 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/07 18:17:19 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,13 +92,12 @@ bool	prepare_render(t_scene *scene, t_gc_object **gc_list)
 		return (print_error("Failed to initialize MLX42", *gc_list), false);
 	scene->img = mlx_new_image(scene->mlx, WIN_WIDTH, WIN_HEIGHT);
 	if (!scene->img)
-	{
-		mlx_close_window(scene->mlx);
-		return (print_error("Failed to create image", *gc_list), false);
-	}
+		return (mlx_close_window(scene->mlx),
+			print_error("Failed to create image", *gc_list), false);
 	scene->render.color = init_color_buffer(*scene->img);
 	scene->render.i = 0;
-	assign_textures(*scene);
+	if (!ft_strcmp(MODE, "TEXTURE") && !assign_textures(*scene))
+		return (print_error("Failed to parse textures", *gc_list), false);
 	render(scene);
 	if (mlx_image_to_window(scene->mlx, scene->img, 0, 0) < 0)
 		return (print_error("Failed to attach image to window", *gc_list),

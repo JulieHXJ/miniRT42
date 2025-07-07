@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt_bonus.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 11:46:12 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/07 15:49:03 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/07 18:06:23 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ bool	create_cone(int id, t_scene **scn, char **arr, t_gc_object **gc);
 bool	hit_cone(t_ray ray, t_cone cone, t_hit *hit);
 t_color	color_disruption(t_hit hit);
 t_color	texture_object(t_hit *hit);
-void	assign_textures(t_scene scene);
+bool	assign_textures(t_scene scene);
 
 #endif

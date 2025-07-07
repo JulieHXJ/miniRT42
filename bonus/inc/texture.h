@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 11:46:12 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/07 12:34:20 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/07 18:13:01 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_uv
 
 typedef struct s_texture
 {
+	char			*line;
 	mlx_texture_t	*png;
 	t_uv			uv;
 }					t_texture;

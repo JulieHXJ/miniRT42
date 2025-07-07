@@ -6,7 +6,7 @@
 /*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/07 12:35:29 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/07 18:25:06 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ int	main(int ac, char **av)
 	{
 		while (scene->obj)
 		{
-			mlx_delete_texture(scene->obj->tex.png);
+			if (scene->obj->tex.png)
+				mlx_delete_texture(scene->obj->tex.png);
 			scene->obj = scene->obj->next;
 		}
 	}

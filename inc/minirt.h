@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/07 15:56:20 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/07 17:47:49 by dchrysov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include "gc.h"
 # include "../bonus/inc/minirt_bonus.h"
 
-# define MODE "SIMPLE"
+# define MODE "TEXTURE"
 
 # define USAGE_MSG "Usage: ./minirt scenes/<file_name>.rt"
 # define HOOK "arrow keys to move, A/D/W/X to rotate, R to reset camera"
