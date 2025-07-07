@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 13:47:13 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/07 12:53:44 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/07 15:56:05 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,13 @@ typedef struct s_scene
 	t_render	render;
 }				t_scene;
 
-bool	create_environment(char *line, t_scene **scene, t_gc_object **gc_list);
-bool	create_objects(char *line, t_scene **scene, t_gc_object **gc);
-bool	parser(int fd, t_scene **scene, t_gc_object **gc_list);
-bool	prepare_render(t_scene *scene, t_gc_object **gc_list);
-void	get_cylinder_ends(t_cylinder *c);
+void	set_viewport(t_viewport *vp, t_camera *camera);
 void	translate_horizontal(t_scene *scene, float step);
 void	translate_vertical(t_scene *scene, float step);
 void	rotate_camera(t_scene *scene, float pitch, float yaw);
 void	zooming(double xdelta, double ydelta, void *param);
 void	key_hook(mlx_key_data_t keydata, void *param);
+bool	prepare_render(t_scene *scene, t_gc_object **gc_list);
 void	render(void *arg);
-void	set_viewport(t_viewport *vp, t_camera *camera);
-void	print_vec3(t_vec3 v, char *label);
-void	print_camera(t_camera *camera);
-void	print_object(t_object *obj);
-// void	print_scene_info(t_scene *scene);
-void	add_light(t_scene *scene, t_light *light);
 
 #endif

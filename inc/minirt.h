@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/07 13:02:12 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/07 15:56:20 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include "../lib/getnextline/inc/get_next_line.h"
 # include "../lib/libft/inc/libft.h"
 # include "intersect.h"
-# include "material.h"
 # include "vector.h"
 # include "objects.h"
 # include "env.h"
@@ -42,11 +41,9 @@
 # define ORIENT_MIN -1.0
 # define ORIENT_MAX 1.0
 
-
 // Utils
 size_t	array_size(char **arr);
 void	free_color_buffer(t_color **buffer, int height);
-void	add_object(t_scene **scene, t_object **new_obj);
 float	ft_atod(const char *str);
 float	frand(void);
 
@@ -58,6 +55,9 @@ bool	valid_ratio(float ratio);
 
 // Parser
 bool	assign_positive_num(char *num, float *value);
+bool	create_environment(char *line, t_scene **scene, t_gc_object **gc_list);
+bool	create_objects(char *line, t_scene **scene, t_gc_object **gc);
+bool	parser(int fd, t_scene **scene, t_gc_object **gc_list);
 
 // Intersections
 t_ray	ray_to_vp(t_scene *scene, float x, float y);
@@ -72,6 +72,10 @@ t_color	checkered_background(uint32_t x, uint32_t y);
 t_color	color_pixel(t_scene *scene, uint32_t x, uint32_t y);
 t_color	base_color_mode(t_hit *hit);
 
-
+// Debugging
+void	print_vec3(t_vec3 v, char *label);
+void	print_camera(t_camera *camera);
+void	print_object(t_object *obj);
+// void	print_scene_info(t_scene *scene);
 
 #endif
