@@ -5,7 +5,7 @@
 
 CC = gcc
 MAKEFLAGS += -s
-CFLAGS = -Wall -Wextra -Werror -Ofast -flto -march=native -Wunreachable-code -g -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I./inc -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -Ofast -flto -march=native -Wunreachable-code -g -I$(MLXDIR)/inc -I$(GNLDIR)/inc -I./inc 
 MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit -ldl -lglfw
 # MLX_FLAGS = -ldl -lglfw
 
@@ -17,7 +17,7 @@ GNLDIR = ./lib/getnextline
 MLX = $(MLXDIR)/build/libmlx42.a
 LIBFT = $(LIBFTDIR)/libft.a
 GNL = $(GNLDIR)/libgnl.a
-NAME = minirt
+NAME = miniRT
 
 RM = rm -f
 .DEFAULT_GOAL := all

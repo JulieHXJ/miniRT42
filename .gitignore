@@ -1,0 +1,6 @@
+# .gitignore 建议内容
+*.a
+miniRT
+obj/
+lib/*/obj/
+lib/MLX42/

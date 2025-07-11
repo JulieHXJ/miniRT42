@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:22:35 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 17:28:58 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:17:40 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,6 @@ t_color	color_add(t_color c1, t_color c2)
 	result.b = c1.b + c2.b;
 	return (result);
 }
-
-// /**
-//  * @brief Blends two colors based on a ratio (surface material blending)
-//  */
-// t_color	color_blend(t_color c1, t_color c2, float ratio)
-// {
-// 	t_color	result;
-//
-// 	if (ratio < 0.0 || ratio > 1.0)
-// 		return (c1);
-// 	result.r = (int)fmin(c1.r * (1 - ratio) + c2.r * ratio, 255.0);
-// 	result.g = (int)fmin(c1.g * (1 - ratio) + c2.g * ratio, 255.0);
-// 	result.b = (int)fmin(c1.b * (1 - ratio) + c2.b * ratio, 255.0);
-// 	return (result);
-// }
 
 t_color	color_mult(t_color c1, t_color c2)
 {
