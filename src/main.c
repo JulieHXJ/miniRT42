@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/07 12:35:29 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:57:32 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,9 @@ static t_scene	*scene_init(t_gc_object **list)
 	return (scene);
 }
 
+
+
+
 int	main(int ac, char **av)
 {
 	t_gc_object	*gc_list;
@@ -101,5 +104,6 @@ int	main(int ac, char **av)
 		}
 	}
 	mlx_terminate(scene->mlx);
+	system("leaks minirt");
 	return (gc_free(gc_list), 0);
 }
