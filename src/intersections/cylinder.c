@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 13:37:22 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/02 13:35:04 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/11 19:07:46 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,27 +94,32 @@ static bool	check_cap(t_ray ray, t_cylinder cylinder, t_vec3 center,
  */
 bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit)
 {
-	float	t_bottom;
-	float	t_top;
-	float	t_min;
+	// float	t_bottom;
+	// float	t_top;
+	// float	t_min;
 	t_hit	hit_side;
+	float t_cap;
+	bool has_hit = false;
 
-	t_min = hit->t;
+	// t_min = hit->t;
 	hit_side.t = hit->t;
-	if (check_sides(ray, cylinder, &hit_side) && hit_side.t < t_min)
-		return (*hit = hit_side, t_min = hit_side.t, true);
-	if (check_cap(ray, cylinder, cylinder.bottom_center, &t_bottom)
-		&& t_bottom < t_min && t_bottom > 0)
+	if (check_sides(ray, cylinder, &hit_side) && hit_side.t < hit->t)
 	{
-		update_hit(hit, t_bottom, ray_point_at(ray, t_bottom),
+		*hit = hit_side;
+		has_hit = true;
+	}
+	if (check_cap(ray, cylinder, cylinder.bottom_center, &t_cap)
+		&& t_cap < hit->t && t_cap > 0)
+	{
+		update_hit(hit, t_cap, ray_point_at(ray, t_cap),
 			vec_scale(cylinder.direction, -1));
-		return (t_min = t_bottom, true);
+		has_hit = true;
 	}
-	if (check_cap(ray, cylinder, cylinder.top_center, &t_top) && t_top < t_min
-		&& t_top > 0)
+	if (check_cap(ray, cylinder, cylinder.top_center, &t_cap) && t_cap < hit->t
+		&& t_cap > 0)
 	{
-		update_hit(hit, t_top, ray_point_at(ray, t_top), cylinder.direction);
-		return (t_min = t_top, true);
+		update_hit(hit, t_cap, ray_point_at(ray, t_cap), cylinder.direction);
+		has_hit = true;
 	}
-	return (false);
+	return (has_hit);
 }

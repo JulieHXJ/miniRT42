@@ -1,3 +1,5 @@
+![Screenshot of miniRT](assets/inside.png)
+
 # miniRT — A Minimal Ray Tracer  
 > A 42 School project | Real-time image generation via ray tracing
 

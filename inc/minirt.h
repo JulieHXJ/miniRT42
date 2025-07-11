@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:57:47 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/11 18:03:11 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/11 18:21:05 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include "gc.h"
 # include "../bonus/inc/minirt_bonus.h"
 
-# define MODE "TEXTURE"
+# define MODE "SIMPLE"
 
 # define USAGE_MSG "Usage: ./minirt scenes/<file_name>.rt"
 # define HOOK "arrow keys to move, A/D/W/X to rotate, R to reset camera"
