@@ -6,7 +6,7 @@
 /*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:58:58 by junjun            #+#    #+#             */
-/*   Updated: 2025/07/11 14:57:32 by xhuang           ###   ########.fr       */
+/*   Updated: 2025/07/11 15:18:19 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,6 @@ static t_scene	*scene_init(t_gc_object **list)
 	camera_init(scene);
 	return (scene);
 }
-
-
-
 
 int	main(int ac, char **av)
 {

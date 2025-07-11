@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   objects.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xhuang <xhuang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 13:43:51 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/07/07 12:56:33 by dchrysov         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:16:30 by xhuang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define OBJECTS_H
 
 # include "vector.h"
-# include "material.h"
 # include "../bonus/inc/texture.h"
 
 typedef enum e_obj_type
@@ -79,7 +78,6 @@ typedef struct s_object
 		t_cone		cone;
 	} u_data;
 	t_color			color;
-	t_material		material;
 	t_texture		tex;
 	struct s_object	*next;
 }					t_object;
