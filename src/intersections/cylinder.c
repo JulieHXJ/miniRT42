@@ -94,14 +94,10 @@ static bool	check_cap(t_ray ray, t_cylinder cylinder, t_vec3 center,
  */
 bool	hit_cylinder(t_ray ray, t_cylinder cylinder, t_hit *hit)
 {
-	// float	t_bottom;
-	// float	t_top;
-	// float	t_min;
 	t_hit	hit_side;
 	float t_cap;
 	bool has_hit = false;
 
-	// t_min = hit->t;
 	hit_side.t = hit->t;
 	if (check_sides(ray, cylinder, &hit_side) && hit_side.t < hit->t)
 	{
