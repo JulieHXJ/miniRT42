@@ -1,98 +1,73 @@
 ![Screenshot of miniRT](assets/inside.png)
 
-# miniRT — A Minimal Ray Tracer  
-> A 42 School project | Real-time image generation via ray tracing
+# miniRT — Ray Tracing in C
 
-## Summary
+> A realistic 3D renderer using ray tracing techniques.  
+> Developed as part of the 42 school curriculum — with full bonus features.
 
-Render realistic 3D scenes by simulating the physical behavior of light — including shadows, diffuse and specular reflections — using ray tracing techniques.
-## Input & Output
+## Usage
 
-- **Input**: `.rt` scene description file (custom format)  
-- **Output**: Graphical window (MiniLibX) displaying the rendered image
+### Build
+<pre><code>make
+./miniRT scenes/example.rt</code></pre>
 
 ---
+
 
 ## Project Breakdown
 
 ### 1.Parsing & Scene Setup
 
-- Check argument count, file name and extension  
-- Acceptable elements:
-  ```
-  A  → Ambient light        (3 parameters)  
-  C  → Camera               (4 parameters)  
-  L  → Light source         (3 parameters)  
-  sp → Sphere               (4 parameters)  
-  pl → Plane                (4 parameters)  
-  cy → Cylinder             (6 parameters)  
-  co → Cone                 (6 parameters, bonus)  
-  ```
-- Validation:
-  - RGB values: 0–255  
-  - Vectors: normalized within [-1, 1]  
-  - Positive diameter/height  
-- Scene elements can appear in any order, separated by space, tabs, or newline separators  
-- Structured scene representation for rendering
+- Validate file extension, argument count
+- Enforce scene constraints:
+  - Exactly **1 camera**, **1 ambient light**  
+  - **0 or 1** light source *(bonus: supports multiple)* 
+- Accept objects in any order, whitespace-separated
+- Format checked for:
+  - Colors in **0–255**  
+  - Normalized vectors in **[-1,1]**  
+  - Positive diameters/heights 
+- Parsed data stored into structured scene representations
+
 
 ---
 
 ### 2️.Ray Tracing & Intersections
 
-We generate a ray from the camera through each pixel of a virtual screen.
+- Viewport set up in front of the camera  
+- Each screen pixel maps to a ray from the camera  
+- Intersection logic implemented for:  
+  - **Sphere** (`sp`)  
+  - **Plane** (`pl`)  
+  - **Cylinder** (`cy`)  
+  - **Cone** *(bonus)*  
 
-#### Viewport Setup
-- Defined in front of the camera  
-- Parameters: width, height, orientation (`up`, `right`, `normal`)  
-- Rays are cast through each pixel
-
-#### Object Intersections
-
-Mathematically determine ray-object intersections:
-
-| Object     | Method                                              |
-|------------|-----------------------------------------------------|
-| **Ray**    | `P(t) = origin + t * direction`                    |
-| **Sphere** | Solve `|P(t) - center|² = radius²`                 |
-| **Plane**  | Solve `dot(P(t) - point_on_plane, normal) = 0`     |
-| **Cylinder** | Axis projection + cap test                        |
-| **Cone** *(bonus)* | Parametric solution                         |
-
-Only the closest valid intersection is retained per ray.
+📐 Accurate math for intersections:  
+- **Ray**: `P(t) = origin + t * direction`  
+- Solving quadratics & axis projections
 
 ---
 
 ### 3️.Lighting & Shading
 
-We calculate final pixel color based on:
+- **Ambient Lighting** (global base light)  
+- **Diffuse Reflection** (Lambertian shading) 
+- **Multiple Colored Lights** *(bonus)*  
+- Shadow checks for each light  
+- RGB contribution blending  
+- Lighting formula:
+  - FinalColor = Ambient + Σ (Diffuse + Specular per light)
 
-#### Ambient Light
-- Base illumination for the whole scene  
-- `color += ambient_color * intensity`
+- Surface Modes (Bonus Feature)
 
-#### Diffuse Light (Lambertian)
-- Based on angle between light and surface normal  
-- Blocked light = shadow  
-- `intensity = max(dot(normal, light_dir), 0.0)`
-
-#### Specular Highlights *(bonus)*
-- Shiny surfaces, viewer-angle dependent  
-- `intensity += pow(max(dot(reflect_dir, view_dir), 0.0), shininess)`
-
-#### Multiple Colored Lights *(bonus)*
-- Lights support RGB coloring  
-- Loop through each light:
-  - Cast shadow ray  
-  - Accumulate diffuse/specular effects  
-  - `final_color = ambient + Σ(lights)`
-
-#### Bump Maps *(bonus)*
-- Textured normal variation using PNG maps  
-- Adds surface realism without changing geometry  
-- Applied to sphere, plane, and cylinder
+<pre><code># define MODE "SIMPLE"     // plain surfaces
+# define MODE "DISRUPTION" // checkerboard effect
+# define MODE "TEXTURE"    // bump map simulation</code></pre>
+  - "SIMPLE": Flat, solid-color surfaces
+  - "DISRUPTION": Checkerboard pattern (procedural texture)
+  - "TEXTURE": Bump map lighting using perturbed normals
 
 ---
-
 ### 4️.Graphical Output (MiniLibX)
 
 - Graphical window display  
@@ -105,13 +80,13 @@ We calculate final pixel color based on:
 
 ---
 
-## Optional Extensions / Theory
+## Bonus
 
-- Vector math: `dot`, `cross`, normalization  
-- Surface normals & backface culling  
-- Anti-aliasing (TBD)  
-- Multithreading (bonus-eligible)  
-- BVH acceleration (not implemented)
+- Cone object support 
+- Multiple lights with RGB colors
+- Specular highlights  
+- Checkerboard plane texture  
+- Bump map simulation
 
 ---
 
